@@ -13,5 +13,8 @@
   "main": "server.js",
   "repository": "http://github.com/coding-blocks/boss-backend",
   "author": "Arnav Gupta <arnav@codingblocks.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "DATABASE_URL='postgres://bossuser:bosspass@localhost:5432/bossdb PORT=3232 node server.js"
+  }
 }

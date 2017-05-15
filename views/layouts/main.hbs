@@ -4,24 +4,38 @@
     <meta charset="UTF-8">
     <title>BOSS</title>
     <link href="/lib/semantic/semantic.min.css" rel="stylesheet">
+    <script src="/lib/jquery-3.2.1.min.js"></script>
     <script src="/lib/semantic/semantic.js"></script>
+    <style>
+        .main.container {
+            margin-top: 6em;
+        }
+    </style>
 </head>
 <body>
 
-<div class="ui top fixed menu">
-    <div class="item">BOSS</div>
-    <a class="item">
-        <i class="sort content descending icon"></i>
-        Leaderboard
-    </a>
+<div class="ui top fixed inverted menu">
+    <div class="ui container">
+        <div class="header item">BOSS</div>
+        <a class="item {{menu.leaderboard}}" href="/leaderboard">
+            <i class="sort content descending icon"></i>
+            Leaderboard
+        </a>
 
-    <a class="item">
-        <i class="checked calendar icon"></i>
-        Claim
-    </a>
+        <div class="ui simple dropdown item">
+            <i class="checked calendar icon"></i>
+            Claim
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
+                <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div class="ui container">
+<div class="ui main container">
     {{{body}}}
 </div>
 
