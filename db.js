@@ -20,6 +20,10 @@ const Claim = sequelize.define('claim', {
     status: Sequelize.ENUM(Object.keys(config.CLAIM_STATUS).map((key) => config.CLAIM_STATUS[key]))
 });
 
+sequelize.sync({}).then(() => {
+    console.log('DB Synced');
+});
+
 exports = module.exports = {
     Claim
 };
