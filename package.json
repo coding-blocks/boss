@@ -2,6 +2,8 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "pg": "^6.1.5",
+    "pg-hstore": "^2.3.2",
     "sequelize": "^3.30.4"
   },
   "name": "boss-backend",
