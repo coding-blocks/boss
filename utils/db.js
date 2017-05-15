@@ -2,7 +2,7 @@
  * Created by championswimmer on 15/05/17.
  */
 const Sequelize = require('sequelize');
-const config = require('./config');
+const config = require('./../config');
 
 const sequelize = new Sequelize(process.env.DATABASE_URL);
 

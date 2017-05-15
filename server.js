@@ -3,23 +3,31 @@
  */
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const routes = {
-    api: require('./api')
+    api: require('./routes/api'),
+    root: require('./routes/root')
 };
 
 const app = express();
+
+app.engine('hbs', exphbs.express4({
+    partialsDir: path.join(__dirname, 'views/partials'),
+    layoutsDir: path.join(__dirname, 'views/layouts'),
+    defaultLayout: 'views/layouts/main.hbs',
+}));
+app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "hbs");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.raw());
 
 app.use('/api', routes.api);
-app.get('/', (req, res) => {
-    res.send('Server works')
-});
+app.use('/', routes.root);
 
 
 app.listen(process.env.PORT, function () {
-    console.log("Server started on http://localhost:3232");
+    console.log("Server started on http://localhost:" + process.env.PORT);
 });

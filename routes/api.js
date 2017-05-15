@@ -3,8 +3,8 @@
  */
 const Router = require('express').Router;
 
-const config = require('./config');
-const db = require('./db');
+const config = require('./../config');
+const db = require('./../utils/db');
 
 const route = new Router();
 
