@@ -20,6 +20,6 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(3232, function () {
+app.listen(process.env.PORT, function () {
     console.log("Server started on http://localhost:3232");
 });
