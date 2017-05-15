@@ -14,7 +14,7 @@ route.get('/leaderboard', (req, res) => {
         attributes: [
             'user',
             [Sequelize.fn('SUM', Sequelize.col('bounty')), 'bounty', 'DESC'],
-            [Sequelize.fn('COUNT', Sequelize.col('bounty')), 'pulls']
+            // [Sequelize.fn('COUNT', Sequelize.col('bounty')), 'pulls']
         ],
         group: 'user',
         where: {
