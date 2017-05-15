@@ -15,6 +15,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.raw());
 
 app.use('/api', api);
+app.get('/', (req, res) => {
+    res.send('Server works')
+});
 
 
 app.listen(3232, function () {
