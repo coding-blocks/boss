@@ -10,21 +10,11 @@ const db = require('./../utils/db');
 const route = new Router();
 
 route.get('/leaderboard', (req, res) => {
-    db.Claim.findAll({
-        attributes: [
-            'user',
-            [Sequelize.fn('SUM', Sequelize.col('bounty')), 'totalbounty'],
-            // [Sequelize.fn('COUNT', Sequelize.col('bounty')), 'pulls']
-        ],
-        group: 'user',
-        where: {
-            status: config.CLAIM_STATUS.ACCEPTED
-        },
-        order: [
-            [Sequelize.fn('SUM', Sequelize.col('bounty')), 'DESC']
-        ],
-        raw: true
-    }).then(results => {
+    db.query("SELECT `user`, " +
+        "SUM(CASE WHEN `claim`.`status` = 'accepted' THEN `bounty` ELSE 0 END) as `bounty`, " +
+        "COUNT(`bounty`) as `pulls` FROM `claims` AS `claim` " +
+        "GROUP BY `user` " +
+        "ORDER BY SUM(`bounty`) DESC").spread((results, meta) => {
         res.render('leaderboard', {
             userstats: results
         })
