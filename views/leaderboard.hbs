@@ -1,1 +1,22 @@
-<div> Hi </div>
+<table class="ui celled padded table">
+    <thead>
+    <tr>
+        <th>Github User</th>
+        <th>Points</th>
+        <th>PRs Submitted</th>
+    </tr>
+    {{#each userstats as |user|}}
+        <tr>
+            <td>
+                <h4 class="ui center aligned">{{user.user}}</h4>
+            </td>
+            <td>
+                <div class="right aligned">{{user.bounty}}</div>
+            </td>
+            <td>
+                <div class="right aligned">{{user.pulls}}</div>
+            </td>
+        </tr>
+    {{/each}}
+    </thead>
+</table>
