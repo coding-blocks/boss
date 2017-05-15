@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.raw());
 
-app.use('/api', api);
+app.use('/api', routes.api);
 app.get('/', (req, res) => {
     res.send('Server works')
 });
