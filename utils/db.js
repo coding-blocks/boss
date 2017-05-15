@@ -16,7 +16,7 @@ const Claim = sequelize.define('claim', {
     issueUrl: Sequelize.STRING,
     pullUrl: {type: Sequelize.STRING, unique: true},
     repo: Sequelize.STRING,
-    bounty: Sequelize.STRING,
+    bounty: Sequelize.INTEGER,
     status: Sequelize.ENUM(Object.keys(config.CLAIM_STATUS).map((key) => config.CLAIM_STATUS[key]))
 });
 
