@@ -27,6 +27,7 @@ app.use(bodyParser.raw());
 
 app.use('/api', routes.api);
 app.use('/', routes.root);
+app.use('/', express.static(path.join(__dirname, 'public_static')));
 
 
 app.listen(process.env.PORT, function () {
