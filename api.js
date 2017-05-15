@@ -28,6 +28,7 @@ route.get('/claims/:id/delete', (req, res) => {
 });
 
 route.get('/claims/:id/update', (req, res) => {
+    //TODO: For authorised requests only
     db.Claim.update({
         status: req.query.status
     }, {
