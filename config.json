@@ -1,0 +1,9 @@
+{
+  "CLAIM_STATUS": {
+    "CLAIMED": "claimed",
+    "ACCEPTED":"accepted",
+    "REJECTED": "rejected",
+    "DISPUTED": "disputed",
+    "REVOKED": "revoked"
+  }
+}
