@@ -25,5 +25,6 @@ sequelize.sync({}).then(() => {
 });
 
 exports = module.exports = {
+    Database: sequelize,
     Claim
 };

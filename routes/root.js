@@ -10,7 +10,7 @@ const db = require('./../utils/db');
 const route = new Router();
 
 route.get('/leaderboard', (req, res) => {
-    db.query("SELECT `user`, " +
+    db.Database.query("SELECT `user`, " +
         "SUM(CASE WHEN `claim`.`status` = 'accepted' THEN `bounty` ELSE 0 END) as `bounty`, " +
         "COUNT(`bounty`) as `pulls` FROM `claims` AS `claim` " +
         "GROUP BY `user` " +
