@@ -22,7 +22,8 @@ route.get('/leaderboard', (req, res) => {
         },
         order: [
             ['totalbounty', 'DESC']
-        ]
+        ],
+        raw: true
     }).then(results => {
         res.render('leaderboard', {
             userstats: results
