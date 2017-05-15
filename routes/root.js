@@ -21,7 +21,7 @@ route.get('/leaderboard', (req, res) => {
             status: config.CLAIM_STATUS.ACCEPTED
         },
         order: [
-            ['totalbounty', 'DESC']
+            [Sequelize.fn('SUM', Sequelize.col('bounty')), 'DESC']
         ],
         raw: true
     }).then(results => {
