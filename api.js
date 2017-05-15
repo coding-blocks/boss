@@ -23,7 +23,7 @@ route.get('/claims/:id/delete', (req, res) => {
             id: req.params.id
         }
     }).then(result => {
-        res.send(result)
+        res.send({result: result})
     })
 });
 
