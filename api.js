@@ -27,6 +27,18 @@ route.get('/claims/:id/delete', (req, res) => {
     })
 });
 
+route.get('/claims/:id/update', (req, res) => {
+    db.Claim.update({
+        status: req.query.status
+    }, {
+        where: {
+            id: req.params.id
+        }
+    }).then(result => {
+        res.send({result: result})
+    })
+});
+
 route.post('/claims/add', (req, res) => {
     db.Claim.create({
         user: req.body.user,
