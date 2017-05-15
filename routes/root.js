@@ -39,7 +39,6 @@ route.get('/claims/add', (req, res) => {
 });
 
 route.post('/claims/add', (req, res) => {
-    console.log(req.body);
     du.createClaim(
         req.body.user,
         req.body.issue_url,
