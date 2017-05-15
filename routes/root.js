@@ -13,13 +13,16 @@ route.get('/leaderboard', (req, res) => {
     db.Claim.findAll({
         attributes: [
             'user',
-            [Sequelize.fn('SUM', Sequelize.col('bounty')), 'bounty', 'DESC'],
+            [Sequelize.fn('SUM', Sequelize.col('bounty')), 'totalbounty'],
             // [Sequelize.fn('COUNT', Sequelize.col('bounty')), 'pulls']
         ],
         group: 'user',
         where: {
             status: config.CLAIM_STATUS.ACCEPTED
-        }
+        },
+        order: [
+            ['totalbounty', 'DESC']
+        ]
     }).then(results => {
         res.render('leaderboard', {
             userstats: results
