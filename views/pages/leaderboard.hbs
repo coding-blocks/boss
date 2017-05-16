@@ -1,13 +1,14 @@
-<table class="ui celled padded table">
+<table class="ui celled padded table red">
     <thead>
     <tr>
         <th>Github User</th>
         <th>Points</th>
         <th>PRs Submitted</th>
     </tr>
+    </thead>
     {{#each userstats as |user|}}
         <tr>
-            <td>
+            <td class="red text">
                 <h4 class="ui center aligned">{{user.user}}</h4>
             </td>
             <td>
@@ -18,5 +19,9 @@
             </td>
         </tr>
     {{/each}}
-    </thead>
 </table>
+<style>
+    .red.text {
+        color: red;
+    }
+</style>
