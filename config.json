@@ -1,4 +1,5 @@
 {
+  "PAGINATION_SIZE" : 2,
   "CLAIM_STATUS": {
     "CLAIMED": "claimed",
     "ACCEPTED":"accepted",

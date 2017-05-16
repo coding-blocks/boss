@@ -9,6 +9,7 @@ const config = require('./../config');
 const db = require('./../utils/db');
 const du = require('./../utils/datautils');
 
+
 const route = new Router();
 
 let adminUser = process.env.BOSS_ADMIN || 'theboss';
@@ -36,9 +37,29 @@ route.get('/leaderboard', (req, res) => {
 });
 
 route.get('/claims/view', (req, res) => {
-    du.getClaims(req.query.status).then(claims => {
+
+    const options = {
+        status : req.query.status,
+        page : req.query.page || 1,
+        size : req.query.size || config.PAGINATION_SIZE
+    };
+
+    options.page = parseInt(options.page);
+
+    du.getClaims(options).then( data => {
+        const pagination = [];
+        for(var i=1;i<=data.lastPage;i++)
+            pagination.push(`?page=${i}&size=${options.size}`);
+
         res.render('pages/claims/view', {
-            claims: claims,
+            prevPage : options.page-1,
+            nextPage : options.page+1,
+            pagination : pagination,
+            isFirstPage : options.page == 1,
+            isLastPage : data.lastPage == options.page ,
+            page : options.page ,
+            size : options.size,
+            claims: data.claims,
             menu: {claims_view: 'active'}
         })
     })
