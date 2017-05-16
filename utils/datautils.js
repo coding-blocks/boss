@@ -57,7 +57,7 @@ function getLeaderboard() {
         'SUM(CASE WHEN "claim"."status" = \'accepted\' THEN "bounty" ELSE 0 END) as "bounty", ' +
         'COUNT("bounty") as "pulls" FROM "claims" AS "claim" ' +
         'GROUP BY "user" ' +
-        'ORDER BY SUM("bounty") DESC'
+        'ORDER BY SUM(CASE WHEN "claim"."status" = \'accepted\' THEN "bounty" ELSE 0 END) DESC'
     )
 }
 
