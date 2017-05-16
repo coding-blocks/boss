@@ -13,14 +13,15 @@ function getClaims(options) {
      const claims = db.Claim.findAll({
         limit : options.size,
         offset : offset,
-        status: options.status
-    });
+        status: options.status,
+        order: [['updatedAt', 'DESC']]
+     });
 
     return RSVP.hash({
         lastPage : lastPage,
         claims : claims
     });
-    
+
 }
 
 function getClaimById(claimId) {
