@@ -2,14 +2,14 @@
     {{#each claims as |claim|}}
         <div class="four wide item">
             <div class="image">
-                <div class="ui statistic">
+                <a class="ui statistic" href="/claims/{{claim.id}}">
                     <div class="value">
                         {{claim.bounty}}
                     </div>
                     <div class="label">
                         BOUNTY POINTS
                     </div>
-                </div>
+                </a>
             </div>
             <div class="middle aligned content">
                 <a class="header">{{claim.user}}</a>

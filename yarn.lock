@@ -45,6 +45,10 @@ balanced-match@^0.4.1:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-0.4.2.tgz#cb3f3e3c732dc0f01ee70b403f302e61d7709838"
 
+basic-auth@^1.0.4:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-1.1.0.tgz#45221ee429f7ee1e5035be3f51533f1cdfd29884"
+
 bluebird@^3.0.5, bluebird@^3.3.4, bluebird@^3.4.6:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
@@ -206,6 +210,12 @@ escape-html@~1.0.3:
 etag@~1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.0.tgz#6f631aef336d6c46362b51764044ce216be3c051"
+
+express-basic-auth@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/express-basic-auth/-/express-basic-auth-1.0.2.tgz#e4fc64cd4c8aa86fffda167197012abea10788b9"
+  dependencies:
+    basic-auth "^1.0.4"
 
 express-hbs@^1.0.4:
   version "1.0.4"
