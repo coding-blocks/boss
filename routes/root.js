@@ -44,6 +44,7 @@ route.get('/claims/view', (req, res) => {
         size : req.query.size || config.PAGINATION_SIZE
     };
 
+    options.page = parseInt(options.page);
 
     du.getClaims(options).then( data => {
         const pagination = [];
@@ -56,6 +57,8 @@ route.get('/claims/view', (req, res) => {
             pagination : pagination,
             isFirstPage : options.page == 1,
             isLastPage : data.lastPage == options.page ,
+            page : options.page ,
+            size : options.size,
             claims: data.claims,
             menu: {claims_view: 'active'}
         })

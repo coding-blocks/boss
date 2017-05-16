@@ -31,6 +31,10 @@ exphbs.registerHelper('equal', function(lvalue, rvalue, options) {
     }
 });
 
+exphbs.registerHelper('add', function (lvalue,rvalue , options) {
+    return lvalue+rvalue;
+})
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.raw());
