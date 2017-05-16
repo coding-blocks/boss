@@ -9,10 +9,17 @@ const du = require('./../utils/datautils');
 const route = new Router();
 
 route.get('/claims', (req, res) => {
-    du.getClaims(req.query.status).then(claims => {
-        res.send(claims)
-    })
 
+    const options = {
+        status : req.query.status,
+        page : req.query.page || 1,
+        size : req.query.size || 99999999
+    }
+
+   du.getClaims(options).then(data => {
+            res.send(data.claims)
+    });
+    
 });
 
 route.get('/claims/:id/delete', (req, res) => {
