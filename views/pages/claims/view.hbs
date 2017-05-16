@@ -38,6 +38,16 @@
             </div>
         </div>
     {{/each}}
+
+    <div class="pagination">
+        <div class="ui pagination menu">
+            {{#each pagination as |link index|}}
+                <a class="item" href="{{link}}" >
+                    {{index}}
+                </a>
+            {{/each}}
+        </div>
+    </div>
 </div>
 <style>
     .user.header {
