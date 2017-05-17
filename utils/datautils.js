@@ -80,9 +80,11 @@ function getLeaderboard(options) {
     const results = new RSVP.Promise( function (resolve,reject) {
         db.Database.query(`SELECT "user", 
         SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
-        COUNT("bounty") as "pulls" FROM "claims" AS "claim" 
+        COUNT("bounty") as "pulls" 
+        FROM "claims" AS "claim" 
         GROUP BY "user" 
-        ORDER BY SUM("bounty") DESC LIMIT ${options.size} OFFSET ${offset}`
+        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC 
+        LIMIT ${options.size} OFFSET ${offset}`
         ).spread((results, meta) => {
             resolve(results);
         });
