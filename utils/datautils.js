@@ -2,13 +2,26 @@
  * Created by championswimmer on 16/05/17.
  */
 const db = require('./db');
+const RSVP = require('rsvp');
 
-function getClaims(status) {
-    return db.Claim.findAll({
-        status: status,
-        order: [['updatedAt', 'DESC']]
 
-    })
+function getClaims(options) {
+  
+    const offset = (options.page - 1 ) * options.size ;
+    const lastPage = db.Claim.count().then(cnt=>{
+        return Math.ceil( cnt / options.size );
+    });
+     const claims = db.Claim.findAll({
+        limit : options.size,
+        offset : offset,
+        status: options.status
+    });
+
+    return RSVP.hash({
+        lastPage : lastPage,
+        claims : claims
+    });
+    
 }
 
 function getClaimById(claimId) {

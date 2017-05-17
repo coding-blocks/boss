@@ -6,6 +6,7 @@
     "express-hbs": "^1.0.4",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
+    "rsvp": "^3.5.0",
     "sequelize": "^3.30.4"
   },
   "name": "boss-backend",
