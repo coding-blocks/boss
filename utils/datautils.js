@@ -4,8 +4,9 @@
 const db = require('./db');
 const RSVP = require('rsvp');
 
-function getClaims(options) {
 
+function getClaims(options) {
+  
     const offset = (options.page - 1 ) * options.size ;
     const lastPage = db.Claim.count().then(cnt=>{
         return Math.ceil( cnt / options.size );
