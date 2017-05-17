@@ -2,6 +2,7 @@
  * Created by championswimmer on 16/05/17.
  */
 const db = require('./db');
+const rp = require('request-promise');
 const RSVP = require('rsvp');
 
 
@@ -67,14 +68,61 @@ function createClaim(user, issueUrl, pullUrl, bounty, status) {
     })
 }
 
-function getLeaderboard() {
-    return db.Database.query('SELECT "user", ' +
-        'SUM(CASE WHEN "claim"."status" = \'accepted\' THEN "bounty" ELSE 0 END) as "bounty", ' +
-        'COUNT("bounty") as "pulls" FROM "claims" AS "claim" ' +
-        'GROUP BY "user" ' +
-        'ORDER BY SUM(CASE WHEN "claim"."status" = \'accepted\' THEN "bounty" ELSE 0 END) DESC'
-    )
+function getLeaderboard(options) {
+
+    console.log(options);
+    options.size = parseInt(options.size);
+    const offset = (options.page-1) * options.size;
+
+    const lastPage = db.Claim.aggregate('user' , 'count' , {distinct : true} ).then( cnt=>{
+        return Math.ceil(cnt / options.size);
+    });
+
+    const results = new RSVP.Promise( function (resolve,reject) {
+        db.Database.query(`SELECT "user", 
+        SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
+        COUNT("bounty") as "pulls" FROM "claims" AS "claim" 
+        GROUP BY "user" 
+        ORDER BY SUM("bounty") DESC LIMIT ${options.size} OFFSET ${offset}`
+        ).spread((results, meta) => {
+            resolve(results);
+        });
+    });
+
+    return RSVP.hash({
+      results , lastPage
+    });
 }
+
+function findOrCreateUser(token) {
+    //get the user of the token first
+    return rp({
+            uri : 'https://account.codingblocks.com/api/users/me',
+            qs : {
+                include : 'github'
+            },
+            headers : {
+                'Authorization' : `Bearer ${token}`
+            },
+            json : true
+        }).then(data=>{
+            const id = data.id;
+
+        // fetch the user from db , if not found create one
+            const user = db.User.findOrCreate({
+                    where : { id : id },
+                    defaults : { role : 'user'}
+            });
+
+            return user.spread((userDB, created) => {
+                  data.role = userDB.role;
+                  return data;
+            });
+
+        });
+}
+
+
 
 exports = module.exports = {
     getClaims,
@@ -83,5 +131,6 @@ exports = module.exports = {
     createClaim,
     getLeaderboard,
     getClaimById,
-    updateClaim
+    updateClaim,
+    findOrCreateUser
 };

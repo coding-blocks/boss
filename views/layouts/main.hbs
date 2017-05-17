@@ -35,7 +35,16 @@
             <i class="info icon"></i>
             Information
         </a>
-    </div>
+        {{#if isAuthenticated}}
+            <div class="item right">
+                <a target="_blank" href="https://account.codingblocks.com/users/me" >Welcome {{user.firstname}} </a>
+            </div>
+            <a class="item" href="/logout">Logout </a>
+
+        {{else}}
+            <a class="right item" href="https://account.codingblocks.com/oauth/authorize?response_type=code&client_id={{clientId}}&redirect_uri={{callbackURL}}">Login</a>
+        {{/if}}
+</div>
 
 </div>
 
