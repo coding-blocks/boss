@@ -5,7 +5,9 @@ const db = require('./db');
 
 function getClaims(status) {
     return db.Claim.findAll({
-        status: status
+        status: status,
+        order: [['updatedAt', 'DESC']]
+
     })
 }
 
