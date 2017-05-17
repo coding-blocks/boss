@@ -4,7 +4,23 @@
 const Sequelize = require('sequelize');
 const config = require('./../config');
 
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+
+const sequelize = process.env.DATABASE_URL ?
+    new Sequelize(process.env.DATABASE_URL) :
+
+    new Sequelize(
+        process.env.BOSS_DB_NAME,
+        process.env.BOSS_DB_USER,
+        process.env.BOSS_DB_PASS,
+        {
+            host: 'localhost',
+            dialect: 'postgres',
+            pool: {
+                max: 5,
+                min: 0,
+                idle: 10000
+            },
+        });
 
 const Claim = sequelize.define('claim', {
     id: {

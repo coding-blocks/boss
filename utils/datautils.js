@@ -6,7 +6,9 @@ const RSVP = require('rsvp');
 
 function getClaims(status) {
     return db.Claim.findAll({
-        status: status
+        status: status,
+        order: [['updatedAt', 'DESC']]
+
     })
 }
 
@@ -78,7 +80,7 @@ function getLeaderboard(options) {
       results , lastPage
     });
     
-    
+   
 }
 
 exports = module.exports = {

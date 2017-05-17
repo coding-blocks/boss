@@ -45,6 +45,7 @@ app.use('/api', routes.api);
 app.use('/', routes.root);
 app.use('/', express.static(path.join(__dirname, 'public_static')));
 
+process.env.PORT = process.env.PORT || 3232;
 
 app.listen(process.env.PORT, function () {
     console.log("Server started on http://localhost:" + process.env.PORT);
