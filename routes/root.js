@@ -28,9 +28,30 @@ route.get('/', (req, res) => {
 });
 
 route.get('/leaderboard', (req, res) => {
-    du.getLeaderboard().spread((results, meta) => {
+
+    const options = {
+        page : req.query.page|| 1, 
+        size : req.query.size || config.PAGINATION_SIZE 
+    };
+
+    options.page = parseInt(options.page);
+
+    du.getLeaderboard(options).then(data => {
+
+        const pagination = [];
+
+        for(var i=1;i<=data.lastPage;i++)
+            pagination.push(`?page=${i}&size=${options.size}`);
+
         res.render('pages/leaderboard', {
-            userstats: results,
+            prevPage : options.page-1,
+            nextPage : options.page+1,
+            isFirstPage : options.page==1,
+            isLastPage : options.page == data.lastPage,
+            size : options.size,
+            page : options.page,
+            pagination : pagination,
+            userstats: data.results,
             menu: {leaderboard: 'active'}
         })
     })

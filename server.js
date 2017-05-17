@@ -31,9 +31,11 @@ exphbs.registerHelper('equal', function(lvalue, rvalue, options) {
     }
 });
 
-exphbs.registerHelper('add', function (lvalue,rvalue , options) {
-    return lvalue+rvalue;
-})
+exphbs.registerHelper('add', function(lvalue, rvalue, options) {
+    if (arguments.length < 3)
+        throw new Error("Handlebars Helper equal needs 2 parameters");
+   return parseInt(lvalue) + parseInt(rvalue) ;
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

@@ -20,6 +20,26 @@
         </tr>
     {{/each}}
 </table>
+
+<div class="ui pagination menu">
+               {{#if isFirstPage}}
+                    <a class="item disabled"> Prev</a>
+                {{else}}
+                    <a class="item" href="?page={{prevPage}}&size={{size}}" >Prev </a>
+                {{/if}}
+
+                {{#each pagination as |link index|}}
+                    <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} "  href="{{link}}" >
+                        {{add index 1}}
+                    </a>
+                {{/each}}
+                {{#if isLastPage}}
+                    <a class="item disabled"> Next </a>
+                {{else}}
+                    <a class="item" href="?page={{nextPage}}&size={{size}}" >Next </a>
+                {{/if}}
+            </div>
+
 <style>
     .red.text {
         color: red;
