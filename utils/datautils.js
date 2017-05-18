@@ -28,16 +28,6 @@ function getClaimById(claimId) {
     return db.Claim.findById(claimId)
 }
 
-function updateClaim(claimId, status) {
-    return db.Claim.update({
-        status: status
-    }, {
-        where: {
-            id: claimId
-        }
-    })
-}
-
 function delClaim(claimId) {
     return db.Claim.destroy({
         where: {
