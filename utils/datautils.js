@@ -73,7 +73,8 @@ function getLeaderboard(options) {
         SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
         COUNT("bounty") as "pulls" FROM "claims" AS "claim" 
         GROUP BY "user" 
-        ORDER BY SUM("bounty") DESC LIMIT ${options.size} OFFSET ${offset}`
+        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC 
+        LIMIT ${options.size} OFFSET ${offset}`
         ).spread((results, meta) => {
             resolve(results);
         });
