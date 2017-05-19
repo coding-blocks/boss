@@ -11,6 +11,6 @@
   "secret" : "someMuchSecretFFS",
   "clientId" : "5415484107",
   "clientSecret" : "UD7hOaRkfqQgywq3cbeyevwMlAgpBpC41fjyKoc3cDBJ3p3HQA8OHeUIFOGxnzEs",
-  "callbackURL" :  "http://localhost:3232/login/callback"
+  "callbackURL" :  "https://boss.codingblocks.com/login/callback"
 
 }
