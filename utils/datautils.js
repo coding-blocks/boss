@@ -15,7 +15,8 @@ function getClaims(options) {
      const claims = db.Claim.findAll({
         limit : options.size,
         offset : offset,
-        status: options.status
+        status: options.status,
+        order: [['updatedAt', 'DESC']]
     });
 
     return RSVP.hash({
@@ -27,16 +28,6 @@ function getClaims(options) {
 
 function getClaimById(claimId) {
     return db.Claim.findById(claimId)
-}
-
-function updateClaim(claimId, status) {
-    return db.Claim.update({
-        status: status
-    }, {
-        where: {
-            id: claimId
-        }
-    })
 }
 
 function delClaim(claimId) {
@@ -83,7 +74,8 @@ function getLeaderboard(options) {
         SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
         COUNT("bounty") as "pulls" FROM "claims" AS "claim" 
         GROUP BY "user" 
-        ORDER BY SUM("bounty") DESC LIMIT ${options.size} OFFSET ${offset}`
+        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC 
+        LIMIT ${options.size} OFFSET ${offset}`
         ).spread((results, meta) => {
             resolve(results);
         });
@@ -92,6 +84,7 @@ function getLeaderboard(options) {
     return RSVP.hash({
       results , lastPage
     });
+
 }
 
 function findOrCreateUser(token) {
@@ -134,3 +127,4 @@ exports = module.exports = {
     updateClaim,
     findOrCreateUser
 };
+
