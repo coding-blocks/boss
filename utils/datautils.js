@@ -11,10 +11,12 @@ function getClaims(options) {
     const lastPage = db.Claim.count().then(cnt=>{
         return Math.ceil( cnt / options.size );
     });
+
+    const whereClause = options.status ? { status:  options.status } : null ;
      const claims = db.Claim.findAll({
         limit : options.size,
         offset : offset,
-        status: options.status,
+        where :  whereClause ,
         order: [['updatedAt', 'DESC']]
     });
 
