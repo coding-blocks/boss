@@ -4,6 +4,7 @@
 const basicAuth = require('express-basic-auth')
 const Sequelize = require('sequelize');
 const rp = require('request-promise');
+const passport = require('passport');
 const Router = require('express').Router;
 
 const auth = require('./../utils/auth');
@@ -31,45 +32,9 @@ route.get('/', (req, res) => {
     res.redirect('/leaderboard')
 });
 
-route.get('/login/callback',(req,res)=>{
-    const code = req.query.code;
-
-    // prepare a POST request to the oneauth api
-    const options = {
-        method: 'POST',
-        uri: 'https://account.codingblocks.com/oauth/token',
-        body: {
-            client_id: config.clientId,
-            redirect_uri : config.callbackURL,
-            client_secret : config.clientSecret,
-            grant_type : 'authorization_code',
-            code : code
-        },
-        json: true
-    };
-
-    let error ;
-
-    rp(options).then(data=>{
-        //get access_token
-        if(data.access_token) {
-            req.session.accessToken = data.access_token;
-            req.session.user = du.findOrCreateUser(data.access_token);
-        } else {
-            error = 'Unable to Authenticate, 401';
-        }
-    }).catch(err=>{
-        error = err;
-    }).finally(function () {
-        if(error){
-            res.render('error', {error});
-        } else {
-            req.session.user.then(user=> {
-                req.session.user = user;
-                res.redirect('/');
-            });
-        }
-    });
+route.get('/login', passport.authenticate('oauth2', { failureRedirect: '/failed' }) );
+route.get('/login/callback', passport.authenticate('oauth2', { failureRedirect: '/failed' }) , (req,res)=>{
+    res.redirect('/');
 });
 
 route.get('/logout', (req,res)=>{

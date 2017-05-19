@@ -5,6 +5,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const exphbs = require('express-hbs');
+const passport = require('passport');
+const OAuth2Strategy = require('passport-oauth2').Strategy;
+const BearerStrategy = require('passport-http-bearer').Strategy;
+
+
 const session = require('express-session');
 
 const auth = require('./utils/auth');
@@ -60,8 +65,37 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.raw());
 
-app.use('/api', routes.api);
+
+//setup passport
+
+passport.use(new OAuth2Strategy({
+        authorizationURL: 'https://account.codingblocks.com/oauth/authorize',
+        tokenURL: 'https://account.codingblocks.com/oauth/token',
+        clientID: config.clientId,
+        clientSecret: config.clientSecret,
+        callbackURL: config.callbackURL
+    }, auth.oauth2Success
+));
+
+passport.use(new BearerStrategy(auth.checkToken));
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+
 app.use(session(sess)); // let api be stateless
+
+//initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+app.use('/api', routes.api);
 app.use(auth.injectAuthData);
 app.use('/', routes.root);
 app.use('/', express.static(path.join(__dirname, 'public_static')));

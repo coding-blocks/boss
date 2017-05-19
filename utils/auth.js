@@ -11,43 +11,63 @@ const config = require('./../config.json');
 
 module.exports = {
   injectAuthData(req,res,next){
-      if(req.session.user) {
+      if(req.user) {
           res.locals.isAuthenticated = true;
-          res.locals.user = req.session.user;
+          res.locals.user = req.user;
       } else {
           res.locals.isAuthenticated = false;
       }
       next();
   },
   adminOnly(req,res,next){
-      if( req.session.user && req.session.user.role === 'admin')
+      if( req.user && req.user.role === 'admin')
           next();
       else
           res.render('error' , {error : 'Admin Access Only!'});
   },
-  adminOnlyApi(req,res,next){
+    checkToken(token,done){
       //check if token is of an admin user
-      if( req.get('Authorization') ) {
-          rp({
-              uri : 'https://account.codingblocks.com/api/users/me',
-              headers : {
-                  'Authorization' : req.get('Authorization')
-              },
-              json : true
-          }).then(data=>{
-            return db.User.findOne({ where : {id : data.id } });
-          }).then(user=>{
-              if(user.role === 'admin')
-                  next();
-              else
-                  res.sendStatus(401);
-          }).catch(err=>{
-              console.error(err);
-              res.sendStatus(500);
-          });
 
-      } else {
-          res.sendStatus(401);
-      }
-  }  
+      rp({
+          uri : 'https://account.codingblocks.com/api/users/me',
+          headers : {
+              'Authorization' : `Bearer ${token}`
+          },
+          json : true
+      }).then(data=>{
+        return db.User.findOne({ where : {id : data.id } });
+      }).then(user=>{
+          if(user.role === 'admin')
+              done(null,user);
+          else
+              done('Unauthroized');
+      }).catch(err=>{
+          done('Unauthroized');
+      });
+
+  },
+    oauth2Success(accessToken, refreshToken, profile, cb) {
+        console.log(accessToken , refreshToken , profile);
+        return rp({
+            uri    : 'https://account.codingblocks.com/api/users/me',
+            qs : {
+                include : 'github'
+            },
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            },
+            json   : true
+        }).then( data=>{
+            const user = db.User.findOrCreate({
+                where : { id : data.id },
+                defaults : { role : 'user'}
+            });
+
+            return user.spread((userDB, created) => {
+                data.role = userDB.role;
+                return cb(null,data);
+
+            });
+        });
+    }
 };
