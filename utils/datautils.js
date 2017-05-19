@@ -8,7 +8,7 @@ const github = new GitHubApi({
     headers: {
         "user-agent": "boss-backend" // GitHub is happy with a unique user agent
     },
-    Promise: require('bluebird'),
+    Promise: Promise,
     followRedirects: false,
     timeout: 5000
 });
