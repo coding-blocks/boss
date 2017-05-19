@@ -107,6 +107,9 @@ route.post('/claims/add', (req, res) => {
         config.CLAIM_STATUS.CLAIMED
     ).then(claim => {
         res.redirect('/claims/view')
+    }).catch(err=>{
+        console.error(err);
+        res.render('pages/error', {error : 'Username Inavlid'} );
     })
 });
 

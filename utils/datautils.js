@@ -1,6 +1,17 @@
 /**
  * Created by championswimmer on 16/05/17.
  */
+const GitHubApi = require("github");
+const github = new GitHubApi({
+    protocol: "https",
+    host: "api.github.com", // should be api.github.com for GitHub
+    headers: {
+        "user-agent": "boss-backend" // GitHub is happy with a unique user agent
+    },
+    Promise: require('bluebird'),
+    followRedirects: false,
+    timeout: 5000
+});
 const db = require('./db');
 const RSVP = require('rsvp');
 
@@ -48,14 +59,19 @@ function updateClaim(claimId, status) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
-    return db.Claim.create({
-        user,
-        issueUrl,
-        pullUrl,
-        repo: pullUrl.split('github.com/')[1].split('/')[1],
-        bounty: bounty,
-        status: status
-    })
+
+    return github.users.getForUser({
+        username : user
+    }).then(data=>{
+       return db.Claim.create({
+            user,
+            issueUrl,
+            pullUrl,
+            repo: pullUrl.split('github.com/')[1].split('/')[1],
+            bounty: bounty,
+            status: status
+        });
+    });
 }
 
 function getLeaderboard(options) {
