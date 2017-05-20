@@ -2,31 +2,20 @@
  * Created by championswimmer on 16/05/17.
  */
 const db = require('./db');
-const rp = require('request-promise');
-const RSVP = require('rsvp');
 const fs = require('fs');
 
 
 function getClaims(options) {
-  
+
     const offset = (options.page - 1 ) * options.size ;
-    const lastPage = db.Claim.count().then(cnt=>{
-        return Math.ceil( cnt / options.size );
-    });
 
     const whereClause = options.status ? { status:  options.status } : null ;
-     const claims = db.Claim.findAll({
+    return db.Claim.findAndCountAll({
         limit : options.size,
         offset : offset,
         where :  whereClause ,
         order: [['updatedAt', 'DESC']]
     });
-
-    return RSVP.hash({
-        lastPage : lastPage,
-        claims : claims
-    });
-    
 }
 
 function getClaimById(claimId) {
@@ -82,27 +71,18 @@ function getLeaderboard(options) {
     options.size = parseInt(options.size);
     const offset = (options.page-1) * options.size;
 
-    const lastPage = db.Claim.aggregate('user' , 'count' , {distinct : true} ).then( cnt=>{
-        return Math.ceil(cnt / options.size);
-    });
+    const userCount = db.Claim.aggregate('user' , 'count' , {distinct : true} )
 
-    const results = new RSVP.Promise( function (resolve,reject) {
-        db.Database.query(`SELECT "user", 
+    const results = db.Database.query(`SELECT "user", 
         SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
         COUNT("bounty") as "pulls" 
         FROM "claims" AS "claim" 
         GROUP BY "user" 
         ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC 
         LIMIT ${options.size} OFFSET ${offset}`
-        ).spread((results, meta) => {
-            resolve(results);
-        });
-    });
+    );
 
-    return RSVP.hash({
-      results , lastPage
-    });
-
+    return Promise.all([userCount, results]);
 }
 
 exports = module.exports = {

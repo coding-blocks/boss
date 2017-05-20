@@ -54,6 +54,9 @@ route.get('/leaderboard', (req, res) => {
     du.getLeaderboard(options).then(data => {
 
         const pagination = [];
+        const count = data[0];
+        const rows = data[1][0];
+        const lastPage = Math.ceil(count / options.size);
 
         for(var i=1;i<=data.lastPage;i++)
             pagination.push(`?page=${i}&size=${options.size}`);
@@ -66,10 +69,11 @@ route.get('/leaderboard', (req, res) => {
             size : options.size,
             page : options.page,
             pagination : pagination,
-            userstats: data.results,
+            userstats: rows,
             menu: {leaderboard: 'active'}
         })
     }).catch((error) => {
+        console.log(error);
         res.send("Error fetching leaderboard")
     })
 });
@@ -84,9 +88,10 @@ route.get('/claims/view', (req, res) => {
 
     options.page = parseInt(options.page);
 
-    du.getClaims(options).then( data => {
+    du.getClaims(options).then(data => {
         const pagination = [];
-        for(var i=1;i<=data.lastPage;i++)
+        const lastPage = Math.ceil(data.count / options.size);
+        for(var i=1;i<=lastPage;i++)
             pagination.push(`?page=${i}&size=${options.size}`);
 
         res.render('pages/claims/view', {
@@ -94,13 +99,14 @@ route.get('/claims/view', (req, res) => {
             nextPage : options.page+1,
             pagination : pagination,
             isFirstPage : options.page == 1,
-            isLastPage : data.lastPage == options.page ,
+            isLastPage : lastPage == options.page ,
             page : options.page ,
             size : options.size,
-            claims: data.claims,
+            claims: data.rows,
             menu: {claims_view: 'active'}
         })
     }).catch((err) => {
+        console.log(err);
         res.send("Error fetching claims")
     })
 });
