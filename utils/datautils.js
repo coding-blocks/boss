@@ -3,6 +3,7 @@
  */
 const db = require('./db');
 const RSVP = require('rsvp');
+const fs = require('fs');
 
 
 function getClaims(options) {
@@ -40,6 +41,13 @@ function delClaim(claimId) {
 }
 
 function updateClaim(claimId, status) {
+
+    const claim = {
+        action: 'update',
+        claimId, status
+    };
+    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
+
     return db.Claim.update({
         status: status
     }, {
@@ -50,8 +58,13 @@ function updateClaim(claimId, status) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
-    console.log('create claim ============= ' )
-    console.log(user + " " + issueUrl + " " + pullUrl + " " + bounty + " " + status );
+
+    const claim = {
+        action: 'create',
+        user, issueUrl, pullUrl, bounty, status
+    };
+    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
+
     return db.Claim.create({
         user,
         issueUrl,
