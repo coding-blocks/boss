@@ -7,25 +7,16 @@ const fs = require('fs');
 
 
 function getClaims(options) {
-  
+
     const offset = (options.page - 1 ) * options.size ;
-    const lastPage = db.Claim.count().then(cnt=>{
-        return Math.ceil( cnt / options.size );
-    });
 
     const whereClause = options.status ? { status:  options.status } : null ;
-     const claims = db.Claim.findAll({
+    return db.Claim.findAndCountAll({
         limit : options.size,
         offset : offset,
         where :  whereClause ,
         order: [['updatedAt', 'DESC']]
     });
-
-    return RSVP.hash({
-        lastPage : lastPage,
-        claims : claims
-    });
-    
 }
 
 function getClaimById(claimId) {
