@@ -11,10 +11,13 @@ function getClaims(options) {
     const lastPage = db.Claim.count().then(cnt=>{
         return Math.ceil( cnt / options.size );
     });
+
+    const whereClause = options.status ? { status:  options.status } : null ;
      const claims = db.Claim.findAll({
         limit : options.size,
         offset : offset,
-        status: options.status
+        where :  whereClause ,
+        order: [['updatedAt', 'DESC']]
     });
 
     return RSVP.hash({
@@ -26,16 +29,6 @@ function getClaims(options) {
 
 function getClaimById(claimId) {
     return db.Claim.findById(claimId)
-}
-
-function updateClaim(claimId, status) {
-    return db.Claim.update({
-        status: status
-    }, {
-        where: {
-            id: claimId
-        }
-    })
 }
 
 function delClaim(claimId) {
@@ -57,6 +50,8 @@ function updateClaim(claimId, status) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
+    console.log('create claim ============= ' )
+    console.log(user + " " + issueUrl + " " + pullUrl + " " + bounty + " " + status );
     return db.Claim.create({
         user,
         issueUrl,
