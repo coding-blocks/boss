@@ -48,6 +48,8 @@ function updateClaim(claimId, status) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
+    console.log('create claim ============= ' )
+    console.log(user + " " + issueUrl + " " + pullUrl + " " + bounty + " " + status );
     return db.Claim.create({
         user,
         issueUrl,
