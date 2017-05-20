@@ -105,36 +105,6 @@ function getLeaderboard(options) {
 
 }
 
-function findOrCreateUser(token) {
-    //get the user of the token first
-    return rp({
-            uri : 'https://account.codingblocks.com/api/users/me',
-            qs : {
-                include : 'github'
-            },
-            headers : {
-                'Authorization' : `Bearer ${token}`
-            },
-            json : true
-        }).then(data=>{
-            const id = data.id;
-
-        // fetch the user from db , if not found create one
-            const user = db.User.findOrCreate({
-                    where : { id : id },
-                    defaults : { role : 'user'}
-            });
-
-            return user.spread((userDB, created) => {
-                  data.role = userDB.role;
-                  return data;
-            });
-
-        });
-}
-
-
-
 exports = module.exports = {
     getClaims,
     delClaim,
@@ -142,7 +112,6 @@ exports = module.exports = {
     createClaim,
     getLeaderboard,
     getClaimById,
-    updateClaim,
-    findOrCreateUser
+    updateClaim
 };
 
