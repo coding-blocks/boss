@@ -4,6 +4,7 @@
 const db = require('./db');
 const rp = require('request-promise');
 const RSVP = require('rsvp');
+const fs = require('fs');
 
 
 function getClaims(options) {
@@ -12,10 +13,12 @@ function getClaims(options) {
     const lastPage = db.Claim.count().then(cnt=>{
         return Math.ceil( cnt / options.size );
     });
+
+    const whereClause = options.status ? { status:  options.status } : null ;
      const claims = db.Claim.findAll({
         limit : options.size,
         offset : offset,
-        status: options.status,
+        where :  whereClause ,
         order: [['updatedAt', 'DESC']]
     });
 
@@ -39,6 +42,13 @@ function delClaim(claimId) {
 }
 
 function updateClaim(claimId, status) {
+
+    const claim = {
+        action: 'update',
+        claimId, status
+    };
+    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
+
     return db.Claim.update({
         status: status
     }, {
@@ -49,6 +59,13 @@ function updateClaim(claimId, status) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
+
+    const claim = {
+        action: 'create',
+        user, issueUrl, pullUrl, bounty, status
+    };
+    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
+
     return db.Claim.create({
         user,
         issueUrl,
@@ -72,9 +89,10 @@ function getLeaderboard(options) {
     const results = new RSVP.Promise( function (resolve,reject) {
         db.Database.query(`SELECT "user", 
         SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
-        COUNT("bounty") as "pulls" FROM "claims" AS "claim" 
+        COUNT("bounty") as "pulls" 
+        FROM "claims" AS "claim" 
         GROUP BY "user" 
-        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC 
+        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC 
         LIMIT ${options.size} OFFSET ${offset}`
         ).spread((results, meta) => {
             resolve(results);
