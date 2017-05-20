@@ -69,6 +69,8 @@ route.get('/leaderboard', (req, res) => {
             userstats: data.results,
             menu: {leaderboard: 'active'}
         })
+    }).catch((error) => {
+        res.send("Error fetching leaderboard")
     })
 });
 
@@ -98,6 +100,8 @@ route.get('/claims/view', (req, res) => {
             claims: data.claims,
             menu: {claims_view: 'active'}
         })
+    }).catch((err) => {
+        res.send("Error fetching claims")
     })
 });
 
@@ -110,6 +114,8 @@ route.get('/claims/add', (req, res) => {
 route.get('/claims/:id', auth.adminOnly,  (req, res) => {
     du.getClaimById(req.params.id).then((claim) => {
         res.render('pages/claims/id', {claim: claim})
+    }).catch((err) => {
+        res.send("Error fetching claim id = " + req.params.id);
     })
 });
 
@@ -122,12 +128,16 @@ route.post('/claims/add', (req, res) => {
         config.CLAIM_STATUS.CLAIMED
     ).then(claim => {
         res.redirect('/claims/view')
+    }).catch((error) => {
+        res.send("Error adding claim")
     })
 });
 
 route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
     du.updateClaim(req.params.id, req.body.status).then(result => {
         res.redirect('/claims/' + req.params.id);
+    }).catch((error) => {
+        res.send("Error updating claim")
     })
 });
 
