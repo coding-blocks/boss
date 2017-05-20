@@ -7,10 +7,6 @@
     "DISPUTED": "disputed",
     "REVOKED": "revoked"
   },
-  "PAGINATION_SIZE" : 10,
-  "secret" : "someMuchSecretFFS",
-  "clientId" : "5415484107",
-  "clientSecret" : "UD7hOaRkfqQgywq3cbeyevwMlAgpBpC41fjyKoc3cDBJ3p3HQA8OHeUIFOGxnzEs",
-  "callbackURL" :  "https://boss.codingblocks.com/login/callback"
+  "PAGINATION_SIZE" : 10
 
 }

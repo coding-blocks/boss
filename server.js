@@ -5,22 +5,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const exphbs = require('express-hbs');
-const passport = require('passport');
-const OAuth2Strategy = require('passport-oauth2').Strategy;
-const BearerStrategy = require('passport-http-bearer').Strategy;
-
-
+const passport = require('./auth/passportStatergies');
 const session = require('express-session');
 
 const auth = require('./utils/auth');
-const config = require('./config.json');
+const secrets = require('./secrets.json');
 
 const routes = {
     api: require('./routes/api'),
     root: require('./routes/root')
 };
 const sess = {
-    secret: config.secret,
+    secret: secrets.secret,
     resave: false,
     saveUninitialized: true,
     cookie: {}
@@ -42,8 +38,8 @@ app.engine('hbs', exphbs.express4({
 app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "hbs");
 
-app.locals.clientId = config.clientId;
-app.locals.callbackURL = config.callbackURL;
+app.locals.clientId = secrets.clientId;
+app.locals.callbackURL = secrets.callbackURL;
 
 exphbs.registerHelper('equal', function(lvalue, rvalue, options) {
     if (arguments.length < 3)
@@ -66,33 +62,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.raw());
 
 
-//setup passport
-
-passport.use(new OAuth2Strategy({
-        authorizationURL: 'https://account.codingblocks.com/oauth/authorize',
-        tokenURL: 'https://account.codingblocks.com/oauth/token',
-        clientID: config.clientId,
-        clientSecret: config.clientSecret,
-        callbackURL: config.callbackURL
-    }, auth.oauth2Success
-));
-
-passport.use(new BearerStrategy(auth.checkToken));
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-    done(null, user);
-});
-
 app.use(session(sess)); // let api be stateless
 
 //initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 
 app.use('/api', routes.api);
