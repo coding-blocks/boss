@@ -24,13 +24,13 @@ route.get('/claims', (req, res) => {
     
 });
 
-route.get('/claims/:id/delete', passport.authenticate('bearer', { session: false }) , (req, res) => {
+route.get('/claims/:id/delete', auth.adminOnly , (req, res) => {
     du.delClaim(req.params.id).then(result => {
         res.send({result: result})
     })
 });
 
-route.get('/claims/:id/update', passport.authenticate('bearer', { session: false }) , (req, res) => {
+route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
     //TODO: For authorised requests only
     du.updateClaim(req.params.id, req.query.status).then(result => {
         res.send({result: result})

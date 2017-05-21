@@ -25,8 +25,10 @@ const sequelize = process.env.DATABASE_URL ?
 const User = sequelize.define('user',{
     id : {
          type      : Sequelize.INTEGER,
-         primaryKey: true
+         primaryKey: true,
+        autoIncrement: true
     },
+    oneauthId : Sequelize.STRING,
     role : Sequelize.ENUM(['admin','user'])
 });
 

@@ -59,7 +59,7 @@ module.exports = {
             json   : true
         }).then( data=>{
             const user = db.User.findOrCreate({
-                where : { id : data.id },
+                where : { oneauthId : data.id },
                 defaults : { role : 'user'}
             });
 
