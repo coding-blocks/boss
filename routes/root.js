@@ -126,6 +126,7 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
 });
 
 route.post('/claims/add', (req, res) => {
+    req.body.user =  req.body.user.trim(); // strip whitespaces from start and end
     du.createClaim(
         req.body.user,
         req.body.issue_url,
