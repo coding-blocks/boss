@@ -59,7 +59,12 @@ function updateClaim(claimId, status) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
-
+    
+    const claim = {		
+           action: 'create',		
+         user, issueUrl, pullUrl, bounty, status		
+     };		
+     fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
 
     return github.users.getForUser({
         username : user
