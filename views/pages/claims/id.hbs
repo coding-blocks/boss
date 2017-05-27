@@ -45,11 +45,29 @@
                 <option value="revoked">Revoked</option>
             </select>
         </div>
+
+        <label>Reason </label>
+        <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
+
         <button class="ui button green" type="submit">Submit</button>
 
 
     </form>
     <script>
         $('select.dropdown').dropdown();
+
+        {{#unless claim.reason}}
+            $('#reason').hide();
+        {{/unless}}
+
+        $('select').on('change', function (e){
+            let status = $('#status option:selected').text();
+            if( ['Rejected' , 'Disputed' , 'Revoked'].includes(status) )
+                $('#reason').show();
+            else
+                $('#reason').html('').hide();
+
+        });
+
     </script>
 </div>

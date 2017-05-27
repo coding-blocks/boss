@@ -140,7 +140,7 @@ route.post('/claims/add', (req, res) => {
 });
 
 route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
-    du.updateClaim(req.params.id, req.body.status).then(result => {
+    du.updateClaim(req.params.id, req.body ).then(result => {
         res.redirect('/claims/' + req.params.id);
     }).catch((error) => {
         res.send("Error updating claim")
