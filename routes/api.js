@@ -19,7 +19,7 @@ route.get('/claims', (req, res) => {
     }
 
    du.getClaims(options).then(data => {
-            res.send(data.claims)
+            res.send(data)
     });
     
 });
