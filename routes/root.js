@@ -3,14 +3,17 @@
  */
 const basicAuth = require('express-basic-auth')
 const Sequelize = require('sequelize');
+const rp = require('request-promise');
+const passport = require('passport');
 const Router = require('express').Router;
 
+const auth = require('./../utils/auth');
 const config = require('./../config');
 const db = require('./../utils/db');
 const du = require('./../utils/datautils');
 
-
 const route = new Router();
+
 
 let adminUser = process.env.BOSS_ADMIN || 'theboss';
 let adminPass = process.env.BOSS_PASSWORD || 'khuljasimsim';
@@ -23,8 +26,20 @@ const authHandler = basicAuth({
     realm: 'BOSS Mentor Access Area'
 });
 
+
+
 route.get('/', (req, res) => {
     res.redirect('/leaderboard')
+});
+
+route.get('/login', passport.authenticate('oauth2', { failureRedirect: '/failed' }) );
+route.get('/login/callback', passport.authenticate('oauth2', { failureRedirect: '/failed' }) , (req,res)=>{
+    res.redirect('/');
+});
+
+route.get('/logout', (req,res)=>{
+    req.session.destroy();
+    res.redirect('/');
 });
 
 route.get('/leaderboard', (req, res) => {
@@ -102,7 +117,7 @@ route.get('/claims/add', (req, res) => {
     })
 });
 
-route.get('/claims/:id', authHandler,  (req, res) => {
+route.get('/claims/:id', auth.adminOnly,  (req, res) => {
     du.getClaimById(req.params.id).then((claim) => {
         res.render('pages/claims/id', {claim: claim})
     }).catch((err) => {
@@ -126,7 +141,7 @@ route.post('/claims/add', (req, res) => {
     })
 });
 
-route.post('/claims/:id/update', authHandler, (req, res) => {
+route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
     du.updateClaim(req.params.id, req.body.status).then(result => {
         res.redirect('/claims/' + req.params.id);
     }).catch((error) => {

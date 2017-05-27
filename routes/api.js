@@ -1,8 +1,10 @@
 /**
  * Created by championswimmer on 15/05/17.
  */
+const passport = require('passport');
 const Router = require('express').Router;
 
+const auth = require('./../utils/auth');
 const config = require('./../config');
 const du = require('./../utils/datautils');
 
@@ -22,13 +24,13 @@ route.get('/claims', (req, res) => {
     
 });
 
-route.get('/claims/:id/delete', (req, res) => {
+route.get('/claims/:id/delete', auth.adminOnly , (req, res) => {
     du.delClaim(req.params.id).then(result => {
         res.send({result: result})
     })
 });
 
-route.get('/claims/:id/update', (req, res) => {
+route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
     //TODO: For authorised requests only
     du.updateClaim(req.params.id, req.query.status).then(result => {
         res.send({result: result})

@@ -1,7 +1,9 @@
 <form class="ui form" method="post" action="/claims/add">
     <div class="field">
         <label>Github Username</label>
-        <input name="user" placeholder="Github Username, eg. 'championswimmer'" type="text">
+        <input name="user" placeholder="Github Username, eg. 'championswimmer'" type="text" {{#if user.usergithub}}
+            value="{{user.usergithub.username}}"
+        {{/if}} >
     </div>
     <div class="field">
         <label>Issue URL</label>

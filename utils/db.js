@@ -22,6 +22,16 @@ const sequelize = process.env.DATABASE_URL ?
             },
         });
 
+const User = sequelize.define('user',{
+    id : {
+         type      : Sequelize.INTEGER,
+         primaryKey: true,
+        autoIncrement: true
+    },
+    oneauthId : Sequelize.STRING,
+    role : Sequelize.ENUM(['admin','user'])
+});
+
 const Claim = sequelize.define('claim', {
     id: {
         type: Sequelize.INTEGER,
@@ -36,11 +46,14 @@ const Claim = sequelize.define('claim', {
     status: Sequelize.ENUM(Object.keys(config.CLAIM_STATUS).map((key) => config.CLAIM_STATUS[key]))
 });
 
+
+
 sequelize.sync({}).then(() => {
     console.log('DB Synced');
 });
 
 exports = module.exports = {
     Database: sequelize,
-    Claim
+    Claim,
+    User
 };
