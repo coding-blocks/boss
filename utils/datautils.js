@@ -83,8 +83,6 @@ function getLeaderboard(options) {
     );
 
     return Promise.all([userCount, results]);
-    
-   
 }
 
 exports = module.exports = {
@@ -96,3 +94,4 @@ exports = module.exports = {
     getClaimById,
     updateClaim
 };
+

@@ -1,10 +1,10 @@
 {
-  "PAGINATION_SIZE" : 10,
   "CLAIM_STATUS": {
     "CLAIMED": "claimed",
     "ACCEPTED":"accepted",
     "REJECTED": "rejected",
     "DISPUTED": "disputed",
     "REVOKED": "revoked"
-  }
+  },
+  "PAGINATION_SIZE" : 10
 }

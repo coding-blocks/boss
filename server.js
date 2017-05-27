@@ -5,13 +5,30 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const exphbs = require('express-hbs');
+const passport = require('./auth/passportStatergies');
+const session = require('express-session');
+
+const auth = require('./utils/auth');
+const secrets = require('./secrets.json');
 
 const routes = {
     api: require('./routes/api'),
     root: require('./routes/root')
 };
+const sess = {
+    secret: secrets.secret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {}
+};
 
 const app = express();
+
+
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1); // trust first proxy
+    sess.cookie.secure = true; // serve secure cookies
+}
 
 app.engine('hbs', exphbs.express4({
     partialsDir: path.join(__dirname, 'views/partials'),
@@ -20,6 +37,9 @@ app.engine('hbs', exphbs.express4({
 }));
 app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "hbs");
+
+app.locals.clientId = secrets.clientId;
+app.locals.callbackURL = secrets.callbackURL;
 
 exphbs.registerHelper('equal', function(lvalue, rvalue, options) {
     if (arguments.length < 3)
@@ -41,7 +61,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.raw());
 
+
+app.use(session(sess)); // let api be stateless
+
+//initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use('/api', routes.api);
+app.use(auth.injectAuthData);
 app.use('/', routes.root);
 app.use('/', express.static(path.join(__dirname, 'public_static')));
 
