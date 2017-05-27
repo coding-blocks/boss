@@ -16,7 +16,7 @@
     "sequelize": "^3.30.4"
   },
   "name": "boss-backend",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Backend API to track BOSS submissions",
   "main": "server.js",
   "repository": "http://github.com/coding-blocks/boss-backend",
