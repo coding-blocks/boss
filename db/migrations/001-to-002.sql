@@ -1,1 +1,1 @@
-ALTER TABLE public.claim ADD COLUMN reason VARCHAR(255);
+ALTER TABLE public.claims ADD COLUMN reason VARCHAR(255);
