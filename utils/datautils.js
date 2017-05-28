@@ -30,7 +30,7 @@ function delClaim(claimId) {
     })
 }
 
-function updateClaim(claimId, status) {
+function updateClaim(claimId, {status , reason }) {
 
     const claim = {
         action: 'update',
@@ -39,7 +39,8 @@ function updateClaim(claimId, status) {
     fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
 
     return db.Claim.update({
-        status: status
+        status: status,
+        reason: reason
     }, {
         where: {
             id: claimId

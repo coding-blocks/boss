@@ -25,6 +25,9 @@
                     </p>
                 </div>
                 <div class="extra">
+                    {{#if claim.reason}}
+                        <p>Reason:  {{claim.reason}} </p>
+                    {{/if}}
                     {{#equal claim.status "claimed"}}
                         <div class="ui label yellow">{{claim.status}}</div>
                     {{/equal}}
@@ -34,6 +37,7 @@
                     {{#equal claim.status "rejected"}}
                         <div class="ui label red">{{claim.status}}</div>
                     {{/equal}}
+
                 </div>
             </div>
         </div>
