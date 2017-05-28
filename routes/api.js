@@ -46,6 +46,9 @@ route.post('/claims/add', (req, res) => {
         config.CLAIM_STATUS.CLAIMED
     ).then(claim => {
         res.send(claim)
+    }).catch(err=>{
+        console.error(err);
+        res.status(400).send('Inavlid Request Data');
     })
 });
 

@@ -4,6 +4,7 @@
     "express": "^4.15.2",
     "express-basic-auth": "^1.0.2",
     "express-hbs": "^1.0.4",
+    "github": "^9.2.0",
     "express-session": "^1.15.2",
     "passport": "^0.3.2",
     "passport-http-bearer": "^1.0.1",
