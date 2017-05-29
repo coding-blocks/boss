@@ -20,21 +20,30 @@ route.get('/claims', (req, res) => {
 
    du.getClaims(options).then(data => {
             res.send(data)
-    });
+    }).catch(err => {
+        console.log(err);
+        res.send("Some error occurred");
+   });
     
 });
 
 route.get('/claims/:id/delete', auth.adminOnly , (req, res) => {
     du.delClaim(req.params.id).then(result => {
         res.send({result: result})
-    })
+    }).catch(err => {
+        console.log(err);
+        res.send("Some error occurred");
+    });
 });
 
 route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
     //TODO: For authorised requests only
     du.updateClaim(req.params.id, req.query.status).then(result => {
         res.send({result: result})
-    })
+    }).catch(err => {
+        console.log(err);
+        res.send("Some error occurred");
+    });
 });
 
 route.post('/claims/add', (req, res) => {
@@ -46,7 +55,10 @@ route.post('/claims/add', (req, res) => {
         config.CLAIM_STATUS.CLAIMED
     ).then(claim => {
         res.send(claim)
-    })
+    }).catch(err => {
+        console.log(err);
+        res.send("Some error occurred");
+    });
 });
 
 
