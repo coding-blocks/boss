@@ -22,7 +22,7 @@ route.get('/claims', (req, res) => {
             res.send(data)
     }).catch(err => {
         console.log(err);
-        res.send("Some error occurred");
+        res.send("Sorry. Could not get the claims right now.");
    });
     
 });
@@ -32,7 +32,7 @@ route.get('/claims/:id/delete', auth.adminOnly , (req, res) => {
         res.send({result: result})
     }).catch(err => {
         console.log(err);
-        res.send("Some error occurred");
+        res.send("Sorry. Could not delete the claim right now.");
     });
 });
 
@@ -42,7 +42,7 @@ route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
         res.send({result: result})
     }).catch(err => {
         console.log(err);
-        res.send("Some error occurred");
+        res.send("Sorry. Could not update the claim right now.");
     });
 });
 
@@ -57,7 +57,7 @@ route.post('/claims/add', (req, res) => {
         res.send(claim)
     }).catch(err => {
         console.log(err);
-        res.send("Some error occurred");
+        res.send("Sorry. Could not add the claim right now.");
     });
 });
 
