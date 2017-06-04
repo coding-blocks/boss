@@ -57,15 +57,15 @@ route.get('/leaderboard', (req, res) => {
         const count = data[0];
         const rows = data[1][0];
         const lastPage = Math.ceil(count / options.size);
-
-        for(var i=1;i<=data.lastPage;i++)
+        
+        for(var i=1;i<=lastPage;i++)
             pagination.push(`?page=${i}&size=${options.size}`);
 
         res.render('pages/leaderboard', {
             prevPage : options.page-1,
             nextPage : options.page+1,
             isFirstPage : options.page==1,
-            isLastPage : options.page == data.lastPage,
+            isLastPage : options.page == lastPage,
             size : options.size,
             page : options.page,
             pagination : pagination,
