@@ -1,5 +1,11 @@
+<div class="ui stackable three item menu">
+  <a class="item {{menuH.claimed}}" href="?status=claimed">Claimed</a>
+  <a class="item {{menuH.accepted}}" href="?status=accepted">Accepted</a>
+  <a class="item {{menuH.rejected}}" href="?status=rejected">Rejected</a>
+</div>
+
 <div class="ui very relaxed divided items">
-    {{#each claims as |claim|}}
+    {{#each claims as |claim|}} 
         <div class="four wide item">
             <div class="image">
                 <a class="ui statistic" href="/claims/{{claim.id}}">
@@ -44,28 +50,24 @@
     {{/each}}
 
     <div class="pagination">
-
-
         <div class="ui pagination menu">
             {{#if isFirstPage}}
                 <a class="item disabled"> Prev</a>
             {{else}}
-                <a class="item" href="?page={{prevPage}}&size={{size}}" >Prev </a>
+                <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}" >Prev </a>
             {{/if}}
 
             {{#each pagination as |link index|}}
-                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} "  href="{{link}}" >
+                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}" >
                     {{add index 1}}
                 </a>
             {{/each}}
             {{#if isLastPage}}
                 <a class="item disabled"> Next </a>
             {{else}}
-                <a class="item" href="?page={{nextPage}}&size={{size}}" >Next </a>
+                <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}" >Next </a>
             {{/if}}
         </div>
-
-
     </div>
 </div>
 <style>

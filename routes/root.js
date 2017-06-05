@@ -81,10 +81,19 @@ route.get('/leaderboard', (req, res) => {
 route.get('/claims/view', (req, res) => {
 
     const options = {
-        status : req.query.status,
+        status : req.query.status || "claimed",
         page : req.query.page || 1,
         size : req.query.size || config.PAGINATION_SIZE
     };
+
+    var menuH = {};
+
+    if (options.status == "claimed")
+        menuH[options.status] = 'active';
+    else if (options.status == "accepted")
+        menuH[options.status] = 'active';
+    else 
+        menuH[options.status] = 'active';
 
     options.page = parseInt(options.page);
 
@@ -92,7 +101,7 @@ route.get('/claims/view', (req, res) => {
         const pagination = [];
         const lastPage = Math.ceil(data.count / options.size);
         for(var i=1;i<=lastPage;i++)
-            pagination.push(`?page=${i}&size=${options.size}`);
+            pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`);
 
         res.render('pages/claims/view', {
             prevPage : options.page-1,
@@ -103,7 +112,9 @@ route.get('/claims/view', (req, res) => {
             page : options.page ,
             size : options.size,
             claims: data.rows,
-            menu: {claims_view: 'active'}
+            menu: {claims_view: 'active'},
+            status : options.status,
+            menuH   
         })
     }).catch((err) => {
         console.log(err);
