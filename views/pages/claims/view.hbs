@@ -3,7 +3,33 @@
   <a class="item {{menuH.accepted}}" href="?status=accepted">Accepted</a>
   <a class="item {{menuH.rejected}}" href="?status=rejected">Rejected</a>
 </div>
+<div align="right">
+<div class="ui floating dropdown labeled icon button">
+  <i class="filter icon"></i>
+  {{#if username}}
+      <span class="text">{{username}}</span>
+  {{else}}
+    <span class="text">Filter Usernames</span>
+  {{/if}}
+  <div class="menu">
+    <div class="ui icon search input">
+      <i class="search icon"></i>
+      <input type="text" placeholder="Search users...">
+    </div>
 
+    <div class="scrolling menu">
+    {{#each filter as |user|}}
+      <a class="item" href="{{user.url}}">
+        {{user.name}} 
+      </a>
+      {{/each}}
+    </div>
+  </div>
+</div>
+</div>
+<script>
+$('.ui.dropdown').dropdown('hide');
+</script>
 <div class="ui very relaxed divided items">
     {{#each claims as |claim|}} 
         <div class="four wide item">
@@ -54,7 +80,7 @@
             {{#if isFirstPage}}
                 <a class="item disabled"> Prev</a>
             {{else}}
-                <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}" >Prev </a>
+                <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}" >Prev </a>
             {{/if}}
 
             {{#each pagination as |link index|}}
@@ -65,7 +91,7 @@
             {{#if isLastPage}}
                 <a class="item disabled"> Next </a>
             {{else}}
-                <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}" >Next </a>
+                <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}" >Next </a>
             {{/if}}
         </div>
     </div>
