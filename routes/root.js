@@ -147,7 +147,11 @@ route.post('/claims/add', (req, res) => {
             res.send("Error adding claim")
         });    
     }).catch((err)=>{
-       res.render('pages/claims/add', {error : "Enter a valid Github Username"});
+       if(parseInt(err.statusCode) == 404){
+            res.render('pages/claims/add', {error : "Enter a valid Github Username"});
+       }else{
+            res.render('pages/claims/add', {error : JSON.parse(err.error).message});
+       }
     });
 });
 
