@@ -27,7 +27,7 @@ function getClaimById(claimId) {
 }
 
 function delClaim(claimId) {
-    if (typeof(+claimId) !== 'number') {
+    if (isNan((+claimId)) {
         return res.send("ClaimId must be a number");
     }
     return db.Claim.destroy({
