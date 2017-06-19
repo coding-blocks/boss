@@ -7,13 +7,13 @@ const fs = require('fs');
 
 function getClaims(options) {
 
-    const offset = (options.page - 1 ) * options.size ;
+    const offset = (options.page - 1 ) * options.size;
 
-    const whereClause = options.status ? { status:  options.status } : null ;
+    const whereClause = options.status ? {status: options.status} : null;
     return db.Claim.findAndCountAll({
-        limit : options.size,
-        offset : offset,
-        where :  whereClause ,
+        limit: options.size,
+        offset: offset,
+        where: whereClause,
         order: [['updatedAt', 'DESC']]
     });
 }
@@ -23,6 +23,9 @@ function getClaimById(claimId) {
 }
 
 function delClaim(claimId) {
+    if (typeof(+claimId) !== 'number') {
+        return res.send("ClaimId must be a number");
+    }
     return db.Claim.destroy({
         where: {
             id: claimId
@@ -30,13 +33,14 @@ function delClaim(claimId) {
     })
 }
 
-function updateClaim(claimId, {status , reason }) {
+function updateClaim(claimId, {status, reason}) {
 
     const claim = {
         action: 'update',
         claimId, status
     };
-    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
+    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {
+    });
 
     return db.Claim.update({
         status: status,
@@ -54,7 +58,8 @@ function createClaim(user, issueUrl, pullUrl, bounty, status) {
         action: 'create',
         user, issueUrl, pullUrl, bounty, status
     };
-    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {});
+    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {
+    });
 
     return db.Claim.create({
         user,
@@ -70,9 +75,9 @@ function getLeaderboard(options) {
 
     console.log(options);
     options.size = parseInt(options.size);
-    const offset = (options.page-1) * options.size;
+    const offset = (options.page - 1) * options.size;
 
-    const userCount = db.Claim.aggregate('user' , 'count' , {distinct : true} )
+    const userCount = db.Claim.aggregate('user', 'count', {distinct: true})
 
     const results = db.Database.query(`SELECT "user", 
         SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
