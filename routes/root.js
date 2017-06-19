@@ -11,6 +11,7 @@ const auth = require('./../utils/auth');
 const config = require('./../config');
 const db = require('./../utils/db');
 const du = require('./../utils/datautils');
+const request = require("request");
 
 const route = new Router();
 
@@ -81,19 +82,44 @@ route.get('/leaderboard', (req, res) => {
 route.get('/claims/view', (req, res) => {
 
     const options = {
-        status : req.query.status,
+        username: req.query.username,
+        status : req.query.status || "claimed",
         page : req.query.page || 1,
         size : req.query.size || config.PAGINATION_SIZE
     };
 
+    var menuH = {};
+
+    if (options.status == "claimed")
+        menuH[options.status] = 'active';
+    else if (options.status == "accepted")
+        menuH[options.status] = 'active';
+    else 
+        menuH[options.status] = 'active';
+
     options.page = parseInt(options.page);
 
     du.getClaims(options).then(data => {
-        const pagination = [];
-        const lastPage = Math.ceil(data.count / options.size);
-        for(var i=1;i<=lastPage;i++)
-            pagination.push(`?page=${i}&size=${options.size}`);
 
+        const pagination = [];
+        const filter = [];
+        const lastPage = Math.ceil(data[1].count / options.size);
+
+        for(var i=1;i<=lastPage;i++){
+            if (options.username) {
+                pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`);
+            }else{
+                pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`);
+            }
+        }
+
+        data[0].forEach(function(item, index){
+            filter.push({
+                    name : item.DISTINCT, 
+                    url : `?status=${options.status}&username=${item.DISTINCT}`
+                });
+        });
+            
         res.render('pages/claims/view', {
             prevPage : options.page-1,
             nextPage : options.page+1,
@@ -102,8 +128,12 @@ route.get('/claims/view', (req, res) => {
             isLastPage : lastPage == options.page ,
             page : options.page ,
             size : options.size,
-            claims: data.rows,
-            menu: {claims_view: 'active'}
+            claims: data[1].rows,
+            menu: {claims_view: 'active'},
+            status1 : options.status,
+            menuH,
+            filter : filter,
+            username : options.username
         })
     }).catch((err) => {
         console.log(err);
@@ -126,18 +156,32 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
 });
 
 route.post('/claims/add', (req, res) => {
+
     req.body.user =  req.body.user.trim(); // strip whitespaces from start and end
-    du.createClaim(
-        req.body.user,
-        req.body.issue_url,
-        req.body.pull_url,
-        req.body.bounty,
-        config.CLAIM_STATUS.CLAIMED
-    ).then(claim => {
-        res.redirect('/claims/view')
-    }).catch((error) => {
-        res.send("Error adding claim")
-    })
+    rp({
+       url : `https://api.github.com/users/${req.body.user}`,
+       headers: {
+        'User-Agent': 'request'
+       } 
+    }).then(function(data){
+        du.createClaim(
+            req.body.user,
+            req.body.issue_url,
+            req.body.pull_url,
+            req.body.bounty,
+            config.CLAIM_STATUS.CLAIMED
+        ).then(claim => {
+            res.redirect('/claims/view')
+        }).catch((error) => {
+            res.send("Error adding claim")
+        });    
+    }).catch((err)=>{
+       if(parseInt(err.statusCode) == 404){
+            res.render('pages/claims/add', {error : "Enter a valid Github Username"});
+       }else{
+            res.render('pages/claims/add', {error : JSON.parse(err.error).message});
+       }
+    });
 });
 
 route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
@@ -147,6 +191,5 @@ route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
         res.send("Error updating claim")
     })
 });
-
 
 exports = module.exports = route;

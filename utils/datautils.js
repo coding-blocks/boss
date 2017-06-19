@@ -9,13 +9,17 @@ function getClaims(options) {
 
     const offset = (options.page - 1 ) * options.size;
 
-    const whereClause = options.status ? {status: options.status} : null;
-    return db.Claim.findAndCountAll({
-        limit: options.size,
-        offset: offset,
-        where: whereClause,
+
+    const whereClause = options.username ? { status:  options.status, user : options.username } : { status:  options.status} ;
+    const distinctUsers = db.Claim.aggregate('user', 'DISTINCT', { plain: false, where : { status:  options.status} })
+    const allClaims = db.Claim.findAndCountAll({
+        limit : options.size,
+        offset : offset,
+        where :  whereClause ,
         order: [['updatedAt', 'DESC']]
     });
+
+    return Promise.all([distinctUsers, allClaims])
 }
 
 function getClaimById(claimId) {
