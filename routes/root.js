@@ -82,19 +82,44 @@ route.get('/leaderboard', (req, res) => {
 route.get('/claims/view', (req, res) => {
 
     const options = {
-        status : req.query.status,
+        username: req.query.username,
+        status : req.query.status || "claimed",
         page : req.query.page || 1,
         size : req.query.size || config.PAGINATION_SIZE
     };
 
+    var menuH = {};
+
+    if (options.status == "claimed")
+        menuH[options.status] = 'active';
+    else if (options.status == "accepted")
+        menuH[options.status] = 'active';
+    else 
+        menuH[options.status] = 'active';
+
     options.page = parseInt(options.page);
 
     du.getClaims(options).then(data => {
-        const pagination = [];
-        const lastPage = Math.ceil(data.count / options.size);
-        for(var i=1;i<=lastPage;i++)
-            pagination.push(`?page=${i}&size=${options.size}`);
 
+        const pagination = [];
+        const filter = [];
+        const lastPage = Math.ceil(data[1].count / options.size);
+
+        for(var i=1;i<=lastPage;i++){
+            if (options.username) {
+                pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`);
+            }else{
+                pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`);
+            }
+        }
+
+        data[0].forEach(function(item, index){
+            filter.push({
+                    name : item.DISTINCT, 
+                    url : `?status=${options.status}&username=${item.DISTINCT}`
+                });
+        });
+            
         res.render('pages/claims/view', {
             prevPage : options.page-1,
             nextPage : options.page+1,
@@ -103,8 +128,12 @@ route.get('/claims/view', (req, res) => {
             isLastPage : lastPage == options.page ,
             page : options.page ,
             size : options.size,
-            claims: data.rows,
-            menu: {claims_view: 'active'}
+            claims: data[1].rows,
+            menu: {claims_view: 'active'},
+            status1 : options.status,
+            menuH,
+            filter : filter,
+            username : options.username
         })
     }).catch((err) => {
         console.log(err);
