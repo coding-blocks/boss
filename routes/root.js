@@ -11,6 +11,7 @@ const auth = require('./../utils/auth');
 const config = require('./../config');
 const db = require('./../utils/db');
 const du = require('./../utils/datautils');
+const request = require("request");
 
 const route = new Router();
 
@@ -126,18 +127,32 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
 });
 
 route.post('/claims/add', (req, res) => {
+
     req.body.user =  req.body.user.trim(); // strip whitespaces from start and end
-    du.createClaim(
-        req.body.user,
-        req.body.issue_url,
-        req.body.pull_url,
-        req.body.bounty,
-        config.CLAIM_STATUS.CLAIMED
-    ).then(claim => {
-        res.redirect('/claims/view')
-    }).catch((error) => {
-        res.send("Error adding claim")
-    })
+    rp({
+       url : `https://api.github.com/users/${req.body.user}`,
+       headers: {
+        'User-Agent': 'request'
+       } 
+    }).then(function(data){
+        du.createClaim(
+            req.body.user,
+            req.body.issue_url,
+            req.body.pull_url,
+            req.body.bounty,
+            config.CLAIM_STATUS.CLAIMED
+        ).then(claim => {
+            res.redirect('/claims/view')
+        }).catch((error) => {
+            res.send("Error adding claim")
+        });    
+    }).catch((err)=>{
+       if(parseInt(err.statusCode) == 404){
+            res.render('pages/claims/add', {error : "Enter a valid Github Username"});
+       }else{
+            res.render('pages/claims/add', {error : JSON.parse(err.error).message});
+       }
+    });
 });
 
 route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
@@ -147,6 +162,5 @@ route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
         res.send("Error updating claim")
     })
 });
-
 
 exports = module.exports = route;
