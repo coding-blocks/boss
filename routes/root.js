@@ -141,7 +141,7 @@ route.get('/claims/view', (req, res) => {
     })
 });
 
-route.get('/claims/add', auth.ensureLoggedIn ,   (req, res) => {
+route.get('/claims/add', auth.ensureLoggedInGithub ,   (req, res) => {
     res.render('pages/claims/add', {
         menu: {claims_add: 'active'}
     })
@@ -155,7 +155,7 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
     })
 });
 
-route.post('/claims/add', auth.ensureLoggedIn , (req, res) => {
+route.post('/claims/add', auth.ensureLoggedInGithub , (req, res) => {
 
     du.createClaim(
         req.user.usergithub.username, // use only authenticated github username

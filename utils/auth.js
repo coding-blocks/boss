@@ -19,9 +19,9 @@ module.exports = {
       }
       next();
   },
-  ensureLoggedIn(req,res,next){
-      if(req.user) {
-          console.log(req.user)
+  ensureLoggedInGithub(req,res,next){
+      // check is user is logged in and has github linked
+      if(req.user && req.user.usergithub) {
           next()
       } else {
           res.render('error',{error: 'You need to be logged in for this'})
