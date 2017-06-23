@@ -24,7 +24,7 @@ module.exports = {
       if(req.user && req.user.usergithub) {
           next()
       } else {
-          res.render('error',{error: 'You need to be logged in for this'})
+          res.render('error',{error: 'You need to be logged in for this. Also make sure you have linked your github account at account.codingblocks.com'})
       }
   },
   adminOnly(req,res,next){
