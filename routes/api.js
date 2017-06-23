@@ -37,7 +37,6 @@ route.get('/claims/:id/delete', auth.adminOnly , (req, res) => {
 });
 
 route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
-    //TODO: For authorised requests only
     du.updateClaim(req.params.id, req.query.status).then(result => {
         res.send({result: result})
     }).catch(err => {
@@ -46,9 +45,9 @@ route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
     });
 });
 
-route.post('/claims/add', (req, res) => {
+route.post('/claims/add', auth.ensureLoggedIn, (req, res) => {
     du.createClaim(
-        req.body.user,
+        req.user.usergithub.username,
         req.body.issue_url,
         req.body.pull_url,
         req.body.bounty,

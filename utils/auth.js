@@ -19,6 +19,14 @@ module.exports = {
       }
       next();
   },
+  ensureLoggedIn(req,res,next){
+      if(req.user) {
+          console.log(req.user)
+          next()
+      } else {
+          res.render('error',{error: 'You need to be logged in for this'})
+      }
+  },
   adminOnly(req,res,next){
       if( req.user && req.user.role === 'admin')
           next();
