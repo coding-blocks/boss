@@ -1,9 +1,7 @@
 <form class="ui form" method="post" action="/claims/add">
     <div class="field">
         <label>Github Username</label>
-        <input name="user" placeholder="Github Username, eg. 'championswimmer'" type="text" {{#if user.usergithub}}
-            value="{{user.usergithub.username}}"
-        {{/if}} >
+        <input name="user" placeholder="Github Username, eg. 'championswimmer'" type="text" value="{{user.usergithub.username}}" disabled>
     </div>
     <div class="field">
         <label>Issue URL</label>

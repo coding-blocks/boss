@@ -19,6 +19,14 @@ module.exports = {
       }
       next();
   },
+  ensureLoggedInGithub(req,res,next){
+      // check is user is logged in and has github linked
+      if(req.user && req.user.usergithub) {
+          next()
+      } else {
+          res.render('error',{error: 'You need to be logged in for this. Also make sure you have linked your github account at account.codingblocks.com'})
+      }
+  },
   adminOnly(req,res,next){
       if( req.user && req.user.role === 'admin')
           next();
