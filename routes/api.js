@@ -23,7 +23,6 @@ route.get('/claims', (req, res) => {
     console.log(err);
     res.status(500).send("Sorry. Could not get the claims right now.");
   });
-
 });
 
 route.get('/claims/:id/delete', auth.adminOnly, (req, res) => {
