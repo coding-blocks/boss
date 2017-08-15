@@ -13,9 +13,9 @@ const route = new Router();
 route.get('/claims', (req, res) => {
 
     const options = {
-        status : req.query.status,
+        status : req.query.status || "claimed",
         page : req.query.page || 1,
-        size : req.query.size || 99999999
+        size : req.query.size || config.PAGINATION_SIZE
     }
 
    du.getClaims(options).then(data => {
@@ -38,7 +38,7 @@ route.get('/claims/:id/delete', auth.adminOnly , (req, res) => {
 
 route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
     //TODO: For authorised requests only
-    du.updateClaim(req.params.id, req.query.status).then(result => {
+    du.updateClaim(req.params.id, req.query).then(result => {
         res.send({result: result})
     }).catch(err => {
         console.log(err);
