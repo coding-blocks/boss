@@ -38,7 +38,7 @@ route.get('/claims/:id/delete', auth.adminOnly , (req, res) => {
 
 route.get('/claims/:id/update', auth.adminOnly , (req, res) => {
     //TODO: For authorised requests only
-    du.updateClaim(req.params.id, req.query.status).then(result => {
+    du.updateClaim(req.params.id, req.query).then(result => {
         res.send({result: result})
     }).catch(err => {
         console.log(err);
