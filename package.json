@@ -1,7 +1,8 @@
 {
   "scripts": {
     "test": "node_modules/.bin/_mocha",
-    "start": "node index.js"
+    "start": "node index.js",
+    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
