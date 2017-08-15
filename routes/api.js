@@ -13,9 +13,9 @@ const route = new Router();
 route.get('/claims', (req, res) => {
 
     const options = {
-        status : req.query.status,
+        status : req.query.status || "claimed",
         page : req.query.page || 1,
-        size : req.query.size || 99999999
+        size : req.query.size || config.PAGINATION_SIZE
     }
 
    du.getClaims(options).then(data => {
