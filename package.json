@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "test": "node_modules/.bin/_mocha",
+    "start": "node index.js"
+  },
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
@@ -10,7 +14,6 @@
     "passport-oauth2": "^1.4.0",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
-    "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "rsvp": "^3.5.0",
     "sequelize": "^3.30.4"
@@ -21,5 +24,11 @@
   "main": "server.js",
   "repository": "http://github.com/coding-blocks/boss-backend",
   "author": "Arnav Gupta <arnav@codingblocks.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.0",
+    "request": "^2.81.0"
+  }
 }
