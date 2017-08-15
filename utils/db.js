@@ -9,9 +9,9 @@ const sequelize = process.env.DATABASE_URL ?
     new Sequelize(process.env.DATABASE_URL) :
 
     new Sequelize(
-        process.env.BOSS_DB_NAME,
-        process.env.BOSS_DB_USER,
-        process.env.BOSS_DB_PASS,
+        process.env.BOSS_DB_NAME || 'boss',
+        process.env.BOSS_DB_USER || 'boss',
+        process.env.BOSS_DB_PASS || 'boss',
         {
             host: 'localhost',
             dialect: 'postgres',
@@ -49,9 +49,7 @@ const Claim = sequelize.define('claim', {
 
 
 
-sequelize.sync().then(() => {
-    console.log('DB Synced');
-});
+
 
 exports = module.exports = {
     Database: sequelize,
