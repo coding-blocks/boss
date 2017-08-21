@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BOSS</title>
+    <link href="/lib/semantic/semantic.min.css" rel="stylesheet">
+    <script src="/lib/jquery-3.2.1.min.js"></script>
+    <script src="/lib/semantic/semantic.js"></script>
+    <style>
+        .main.container {
+            margin-top: 6em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="ui top fixed huge inverted menu red">
+    <div class="ui container">
+        <a href="/" class="header item">BOSS</a>
+        <a class="item active" href="/leaderboard">
+            <i class="sort content descending icon"></i>
+            Leaderboard
+        </a>
+
+        <div class="ui simple dropdown item">
+            <i class="checked calendar icon"></i>
+            Claim
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item " href="/claims/view">View</a>
+                <a class="item " href="/claims/add">Add</a>
+            </div>
+        </div>
+        <a class="item" href="http://lab.codingblocks.com/boss">
+            <i class="info icon"></i>
+            Information
+        </a>
+        <a class="item" href="https://github.com/issues?utf8=✓&q=is:open is:issue label:BOSS org:coding-blocks">
+            <i class="github icon"></i>
+            Open Issues
+        </a>
+        
+            <a class="right item" href="/login">Login</a>
+</div>
+
+</div>
+
+<div class="ui main container">
+    <table class="ui celled padded table red">
+    <thead>
+    <tr>
+        <th>Github User</th>
+        <th>Points</th>
+        <th>PRs Submitted</th>
+    </tr>
+    </thead>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/hereisnaman">hereisnaman</b>
+            </td>
+            <td>
+                <div class="right aligned">9650</div>
+            </td>
+            <td>
+                <div class="right aligned">64</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/apoorvaagupta">apoorvaagupta</b>
+            </td>
+            <td>
+                <div class="right aligned">6000</div>
+            </td>
+            <td>
+                <div class="right aligned">19</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/abhishek97">abhishek97</b>
+            </td>
+            <td>
+                <div class="right aligned">5940</div>
+            </td>
+            <td>
+                <div class="right aligned">22</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/bhavyaagg">bhavyaagg</b>
+            </td>
+            <td>
+                <div class="right aligned">5320</div>
+            </td>
+            <td>
+                <div class="right aligned">23</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/akansh97531">akansh97531</b>
+            </td>
+            <td>
+                <div class="right aligned">4600</div>
+            </td>
+            <td>
+                <div class="right aligned">11</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/abishekvashok">abishekvashok</b>
+            </td>
+            <td>
+                <div class="right aligned">4500</div>
+            </td>
+            <td>
+                <div class="right aligned">10</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/ArushiSinghal">ArushiSinghal</b>
+            </td>
+            <td>
+                <div class="right aligned">2250</div>
+            </td>
+            <td>
+                <div class="right aligned">23</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/prateekiiest">prateekiiest</b>
+            </td>
+            <td>
+                <div class="right aligned">1190</div>
+            </td>
+            <td>
+                <div class="right aligned">18</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/ananay">ananay</b>
+            </td>
+            <td>
+                <div class="right aligned">1000</div>
+            </td>
+            <td>
+                <div class="right aligned">7</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/ojasvajain">ojasvajain</b>
+            </td>
+            <td>
+                <div class="right aligned">870</div>
+            </td>
+            <td>
+                <div class="right aligned">7</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/rishabhk07">rishabhk07</b>
+            </td>
+            <td>
+                <div class="right aligned">700</div>
+            </td>
+            <td>
+                <div class="right aligned">6</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/anu0012">anu0012</b>
+            </td>
+            <td>
+                <div class="right aligned">520</div>
+            </td>
+            <td>
+                <div class="right aligned">11</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/adarsh1021">adarsh1021</b>
+            </td>
+            <td>
+                <div class="right aligned">470</div>
+            </td>
+            <td>
+                <div class="right aligned">5</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/AbhirojPanwar">AbhirojPanwar</b>
+            </td>
+            <td>
+                <div class="right aligned">400</div>
+            </td>
+            <td>
+                <div class="right aligned">5</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/mukulsaini">mukulsaini</b>
+            </td>
+            <td>
+                <div class="right aligned">400</div>
+            </td>
+            <td>
+                <div class="right aligned">3</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/astu9880">astu9880</b>
+            </td>
+            <td>
+                <div class="right aligned">370</div>
+            </td>
+            <td>
+                <div class="right aligned">5</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/asutosh7hota">asutosh7hota</b>
+            </td>
+            <td>
+                <div class="right aligned">250</div>
+            </td>
+            <td>
+                <div class="right aligned">4</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/ashu10832">ashu10832</b>
+            </td>
+            <td>
+                <div class="right aligned">210</div>
+            </td>
+            <td>
+                <div class="right aligned">6</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/peropranav">peropranav</b>
+            </td>
+            <td>
+                <div class="right aligned">200</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/abhishek1208">abhishek1208</b>
+            </td>
+            <td>
+                <div class="right aligned">200</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/dibyadas">dibyadas</b>
+            </td>
+            <td>
+                <div class="right aligned">200</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/asutosh97">asutosh97</b>
+            </td>
+            <td>
+                <div class="right aligned">200</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/shubhamvashisht">shubhamvashisht</b>
+            </td>
+            <td>
+                <div class="right aligned">200</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/ronaksakhuja">ronaksakhuja</b>
+            </td>
+            <td>
+                <div class="right aligned">150</div>
+            </td>
+            <td>
+                <div class="right aligned">3</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/batbrain7">batbrain7</b>
+            </td>
+            <td>
+                <div class="right aligned">130</div>
+            </td>
+            <td>
+                <div class="right aligned">3</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/rahulyadav170923">rahulyadav170923</b>
+            </td>
+            <td>
+                <div class="right aligned">100</div>
+            </td>
+            <td>
+                <div class="right aligned">4</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/realslimshanky">realslimshanky</b>
+            </td>
+            <td>
+                <div class="right aligned">100</div>
+            </td>
+            <td>
+                <div class="right aligned">2</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/sirjan13">sirjan13</b>
+            </td>
+            <td>
+                <div class="right aligned">100</div>
+            </td>
+            <td>
+                <div class="right aligned">2</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/ghoomtaaaina">ghoomtaaaina</b>
+            </td>
+            <td>
+                <div class="right aligned">100</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/thegeekybaniya">thegeekybaniya</b>
+            </td>
+            <td>
+                <div class="right aligned">100</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/https://github.com/sarabjeetoberoi">https://github.com/sarabjeetoberoi</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/nukex1122">nukex1122</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/Vatsalgarg1617">Vatsalgarg1617</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/niketmishra">niketmishra</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/Hackbansu">Hackbansu</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/YogeshSharma0201">YogeshSharma0201</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/test">test</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/Prajjwal">Prajjwal</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/ashu08">ashu08</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+        <tr>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/hereisnaaman">hereisnaaman</b>
+            </td>
+            <td>
+                <div class="right aligned">0</div>
+            </td>
+            <td>
+                <div class="right aligned">1</div>
+            </td>
+        </tr>
+</table>
+
+<div class="ui pagination menu">
+                    <a class="item disabled"> Prev</a>
+
+                    <a class="item   active   "  href="?page&#x3D;1&amp;size&#x3D;50" >
+                        1
+                    </a>
+                    <a class="item disabled"> Next </a>
+            </div>
+
+<style>
+    .red.text {
+        color: red;
+    }
+</style>
+
+</div>
+
+</body>
+</html>
