@@ -7,5 +7,5 @@
     "REVOKED": "revoked"
   },
   "PAGINATION_SIZE" : 10,
-  "TEST_MODE": true
+  "TEST_MODE": false
 }

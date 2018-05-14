@@ -149,7 +149,8 @@ route.get('/claims/add', (req, res) => {
 
 route.get('/claims/:id', auth.adminOnly,  (req, res) => {
     du.getClaimById(req.params.id).then((claim) => {
-        res.render('pages/claims/id', {claim: claim})
+        if (!claim) throw new Error("No claim found")
+        res.render('pages/claims/id', {claim})
     }).catch((err) => {
         res.send("Error fetching claim id = " + req.params.id);
     })
