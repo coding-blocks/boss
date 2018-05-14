@@ -2,18 +2,19 @@
  * Created by championswimmer on 15/05/17.
  */
 const Sequelize = require('sequelize');
-const config = require('./../config');
+const config = require('../config');
+const secrets = require('../secrets')
 
 
 const sequelize = process.env.DATABASE_URL ?
     new Sequelize(process.env.DATABASE_URL) :
 
     new Sequelize(
-        process.env.BOSS_DB_NAME || 'boss',
-        process.env.BOSS_DB_USER || 'boss',
-        process.env.BOSS_DB_PASS || 'boss',
+        secrets.BOSS_DB_NAME || 'boss',
+        secrets.BOSS_DB_USER || 'boss',
+        secrets.BOSS_DB_PASS || 'boss',
         {
-            host: 'localhost',
+            host: secrets.BOSS_DB_HOST  || 'localhost',
             dialect: 'postgres',
             pool: {
                 max: 5,
