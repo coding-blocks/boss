@@ -140,13 +140,12 @@ route.get('/claims/view', (req, res) => {
 });
 
 route.get('/claims/add', (req, res) => {
-
-    return res.redirect('/')
-
-    // res.render('pages/claims/add', {
-    //     menu: {claims_add: 'active'}
-    // })
-});
+    res.render('pages/claims/add', {
+        menu: {
+            claims_add: 'active'
+        }
+    });
+})
 
 route.get('/claims/:id', auth.adminOnly,  (req, res) => {
     du.getClaimById(req.params.id).then((claim) => {
@@ -158,33 +157,31 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
 
 route.post('/claims/add', (req, res) => {
 
-    return res.redirect('/')
-
-    // req.body.user =  req.body.user.trim(); // strip whitespaces from start and end
-    // rp({
-    //    url : `https://api.github.com/users/${req.body.user}`,
-    //    headers: {
-    //     'User-Agent': 'request'
-    //    }
-    // }).then(function(data){
-    //     du.createClaim(
-    //         req.body.user,
-    //         req.body.issue_url,
-    //         req.body.pull_url,
-    //         req.body.bounty,
-    //         config.CLAIM_STATUS.CLAIMED
-    //     ).then(claim => {
-    //         res.redirect('/claims/view')
-    //     }).catch((error) => {
-    //         res.send("Error adding claim")
-    //     });
-    // }).catch((err)=>{
-    //    if(parseInt(err.statusCode) == 404){
-    //         res.render('pages/claims/add', {error : "Enter a valid Github Username"});
-    //    }else{
-    //         res.render('pages/claims/add', {error : JSON.parse(err.error).message});
-    //    }
-    // });
+    req.body.user =  req.body.user.trim(); // strip whitespaces from start and end
+    rp({
+       url : `https://api.github.com/users/${req.body.user}`,
+       headers: {
+        'User-Agent': 'request'
+       }
+    }).then(function(data){
+        du.createClaim(
+            req.body.user,
+            req.body.issue_url,
+            req.body.pull_url,
+            req.body.bounty,
+            config.CLAIM_STATUS.CLAIMED
+        ).then(claim => {
+            res.redirect('/claims/view')
+        }).catch((error) => {
+            res.send("Error adding claim")
+        });
+    }).catch((err)=>{
+       if(parseInt(err.statusCode) == 404){
+            res.render('pages/claims/add', {error : "Enter a valid Github Username"});
+       }else{
+            res.render('pages/claims/add', {error : JSON.parse(err.error).message});
+       }
+    });
 });
 
 route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
