@@ -28,7 +28,9 @@
             <i class="dropdown icon"></i>
             <div class="menu">
                 <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
+                {{#if isAuthenticated}}
                 <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
+                {{/if}}
             </div>
         </div>
         <a class="item" href="http://lab.codingblocks.com/boss">
@@ -39,7 +41,7 @@
             <i class="github icon"></i>
             Open Issues
         </a>
-        
+
         {{#if isAuthenticated}}
             <div class="item right">
                 <a target="_blank" href="https://account.codingblocks.com/users/me" >Welcome {{user.firstname}} </a>

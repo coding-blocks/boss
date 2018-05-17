@@ -44,9 +44,9 @@ route.get('/claims/:id/update', auth.adminOnly, (req, res) => {
   });
 });
 
-route.post('/claims/add', (req, res) => {
+route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   du.createClaim(
-    req.body.user,
+    req.user.usergithub.username,
     req.body.issue_url,
     req.body.pull_url,
     req.body.bounty,
