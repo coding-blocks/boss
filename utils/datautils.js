@@ -85,16 +85,35 @@ function getLeaderboard(options) {
 
     const userCount = db.Claim.aggregate('user', 'count', {distinct: true})
 
-    const results = db.Database.query(`SELECT "user", 
-        SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty", 
-        COUNT("bounty") as "pulls" 
-        FROM "claims" AS "claim" 
-        GROUP BY "user" 
-        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC 
+    const results = db.Database.query(`SELECT "user",
+        SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty",
+        COUNT("bounty") as "pulls"
+        FROM "claims" AS "claim"
+        GROUP BY "user"
+        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC
         LIMIT ${options.size} OFFSET ${offset}`
     );
 
     return Promise.all([userCount, results]);
+}
+
+function getCounts() {
+    const participants = db.Claim.aggregate('user', 'count', {distinct: true});
+    const claims = db.Claim.aggregate('*', 'count');
+    const accepted = db.Claim.aggregate(
+        'bounty',
+        'sum',
+        {
+            where: {
+                "status": "accepted"
+            }
+        }
+    );
+    const totalclaimed = db.Claim.aggregate(
+        'bounty',
+        'sum'
+    );
+    return Promise.all([participants, claims, accepted, totalclaimed]);
 }
 
 exports = module.exports = {
@@ -104,6 +123,6 @@ exports = module.exports = {
     createClaim,
     getLeaderboard,
     getClaimById,
-    updateClaim
+    updateClaim,
+    getCounts
 };
-
