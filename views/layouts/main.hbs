@@ -31,6 +31,10 @@
                 <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
             </div>
         </div>
+        <a class="item" href="/stats">
+            <i class="chart line icon"></i>
+            Stats
+        </a>
         <a class="item" href="http://lab.codingblocks.com/boss">
             <i class="info icon"></i>
             Information
@@ -39,7 +43,7 @@
             <i class="github icon"></i>
             Open Issues
         </a>
-        
+
         {{#if isAuthenticated}}
             <div class="item right">
                 <a target="_blank" href="https://account.codingblocks.com/users/me" >Welcome {{user.firstname}} </a>

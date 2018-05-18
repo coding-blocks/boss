@@ -56,7 +56,7 @@ route.get('/leaderboard', (req, res) => {
         const count = data[0];
         const rows = data[1][0];
         const lastPage = Math.ceil(count / options.size);
-        
+
         for(var i=1;i<=lastPage;i++)
             pagination.push(`?page=${i}&size=${options.size}`);
 
@@ -77,6 +77,19 @@ route.get('/leaderboard', (req, res) => {
     })
 });
 
+route.get('/stats', (req, res) => {
+    du.getCounts().then(data => {
+        res.render('pages/stats', {
+            participants: data[0],
+            claims: data[1],
+            accepted: data[2],
+            totalclaimed: data[3]
+        });
+    }).catch((error) => {
+        res.send("Error fetching stats!")
+    })
+});
+
 route.get('/claims/view', (req, res) => {
 
     const options = {
@@ -92,7 +105,7 @@ route.get('/claims/view', (req, res) => {
         menuH[options.status] = 'active';
     else if (options.status == "accepted")
         menuH[options.status] = 'active';
-    else 
+    else
         menuH[options.status] = 'active';
 
     options.page = parseInt(options.page);
@@ -113,11 +126,11 @@ route.get('/claims/view', (req, res) => {
 
         data[0].forEach(function(item, index){
             filter.push({
-                    name : item.DISTINCT, 
+                    name : item.DISTINCT,
                     url : `?status=${options.status}&username=${item.DISTINCT}`
                 });
         });
-            
+
         res.render('pages/claims/view', {
             prevPage : options.page-1,
             nextPage : options.page+1,
