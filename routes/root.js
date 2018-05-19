@@ -77,6 +77,19 @@ route.get('/leaderboard', (req, res) => {
     })
 });
 
+route.get('/stats', (req, res) => {
+    du.getCounts().then(data => {
+        res.render('pages/stats', {
+            participants: data[0],
+            claims: data[1],
+            accepted: data[2],
+            totalclaimed: data[3]
+        });
+    }).catch((error) => {
+        res.send("Error fetching stats!")
+    })
+});
+
 route.get('/claims/view', (req, res) => {
 
     const options = {
