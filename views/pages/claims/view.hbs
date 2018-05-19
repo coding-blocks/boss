@@ -20,7 +20,7 @@
     <div class="scrolling menu">
     {{#each filter as |user|}}
       <a class="item" href="{{user.url}}">
-        {{user.name}} 
+        {{user.name}}
       </a>
       {{/each}}
     </div>
@@ -31,7 +31,7 @@
 $('.ui.dropdown').dropdown('hide');
 </script>
 <div class="ui very relaxed divided items">
-    {{#each claims as |claim|}} 
+    {{#each claims as |claim|}}
         <div class="four wide item">
             <div class="image">
                 <a class="ui statistic" href="/claims/{{claim.id}}">
@@ -44,7 +44,7 @@ $('.ui.dropdown').dropdown('hide');
                 </a>
             </div>
             <div class="middle aligned content">
-                <a class="header user">{{claim.user}}</a>
+                <a class="header user" href="/claims/view/?status={{claim.status}}&username={{claim.user}}">{{claim.user}}</a>
                 <div class="meta">
                     <span>{{claim.repo}}</span>
                 </div>
