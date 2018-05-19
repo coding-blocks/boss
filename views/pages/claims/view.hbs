@@ -20,18 +20,42 @@
     <div class="scrolling menu">
     {{#each filter as |user|}}
       <a class="item" href="{{user.url}}">
-        {{user.name}} 
+        {{user.name}}
       </a>
       {{/each}}
     </div>
   </div>
 </div>
+
+<div class="ui floating dropdown labeled icon button">
+  <i class="filter icon"></i>
+  {{#if repo}}
+      <span class="text">{{repo}}</span>
+  {{else}}
+    <span class="text">Filter Project</span>
+  {{/if}}
+  <div class="menu">
+    <div class="ui icon search input">
+      <i class="search icon"></i>
+      <input type="text" placeholder="Search projects...">
+    </div>
+
+    <div class="scrolling menu">
+    {{#each filter as |user|}}
+      <a class="item" href="{{user.url}}">
+        {{user.repo}}
+      </a>
+      {{/each}}
+    </div>
+  </div>
+</div>
+
 </div>
 <script>
 $('.ui.dropdown').dropdown('hide');
 </script>
 <div class="ui very relaxed divided items">
-    {{#each claims as |claim|}} 
+    {{#each claims as |claim|}}
         <div class="four wide item">
             <div class="image">
                 <a class="ui statistic" href="/claims/{{claim.id}}">

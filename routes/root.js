@@ -144,7 +144,8 @@ route.get('/claims/view', (req, res) => {
             status1 : options.status,
             menuH,
             filter : filter,
-            username : options.username
+            username : options.username,
+            repo : options.issueUrl
         })
     }).catch((err) => {
         console.log(err);
