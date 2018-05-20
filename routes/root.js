@@ -56,7 +56,7 @@ route.get('/leaderboard', (req, res) => {
         const count = data[0];
         const rows = data[1][0];
         const lastPage = Math.ceil(count / options.size);
-        
+
         for(var i=1;i<=lastPage;i++)
             pagination.push(`?page=${i}&size=${options.size}`);
 
@@ -77,6 +77,19 @@ route.get('/leaderboard', (req, res) => {
     })
 });
 
+route.get('/stats', (req, res) => {
+    du.getCounts().then(data => {
+        res.render('pages/stats', {
+            participants: data[0],
+            claims: data[1],
+            accepted: data[2],
+            totalclaimed: data[3]
+        });
+    }).catch((error) => {
+        res.send("Error fetching stats!")
+    })
+});
+
 route.get('/claims/view', (req, res) => {
 
     const options = {
@@ -92,7 +105,7 @@ route.get('/claims/view', (req, res) => {
         menuH[options.status] = 'active';
     else if (options.status == "accepted")
         menuH[options.status] = 'active';
-    else 
+    else
         menuH[options.status] = 'active';
 
     options.page = parseInt(options.page);
@@ -113,11 +126,11 @@ route.get('/claims/view', (req, res) => {
 
         data[0].forEach(function(item, index){
             filter.push({
-                    name : item.DISTINCT, 
+                    name : item.DISTINCT,
                     url : `?status=${options.status}&username=${item.DISTINCT}`
                 });
         });
-            
+
         res.render('pages/claims/view', {
             prevPage : options.page-1,
             nextPage : options.page+1,
@@ -139,7 +152,7 @@ route.get('/claims/view', (req, res) => {
     })
 });
 
-route.get('/claims/add', (req, res) => {
+route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     res.render('pages/claims/add', {
         menu: {
             claims_add: 'active'
@@ -156,33 +169,19 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
     })
 });
 
-route.post('/claims/add', (req, res) => {
-
-    req.body.user =  req.body.user.trim(); // strip whitespaces from start and end
-    rp({
-       url : `https://api.github.com/users/${req.body.user}`,
-       headers: {
-        'User-Agent': 'request'
-       }
-    }).then(function(data){
-        du.createClaim(
-            req.body.user,
-            req.body.issue_url,
-            req.body.pull_url,
-            req.body.bounty,
-            config.CLAIM_STATUS.CLAIMED
-        ).then(claim => {
-            res.redirect('/claims/view')
-        }).catch((error) => {
-            res.send("Error adding claim")
-        });
-    }).catch((err)=>{
-       if(parseInt(err.statusCode) == 404){
-            res.render('pages/claims/add', {error : "Enter a valid Github Username"});
-       }else{
-            res.render('pages/claims/add', {error : JSON.parse(err.error).message});
-       }
+route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
+    du.createClaim(
+        req.user.usergithub.username, // github username already valid
+        req.body.issue_url,
+        req.body.pull_url,
+        req.body.bounty,
+        config.CLAIM_STATUS.CLAIMED
+    ).then(claim => {
+        res.redirect('/claims/view')
+    }).catch((error) => {
+        res.send("Error adding claim")
     });
+
 });
 
 route.post('/claims/:id/update', auth.adminOnly , (req, res) => {

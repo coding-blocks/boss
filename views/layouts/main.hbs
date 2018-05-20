@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>BOSS</title>
     <link href="/lib/semantic/semantic.min.css" rel="stylesheet">
     <script src="/lib/jquery-3.2.1.min.js"></script>
@@ -10,52 +11,120 @@
         .main.container {
             margin-top: 6em;
         }
+        #content {
+            min-height: 100px;
+        }
+        .ui.grid{
+            padding: 0 !important;
+        }
+        .pushable.segment{
+            margin: 0 !important;
+        }
     </style>
 </head>
 <body>
 
-<div class="ui top fixed huge inverted menu red">
-    <div class="ui container">
-        <a href="/" class="header item">BOSS</a>
+<div class="ui grid">
+    <div class="computer only row">
+        <div class="column">
+            <div class="ui top fixed huge inverted menu red">
+                <div class="ui container">
+                    <a href="/" class="header item">BOSS</a>
+                    <a class="item {{menu.leaderboard}}" href="/leaderboard">
+                        <i class="sort content descending icon"></i> Leaderboard
+                    </a>
+
+                    <div class="ui simple dropdown item">
+                        <i class="checked calendar icon"></i> Claim
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a class="item {{menu.claims_view}}" href="/claims/view">View</a> {{#if isAuthenticated}}
+                            <a class="item {{menu.claims_add}}" href="/claims/add">Add</a> {{/if}}
+                        </div>
+                    </div>
+                    <a class="item" href="http://lab.codingblocks.com/boss">
+                        <i class="info icon"></i> Information
+                    </a>
+                    <a class="item" href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql">
+                        <i class="github icon"></i> Open Issues
+                    </a> 
+                    <a class="item" href="https://gitter.im/coding-blocks/boss-2018-lobby">
+                        <i class="gitter icon"></i> Gitter
+                    </a> 
+                    {{#if isAuthenticated}}
+                    <div class="item right">
+                        <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
+                    </div>
+                    <a class="item" href="/logout">Logout </a> {{else}}
+                    <a class="right item" href="/login">Login</a> {{/if}}
+                </div>
+            </div>
+        </div>
+        <!--column-->
+    </div>
+    <!--computer only row-->
+    <div class="tablet mobile only row">
+        <div class="column">
+            <div class="ui inverted  huge red menu">
+                <a id="mobile_item" class="item"><i class="bars icon"></i></a>
+                <a href="/" class="header item">BOSS</a>
+            </div>
+        </div>
+        <!--column-->
+    </div>
+    <!--computer only row-->
+</div>
+<!-- grid-->
+
+<div class="ui pushable segment">
+    <div class="ui sidebar vertical menu" style="overflow-x:hidden">
+        {{#if isAuthenticated}}
+        <div class="item ">
+            <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
+        </div>
+        <a class="item" href="/logout">Logout </a> {{else}}
+        <a class=" item" href="/login">Login</a> {{/if}}
         <a class="item {{menu.leaderboard}}" href="/leaderboard">
-            <i class="sort content descending icon"></i>
-            Leaderboard
+            <i class="sort content descending icon"></i> Leaderboard
         </a>
 
         <div class="ui simple dropdown item">
-            <i class="checked calendar icon"></i>
-            Claim
+            <i class="checked calendar icon"></i> Claim
             <i class="dropdown icon"></i>
             <div class="menu">
-                <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
-                <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
+                <a class="item {{menu.claims_view}}" href="/claims/view">View</a> {{#if isAuthenticated}}
+                <a class="item {{menu.claims_add}}" href="/claims/add">Add</a> {{/if}}
             </div>
         </div>
+        <a class="item" href="/stats">
+            <i class="chart line icon"></i>
+            Stats
+        </a>
         <a class="item" href="http://lab.codingblocks.com/boss">
-            <i class="info icon"></i>
-            Information
+            <i class="info icon"></i> Information
         </a>
-        <a class="item" href="https://github.com/issues?utf8=✓&q=is:open is:issue label:BOSS org:coding-blocks">
-            <i class="github icon"></i>
-            Open Issues
+        <a class="item" href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql">
+            <i class="github icon"></i> Open Issues
         </a>
-        
-        {{#if isAuthenticated}}
-            <div class="item right">
-                <a target="_blank" href="https://account.codingblocks.com/users/me" >Welcome {{user.firstname}} </a>
+        <a class="item" href="https://gitter.im/coding-blocks/boss-2018-lobby">
+            <i class="gitter icon"></i> Gitter
+        </a> 
+    </div>
+    <div class="pusher">
+        <div id="content" class="ui segment">
+            <div class="ui main container">
+              {{{body}}}
             </div>
-            <a class="item" href="/logout">Logout </a>
-
-        {{else}}
-            <a class="right item" href="/login">Login</a>
-        {{/if}}
+        </div>
+    </div>
 </div>
 
-</div>
-
-<div class="ui main container">
-    {{{body}}}
-</div>
+<script>
+    $('.ui.sidebar').sidebar({
+    context: $('.ui.pushable.segment'),
+    transition: 'overlay'
+}).sidebar('attach events', '#mobile_item');
+</script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83327907-10"></script>

@@ -1,0 +1,84 @@
+<div class="stats">
+    <div class="ui two stackable cards">
+        <div class="ui fluid card">
+            <div class="ui statistic">
+                <div class="value" data-count="{{totalclaimed}}">
+                    0
+                </div>
+                <br />
+                <div class="label">
+                    Total Bounties Claimed
+                </div>
+            </div>
+        </div>
+        <div class="ui fluid card">
+            <div class="ui statistic">
+                <div class="value" data-count="{{accepted}}">
+                    0
+                </div>
+                <br />
+                <div class="label">
+                    Total Bounties Accepted
+                </div>
+            </div>
+        </div>
+        <div class="ui fluid card">
+            <div class="ui statistic">
+                <div class="value" data-count="{{claims}}">
+                    0
+                </div>
+                <br />
+                <div class="label">
+                    Total Claims Filed
+                </div>
+            </div>
+        </div>
+        <div class="ui fluid card">
+            <div class="ui statistic">
+                <div class="value" data-count="{{participants}}">
+                    0
+                </div>
+                <br />
+                <div class="label">
+                    Total Participants
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stats {
+        margin-top: 125px;
+    }
+    .ui.statistic {
+        display: block;
+        margin: 0 auto !important;
+    }
+    .ui.fluid.card .value {
+        padding-top: 50px !important;
+    }
+    .ui.fluid.card .label {
+        padding-top: 25px !important;
+        padding-bottom: 50px !important;
+    }
+</style>
+
+<script type="text/javascript">
+$('.value').each(function() {
+    var $this = $(this),
+    countTo = $this.attr('data-count');
+    $({ countNum: $this.text()}).animate({
+        countNum: countTo
+    }, {
+        duration: 500,
+        easing:'linear',
+        step: function() {
+            $this.text(Math.floor(this.countNum));
+    },
+    complete: function() {
+        $this.text(this.countNum);
+    }
+    });
+});
+</script>
