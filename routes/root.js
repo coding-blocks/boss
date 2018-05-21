@@ -141,7 +141,7 @@ route.get('/claims/view', (req, res) => {
             size : options.size,
             claims: data[1].rows,
             menu: {claims_view: 'active'},
-            status1 : options.status,
+            status: options.status,
             menuH,
             filter : filter,
             username : options.username
