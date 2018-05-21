@@ -144,13 +144,14 @@
             <i class="github icon"></i>
             Open Issues
         </a>
-
+        <a class="item" href="https://gitter.im/coding-blocks/boss-2018-lobby">
+            <i class="gitter icon"></i> Gitter
+        </a>
         {{#if isAuthenticated}}
             <div class="item right">
-                <a target="_blank" href="https://account.codingblocks.com/users/me" >Welcome {{user.firstname}} </a>
+                <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
             </div>
             <a class="item" href="/logout">Logout </a>
-
         {{else}}
             <a class="right item" href="/login">Login</a>
         {{/if}}
@@ -162,6 +163,17 @@
 <div class="ui main container">
     {{{body}}}
 </div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-83327907-10"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-83327907-10');
+</script>
+
 
 </body>
 </html>
