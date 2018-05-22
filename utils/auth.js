@@ -2,7 +2,7 @@
  * Created by abhishek on 17/05/17.
  */
 'use strict';
- 
+
 // This file conatins middleware utils for auth and role implementation
 
 const rp = require('request-promise');
@@ -72,5 +72,13 @@ module.exports = {
 
             });
         });
-    }
+    },
+  ensureLoggedInGithub(req, res, next){
+    // check is user is logged in and has github linked
+      if(req.user && req.user.usergithub) {
+          next()
+      } else {
+          res.render('error',{error: 'You need to be logged in for this. Also make sure you have linked your github account at account.codingblocks.com'})
+      }
+  }
 };

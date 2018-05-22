@@ -5,7 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const exphbs = require('express-hbs');
-const passport = require('./auth/passportStatergies');
+const passport = require('./auth/passportStrategies');
 const session = require('express-session');
 
 const auth = require('./utils/auth');
@@ -77,4 +77,3 @@ app.use('/', express.static(path.join(__dirname, 'public_static')));
 exports = module.exports = {
     app
 };
-

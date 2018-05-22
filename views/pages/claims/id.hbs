@@ -36,6 +36,8 @@
     </div>
     <form class="ui form" style="padding: 3em" method="post" action="/claims/{{claim.id}}/update">
         <div class="four wide field">
+            <label>Final Bounty Points</label>
+            <input name="bounty" value="{{claim.bounty}}">
             <label>Update Status</label>
             <select name="status" class="ui dropdown" id="status">
                 <option value="claimed">Claimed</option>
@@ -48,12 +50,13 @@
 
         <label>Reason </label>
         <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
-
+        <br/>
         <button class="ui button green" type="submit">Submit</button>
 
 
     </form>
     <script>
+
         $('select.dropdown').dropdown();
 
         {{#unless claim.reason}}
