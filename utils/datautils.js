@@ -9,9 +9,15 @@ function getClaims(options) {
 
     const offset = (options.page - 1 ) * options.size;
 
-
-    const whereClause = options.username ? { status:  options.status, user : options.username } : { status:  options.status} ;
+    var whereClause = { status:  options.status};
+    if(options.username){
+        whereClause = { status:  options.status, user : options.username };
+    }else if(options.projectname){
+        whereClause = { status:  options.status, repo : options.projectname };
+    }
+    
     const distinctUsers = db.Claim.aggregate('user', 'DISTINCT', { plain: false, where : { status:  options.status} })
+    const distinctProjects = db.Claim.aggregate('repo', 'DISTINCT', { plain: false, where : { status:  options.status} })
     const allClaims = db.Claim.findAndCountAll({
         limit : options.size,
         offset : offset,
@@ -19,7 +25,7 @@ function getClaims(options) {
         order: [['updatedAt', 'DESC']]
     });
 
-    return Promise.all([distinctUsers, allClaims])
+    return Promise.all([distinctUsers, allClaims, distinctProjects])
 }
 
 function getClaimById(claimId) {
@@ -59,7 +65,7 @@ function updateClaim(claimId, {status, reason, bounty}) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
-
+    
     const claim = {
         action: 'create',
         user, issueUrl, pullUrl, bounty, status

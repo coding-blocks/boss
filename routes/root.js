@@ -91,9 +91,10 @@ route.get('/stats', (req, res) => {
 });
 
 route.get('/claims/view', (req, res) => {
-
+    
     const options = {
         username: req.query.username,
+        projectname: req.query.projectname,
         status : req.query.status || "claimed",
         page : req.query.page || 1,
         size : req.query.size || config.PAGINATION_SIZE
@@ -114,11 +115,14 @@ route.get('/claims/view', (req, res) => {
 
         const pagination = [];
         const filter = [];
+        const filterproj = [];
         const lastPage = Math.ceil(data[1].count / options.size);
 
         for(var i=1;i<=lastPage;i++){
             if (options.username) {
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`);
+            }else if(options.projectname){
+                pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`);
             }else{
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`);
             }
@@ -128,6 +132,13 @@ route.get('/claims/view', (req, res) => {
             filter.push({
                     name : item.DISTINCT,
                     url : `?status=${options.status}&username=${item.DISTINCT}`
+                });
+        });
+
+        data[2].forEach(function(item, index){
+            filterproj.push({
+                    name : item.DISTINCT,
+                    url : `?status=${options.status}&projectname=${item.DISTINCT}`
                 });
         });
 
@@ -144,7 +155,9 @@ route.get('/claims/view', (req, res) => {
             status: options.status,
             menuH,
             filter : filter,
-            username : options.username
+            filterproj: filterproj,
+            username : options.username,
+            projectname: options.projectname,
         })
     }).catch((err) => {
         console.log(err);
