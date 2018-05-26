@@ -48,3 +48,4 @@ fabric.properties
 .idea
 secrets.json
 audit/*.json
+countUp.js-master
