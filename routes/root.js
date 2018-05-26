@@ -192,6 +192,7 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     ).then(claim => {
         res.redirect('/claims/view')
     }).catch((error) => {
+        console.error(error);
         res.send("Error adding claim")
     });
 
