@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "node_modules/.bin/_mocha",
+    "test": "node_modules/.bin/_mocha --timeout 10000",
     "start": "node index.js",
     "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
   },
