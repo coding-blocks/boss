@@ -45,6 +45,15 @@ route.get('/claims/:id/update', auth.adminOnly, (req, res) => {
 });
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
+
+  if(process.env.BOSS_DEV === 'localhost'){
+    req.user = {
+      usergithub:{
+        username:'Dhroov7'
+      }
+    }
+  }
+
   du.createClaim(
     req.user.usergithub.username,
     req.body.issue_url,

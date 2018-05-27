@@ -23,7 +23,7 @@ module.exports = {
     if(config.TEST_MODE){
       next();
     }
-    if( req.user && req.user.role === 'admin')
+    if( (req.user && req.user.role === 'admin') || (process.env.BOSS_DEV === 'localhost'))
           next();
       else
           res.render('error' , {error : 'Admin Access Only!'});
@@ -75,7 +75,7 @@ module.exports = {
     },
   ensureLoggedInGithub(req, res, next){
     // check is user is logged in and has github linked
-      if(req.user && req.user.usergithub) {
+      if((req.user && req.user.usergithub) || (process.env.BOSS_DEV === 'localhost')) {
           next()
       } else {
           res.render('error',{error: 'You need to be logged in for this. Also make sure you have linked your github account at account.codingblocks.com'})
