@@ -15,7 +15,7 @@ function getClaims(options) {
     }else if(options.projectname){
         whereClause = { status:  options.status, repo : options.projectname };
     }
-    
+
     const distinctUsers = db.Claim.aggregate('user', 'DISTINCT', { plain: false, where : { status:  options.status} })
     const distinctProjects = db.Claim.aggregate('repo', 'DISTINCT', { plain: false, where : { status:  options.status} })
     const allClaims = db.Claim.findAndCountAll({
@@ -65,7 +65,7 @@ function updateClaim(claimId, {status, reason, bounty}) {
 }
 
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
-    
+
     const claim = {
         action: 'create',
         user, issueUrl, pullUrl, bounty, status
@@ -106,7 +106,7 @@ function getLeaderboard(options) {
 function getCounts() {
     const participants = db.Claim.aggregate('user', 'count', {distinct: true});
     const claims = db.Claim.aggregate('*', 'count');
-    const accepted = db.Claim.aggregate(
+    var accepted = db.Claim.aggregate(
         'bounty',
         'sum',
         {
@@ -115,10 +115,19 @@ function getCounts() {
             }
         }
     );
-    const totalclaimed = db.Claim.aggregate(
+    var totalclaimed = db.Claim.aggregate(
         'bounty',
         'sum'
     );
+
+      if (!isNaN(accepted)) {
+        accepted = 0
+      }
+
+      if (!isNaN(totalclaimed)) {
+        totalclaimed = 0
+      }
+
     return Promise.all([participants, claims, accepted, totalclaimed]);
 }
 
