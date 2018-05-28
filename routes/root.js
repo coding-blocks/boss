@@ -91,7 +91,7 @@ route.get('/stats', (req, res) => {
 });
 
 route.get('/claims/view', (req, res) => {
-    
+
     const options = {
         username: req.query.username,
         projectname: req.query.projectname,
@@ -198,7 +198,7 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
 
 });
 
-route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
+route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
     du.updateClaim(req.params.id, req.body ).then(result => {
         res.redirect('/claims/' + req.params.id);
     }).catch((error) => {
