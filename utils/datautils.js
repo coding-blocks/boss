@@ -118,7 +118,7 @@ function getCounts() {
     const totalclaimed = db.Claim.aggregate(
         'bounty',
         'sum'
-    );
+    );  
     return Promise.all([participants, claims, accepted, totalclaimed]);
 }
 
