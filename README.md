@@ -96,7 +96,9 @@ npm start
 
 And see it working on http://localhost:3232
 
-  
+
+### For Testing
+BOSS_DEV=localhost node index.js
 
 ## API
 
