@@ -98,7 +98,17 @@ And see it working on http://localhost:3232
 
 
 ### For Testing
-BOSS_DEV=localhost node index.js
+
+Start the test server using the following command:
+
+````
+npm run start-test
+````
+Run tests using the following command:
+
+````
+npm test
+````
 
 ## API
 
