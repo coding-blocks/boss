@@ -91,7 +91,7 @@ route.get('/stats', (req, res) => {
 });
 
 route.get('/claims/view', (req, res) => {
-    
+
     const options = {
         username: req.query.username,
         projectname: req.query.projectname,
@@ -192,8 +192,7 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     ).then(claim => {
         res.redirect('/claims/view')
     }).catch((error) => {
-        console.error(error);
-        res.send("Error adding claim")
+        res.render('pages/claims/unique')
     });
 
 });
