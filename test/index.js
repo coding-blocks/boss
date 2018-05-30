@@ -13,7 +13,7 @@ function importTest(name, path) {
 before(function (done) {
   db.sync({force: true}).then(() => {
     console.log("DB configured for tests")
-    app.listen(8000, () => done())
+    app.listen(3232, () => done())
   })
 })
 
