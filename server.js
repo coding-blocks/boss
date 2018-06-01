@@ -19,7 +19,7 @@ const sess = {
     secret: secrets.secret,
     resave: false,
     saveUninitialized: true,
-    cookie: {}
+    cookie: {maxAge: 360000}
 };
 
 const app = express();
