@@ -27,9 +27,11 @@
         </div>
     </div>
 
-    <div id="resetUsername" class="ui icon button">
-        <i class="undo icon"></i>
-    </div>
+    {{#if username}}
+        <div id="resetUsername" class="ui icon button">
+            <a href="?status={{status}}"><i class="undo icon"></i></a>
+        </div>
+    {{/if}}
 
     <div class="ui floating dropdown labeled icon button">
         <i class="filter icon"></i>
@@ -54,21 +56,16 @@
         </div>
     </div>
 
-    <div id="resetProjectName" class="ui icon button">
-        <i class="undo icon"></i>
-    </div>
+    {{#if projectname}}
+        <div id="resetProjectName" class="ui icon button">
+            <a href="?status={{status}}"><i class="undo icon"></i></a>
+        </div>
+    {{/if}}
 
 </div>
 <script>
     $('.ui.dropdown').dropdown('hide');
 
-    $('#resetUsername').click(function () {
-        $('#username').text('Filter Usernames')
-    })
-
-    $('#resetProjectName').click(function () {
-        $('#projectName').text('Filter Projects')
-    })
 </script>
 <div class="ui very relaxed divided items">
     {{#each claims as |claim|}}
