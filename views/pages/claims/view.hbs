@@ -28,9 +28,11 @@
     </div>
 
     {{#if username}}
-        <div id="resetUsername" class="ui icon button">
-            <a href="?status={{status}}"><i class="undo icon"></i></a>
-        </div>
+        <a href="?status={{status}}">
+            <div id="resetUsername" class="ui icon button">
+                <i class="undo icon"></i>
+            </div>
+        </a>
     {{/if}}
 
     <div class="ui floating dropdown labeled icon button">
@@ -57,9 +59,11 @@
     </div>
 
     {{#if projectname}}
-        <div id="resetProjectName" class="ui icon button">
-            <a href="?status={{status}}"><i class="undo icon"></i></a>
-        </div>
+        <a href="?status={{status}}">
+            <div id="resetProjectName" class="ui icon button">
+                <i class="undo icon"></i>
+            </div>
+        </a>
     {{/if}}
 
 </div>
