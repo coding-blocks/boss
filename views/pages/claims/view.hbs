@@ -1,26 +1,26 @@
 <div class="ui stackable three item menu">
-  <a class="item {{menuH.claimed}}" href="?status=claimed">Claimed</a>
-  <a class="item {{menuH.accepted}}" href="?status=accepted">Accepted</a>
-  <a class="item {{menuH.rejected}}" href="?status=rejected">Rejected</a>
+    <a class="item {{menuH.claimed}}" href="?status=claimed">Claimed</a>
+    <a class="item {{menuH.accepted}}" href="?status=accepted">Accepted</a>
+    <a class="item {{menuH.rejected}}" href="?status=rejected">Rejected</a>
 </div>
 <div align="right">
     <div class="ui floating dropdown labeled icon button">
         <i class="filter icon"></i>
         {{#if username}}
-            <span class="text">{{username}}</span>
+            <span id="username" class="text">{{username}}</span>
         {{else}}
             <span class="text">Filter Usernames</span>
         {{/if}}
         <div class="menu">
             <div class="ui icon search input">
-            <i class="search icon"></i>
-            <input type="text" placeholder="Search users...">
+                <i class="search icon"></i>
+                <input type="text" placeholder="Search users...">
             </div>
 
             <div class="scrolling menu">
             {{#each filter as |user|}}
             <a class="item" href="{{user.url}}">
-                {{user.name}}
+               {{user.name}}
             </a>
             {{/each}}
             </div>
@@ -36,14 +36,14 @@
     <div class="ui floating dropdown labeled icon button">
         <i class="filter icon"></i>
         {{#if projectname}}
-            <span class="text">{{projectname}}</span>
+            <span id="projectName" class="text">{{projectname}}</span>
         {{else}}
             <span class="text">Filter Projects</span>
         {{/if}}
         <div class="menu">
             <div class="ui icon search input">
-            <i class="search icon"></i>
-            <input type="text" placeholder="Search Projects...">
+                <i class="search icon"></i>
+                <input type="text" placeholder="Search Projects...">
             </div>
 
             <div class="scrolling menu">
@@ -64,7 +64,7 @@
 
 </div>
 <script>
-$('.ui.dropdown').dropdown('hide');
+    $('.ui.dropdown').dropdown('hide');
 </script>
 <div class="ui very relaxed divided items">
     {{#each claims as |claim|}}
@@ -117,14 +117,16 @@ $('.ui.dropdown').dropdown('hide');
                 <a class="item disabled"> Prev</a>
             {{else}}
                 {{#if projectname}}
-                    <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}" >Prev </a>
+                    <a class="item"
+                       href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Prev </a>
                 {{else}}
-                    <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}" >Prev </a>
+                    <a class="item"
+                       href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}">Prev </a>
                 {{/if}}
             {{/if}}
 
             {{#each pagination as |link index|}}
-                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}" >
+                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
                     {{add index 1}}
                 </a>
             {{/each}}
@@ -132,9 +134,11 @@ $('.ui.dropdown').dropdown('hide');
                 <a class="item disabled"> Next </a>
             {{else}}
                 {{#if projectname}}
-                    <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}" >Next </a>
+                    <a class="item"
+                       href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Next </a>
                 {{else}}
-                    <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}" >Next </a>
+                    <a class="item"
+                       href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}">Next </a>
                 {{/if}}
             {{/if}}
         </div>
@@ -142,8 +146,9 @@ $('.ui.dropdown').dropdown('hide');
 </div>
 <style>
     .user.header {
-        color:red !important;
+        color: red !important;
     }
+
     .user.header:hover {
         color: grey !important;
     }

@@ -119,10 +119,10 @@ function getCounts() {
         'bounty',
         'sum'
     );
-    if (isNaN(accepted)) {
+    if (Number.isNaN(accepted)) {
         accepted = 0;
     }
-    if (isNaN(totalclaimed)) {
+    if (Number.isNaN(totalclaimed)) {
         totalclaimed = 0;
     }
     return Promise.all([participants, claims, accepted, totalclaimed]);
