@@ -71,6 +71,7 @@
     })
 </script>
 <div class="ui very relaxed divided items">
+{{#if claims}}
     {{#each claims as |claim|}}
         <div class="four wide item">
             <div class="image">
@@ -114,6 +115,11 @@
             </div>
         </div>
     {{/each}}
+    {{else}}
+        <div>
+            No Record Found!
+        </div>
+    {{/if}}
 
     <div class="pagination">
         <div class="ui pagination menu">
