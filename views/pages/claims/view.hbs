@@ -60,7 +60,11 @@
 
 </div>
 <script>
-    $('.ui.dropdown').dropdown('hide');
+    $('.ui.dropdown').dropdown({
+        action: function (text, value, element) {
+            element.click()
+        }
+    });
 
     $('#resetUsername').click(function () {
         $('#username').text('Filter Usernames')
@@ -71,7 +75,6 @@
     })
 </script>
 <div class="ui very relaxed divided items">
-    {{#if claims}}
         {{#each claims as |claim|}}
             <div class="four wide item">
                 <div class="image">
@@ -115,9 +118,6 @@
                 </div>
             </div>
         {{/each}}
-    {{else}}
-        <h1 class="ui header" style="text-align: center;margin-top: 50px">No records found</h1>
-    {{/if}}
 
     <div class="pagination">
         <div class="ui pagination menu">
