@@ -71,49 +71,53 @@
     })
 </script>
 <div class="ui very relaxed divided items">
-    {{#each claims as |claim|}}
-        <div class="four wide item">
-            <div class="image">
-                <a class="ui statistic" href="/claims/{{claim.id}}">
-                    <div class="value">
-                        {{claim.bounty}}
-                    </div>
-                    <div class="label">
-                        BOUNTY POINTS
-                    </div>
-                </a>
-            </div>
-            <div class="middle aligned content">
-                <a class="header user" href="/claims/view?username={{claim.user}}">{{claim.user}}</a>
-                <div class="meta">
-                    <span>{{claim.repo}}</span>
+    {{#if claims}}
+        {{#each claims as |claim|}}
+            <div class="four wide item">
+                <div class="image">
+                    <a class="ui statistic" href="/claims/{{claim.id}}">
+                        <div class="value">
+                            {{claim.bounty}}
+                        </div>
+                        <div class="label">
+                            BOUNTY POINTS
+                        </div>
+                    </a>
                 </div>
-                <div class="description">
-                    <p>
-                        Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
-                    </p>
-                    <p>
-                        Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
-                    </p>
-                </div>
-                <div class="extra">
-                    {{#if claim.reason}}
-                        <p>Reason:  {{claim.reason}} </p>
-                    {{/if}}
-                    {{#equal claim.status "claimed"}}
-                        <div class="ui label yellow">{{claim.status}}</div>
-                    {{/equal}}
-                    {{#equal claim.status "accepted"}}
-                        <div class="ui label green">{{claim.status}}</div>
-                    {{/equal}}
-                    {{#equal claim.status "rejected"}}
-                        <div class="ui label red">{{claim.status}}</div>
-                    {{/equal}}
+                <div class="middle aligned content">
+                    <a class="header user" href="/claims/view?username={{claim.user}}">{{claim.user}}</a>
+                    <div class="meta">
+                        <span>{{claim.repo}}</span>
+                    </div>
+                    <div class="description">
+                        <p>
+                            Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
+                        </p>
+                        <p>
+                            Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
+                        </p>
+                    </div>
+                    <div class="extra">
+                        {{#if claim.reason}}
+                            <p>Reason:  {{claim.reason}} </p>
+                        {{/if}}
+                        {{#equal claim.status "claimed"}}
+                            <div class="ui label yellow">{{claim.status}}</div>
+                        {{/equal}}
+                        {{#equal claim.status "accepted"}}
+                            <div class="ui label green">{{claim.status}}</div>
+                        {{/equal}}
+                        {{#equal claim.status "rejected"}}
+                            <div class="ui label red">{{claim.status}}</div>
+                        {{/equal}}
 
+                    </div>
                 </div>
             </div>
-        </div>
-    {{/each}}
+        {{/each}}
+    {{else}}
+        <h1 class="ui header" style="text-align: center;margin-top: 50px">No records found</h1>
+    {{/if}}
 
     <div class="pagination">
         <div class="ui pagination menu">
