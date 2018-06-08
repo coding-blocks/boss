@@ -18,18 +18,20 @@
             </div>
 
             <div class="scrolling menu">
-                {{#each filter as |user|}}
-                    <a class="item" href="{{user.url}}">
-                        {{user.name}}
-                    </a>
-                {{/each}}
+            {{#each filter as |user|}}
+            <a class="item" href="{{user.url}}">
+               {{user.name}}
+            </a>
+            {{/each}}
             </div>
         </div>
     </div>
 
-    <div id="resetUsername" class="ui icon button">
-        <i class="undo icon"></i>
+    {{#if username}}
+    <div class="ui button icon">
+      <a href="?status={{status}}"><i class="close icon grey"></i></a>
     </div>
+    {{/if}}
 
     <div class="ui floating dropdown labeled icon button">
         <i class="filter icon"></i>
@@ -45,30 +47,24 @@
             </div>
 
             <div class="scrolling menu">
-                {{#each filterproj as |project|}}
-                    <a class="item" href="{{project.url}}">
-                        {{project.name}}
-                    </a>
-                {{/each}}
+            {{#each filterproj as |project|}}
+            <a class="item" href="{{project.url}}">
+                {{project.name}}
+            </a>
+            {{/each}}
             </div>
         </div>
     </div>
 
-    <div id="resetProjectName" class="ui icon button">
-        <i class="undo icon"></i>
+    {{#if projectname}}
+    <div class="ui button icon">
+      <a href="?status={{status}}"><i class="close icon grey"></i></a>
     </div>
+    {{/if}}
 
 </div>
 <script>
     $('.ui.dropdown').dropdown('hide');
-
-    $('#resetUsername').click(function () {
-        $('#username').text('Filter Usernames')
-    })
-
-    $('#resetProjectName').click(function () {
-        $('#projectName').text('Filter Projects')
-    })
 </script>
 <div class="ui very relaxed divided items">
     {{#each claims as |claim|}}
