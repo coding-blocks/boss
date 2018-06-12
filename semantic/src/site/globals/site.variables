@@ -1,0 +1,15 @@
+/*******************************
+     User Global Variables
+*******************************/
+@red: #fc4f4f;
+@lightRed: #f68181;
+
+@primaryColor: @red;
+@lightPrimaryColor: @lightRed;
+@secondaryColor: @grey;
+
+@linkColor: @red;
+
+@titleFont: 'Quicksand';
+@headerFont: 'Quicksand';
+@pageFont: 'Cabin', 'Helvetica Neue', Arial;

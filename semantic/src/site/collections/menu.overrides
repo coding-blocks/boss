@@ -1,0 +1,7 @@
+/*******************************
+         Site Overrides
+*******************************/
+
+.ui.secondary.pointing.menu {
+    background: white;
+}
