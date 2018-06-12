@@ -572,7 +572,7 @@ body {
   min-width: 320px;
   background: #FFFFFF;
   font-family: 'Cabin', 'Helvetica Neue', Arial;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
   font-smoothing: antialiased;
@@ -4994,6 +4994,20 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
 /*******************************
          Site Overrides
 *******************************/
+
+.ui.primary.button {
+  background: -webkit-gradient(linear, left top, right top, from(#ed7298), to(#ec8871));
+  background: -webkit-linear-gradient(left, #ed7298, #ec8871);
+  background: linear-gradient(to right, #ed7298, #ec8871);
+}
+
+.ui.primary.button:hover {
+  background: -webkit-gradient(linear, left top, right top, from(#ed7298), to(#ec8871));
+  background: -webkit-linear-gradient(left, #ed7298, #ec8871);
+  background: linear-gradient(to right, #ed7298, #ec8871);
+  -webkit-box-shadow: 0 10px 41px 0 rgba(236, 131, 122, 0.2);
+  box-shadow: 0 10px 41px 0 rgba(236, 131, 122, 0.2);
+}
 /*!
  * # Semantic UI 2.3.1 - Container
  * http://github.com/semantic-org/semantic-ui/
@@ -13297,7 +13311,7 @@ img.ui.bordered.image {
   text-transform: none;
   font-weight: bold;
   border: 0px solid transparent;
-  border-radius: 0.28571429rem;
+  border-radius: 2rem;
   -webkit-transition: background 0.1s ease;
   transition: background 0.1s ease;
 }
@@ -13437,7 +13451,7 @@ a.ui.label {
   text-transform: none;
   background: #E8E8E8;
   padding: 0.5833em 0.833em 0.5833em 0.5em;
-  border-radius: 0.28571429rem;
+  border-radius: 2rem;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -13447,14 +13461,14 @@ a.ui.label {
   vertical-align: top;
   height: 2.1666em;
   margin: -0.5833em 0.5em -0.5833em -0.5em;
-  border-radius: 0.28571429rem 0em 0em 0.28571429rem;
+  border-radius: 2rem 0em 0em 2rem;
 }
 
 .ui.image.label .detail {
   background: rgba(0, 0, 0, 0.1);
   margin: -0.5833em -0.833em -0.5833em 0.5em;
   padding: 0.5833em 0.833em;
-  border-radius: 0em 0.28571429rem 0.28571429rem 0em;
+  border-radius: 0em 2rem 2rem 0em;
 }
 
 /*-------------------
@@ -13467,7 +13481,7 @@ a.ui.label {
   position: relative;
   padding-left: 1.5em;
   padding-right: 1.5em;
-  border-radius: 0em 0.28571429rem 0.28571429rem 0em;
+  border-radius: 0em 2rem 2rem 0em;
   -webkit-transition: none;
   transition: none;
 }
@@ -13597,7 +13611,7 @@ a.ui.label {
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
   min-width: max-content;
-  border-radius: 0em 0.28571429rem 0.28571429rem 0em;
+  border-radius: 0em 2rem 2rem 0em;
   border-color: rgba(0, 0, 0, 0.15);
 }
 
@@ -13636,7 +13650,7 @@ a.ui.label {
   text-align: left;
   -webkit-transform: translateX(-100%);
   transform: translateX(-100%);
-  border-radius: 0.28571429rem 0em 0em 0.28571429rem;
+  border-radius: 2rem 0em 0em 2rem;
 }
 
 .ui[class*="right ribbon"].label:after {
@@ -13702,21 +13716,21 @@ a.ui.label {
 .ui[class*="top left attached"].label {
   width: auto;
   margin-top: 0em !important;
-  border-radius: 0.21428571rem 0em 0.28571429rem 0em;
+  border-radius: 0.21428571rem 0em 2rem 0em;
 }
 
 .ui[class*="top right attached"].label {
   width: auto;
   left: auto;
   right: 0em;
-  border-radius: 0em 0.21428571rem 0em 0.28571429rem;
+  border-radius: 0em 0.21428571rem 0em 2rem;
 }
 
 .ui[class*="bottom left attached"].label {
   width: auto;
   top: auto;
   bottom: 0em;
-  border-radius: 0em 0.28571429rem 0em 0.21428571rem;
+  border-radius: 0em 2rem 0em 0.21428571rem;
 }
 
 .ui[class*="bottom right attached"].label {
@@ -13725,7 +13739,7 @@ a.ui.label {
   left: auto;
   right: 0em;
   width: auto;
-  border-radius: 0.28571429rem 0em 0.21428571rem 0em;
+  border-radius: 2rem 0em 0.21428571rem 0em;
 }
 
 /*******************************
@@ -23447,6 +23461,31 @@ Floated Menu / Item
 
 .ui.secondary.pointing.menu {
   background: white;
+}
+
+.ui.item.menu {
+  border-radius: 2rem;
+}
+
+.ui.item.menu .item {
+  border-radius: 2rem;
+}
+
+.ui.item.menu .item:hover {
+  -webkit-box-shadow: 0 8px 20px 0 rgba(236, 131, 122, 0.2);
+  box-shadow: 0 8px 20px 0 rgba(236, 131, 122, 0.2);
+}
+
+.ui.menu .active.item {
+  background: -webkit-gradient(linear, left top, right top, from(#ed7298), to(#ec8871));
+  background: -webkit-linear-gradient(left, #ed7298, #ec8871);
+  background: linear-gradient(to right, #ed7298, #ec8871);
+}
+
+.ui.menu .active.item:hover {
+  background: -webkit-gradient(linear, left top, right top, from(#ed7298), to(#ec8871));
+  background: -webkit-linear-gradient(left, #ed7298, #ec8871);
+  background: linear-gradient(to right, #ed7298, #ec8871);
 }
 /*!
  * # Semantic UI 2.3.1 - Message

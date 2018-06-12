@@ -5,3 +5,23 @@
 .ui.secondary.pointing.menu {
     background: white;
 }
+
+.ui.item.menu {
+    border-radius: 2rem;
+
+    .item {
+       border-radius: 2rem;
+
+       &:hover {
+           box-shadow: 0 8px 20px 0 rgba(236,131,122,.2);
+       }
+    }
+}
+
+.ui.menu .active.item {
+    background: @buttonColor;
+
+    &:hover {
+        background: @buttonColor;
+    }
+}
