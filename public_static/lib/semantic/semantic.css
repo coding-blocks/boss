@@ -23463,6 +23463,24 @@ Floated Menu / Item
   background: white;
 }
 
+.ui.pagination.menu {
+  border-radius: 2rem;
+  margin-bottom: 30px;
+}
+
+.ui.pagination.menu .item {
+  border-radius: 2rem;
+}
+
+.ui.pagination.menu .item:hover {
+  -webkit-box-shadow: 0 8px 20px 0 rgba(236, 131, 122, 0.2);
+  box-shadow: 0 8px 20px 0 rgba(236, 131, 122, 0.2);
+}
+
+.ui.pagination.menu .active.item {
+  color: white;
+}
+
 .ui.item.menu {
   border-radius: 2rem;
 }
