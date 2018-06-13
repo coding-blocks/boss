@@ -69,6 +69,13 @@
     $('#resetProjectName').click(function () {
         $('#projectName').text('Filter Projects')
     })
+
+    $('.ui.dropdown')
+      .dropdown({
+        action: function (text, value, element) {
+          element.click()
+        }
+      })
 </script>
 <div class="ui very relaxed divided items">
     {{#each claims as |claim|}}
