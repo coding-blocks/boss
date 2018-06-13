@@ -83,7 +83,8 @@ route.get('/stats', (req, res) => {
             participants: data[0],
             claims: data[1],
             accepted: data[2],
-            totalclaimed: data[3]
+            totalclaimed: data[3],
+            menu: {stats: 'active'}
         });
     }).catch((error) => {
         res.send("Error fetching stats!")
