@@ -1,7 +1,11 @@
 {
   "scripts": {
     "test": "node_modules/.bin/_mocha",
+    "prestart": "npm run theme:build",
     "start": "node index.js",
+    "theme:clean": "rimraf public_static/lib/semantic/*",
+    "theme:build": "cd semantic && gulp build",
+    "theme:watch": "cd semantic && gulp watch",
     "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
   },
   "dependencies": {
@@ -17,6 +21,7 @@
     "pg-hstore": "^2.3.2",
     "request-promise": "^4.2.1",
     "rsvp": "^3.5.0",
+    "semantic-ui": "^2.3.1",
     "sequelize": "^3.30.4"
   },
   "name": "boss-backend",
@@ -29,6 +34,7 @@
   "devDependencies": {
     "chai": "^4.1.1",
     "chai-http": "^3.0.0",
+    "gulp": "^3.9.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
     "request": "^2.81.0"

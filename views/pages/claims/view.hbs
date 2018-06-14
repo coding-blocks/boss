@@ -70,6 +70,20 @@
 <script>
     $('.ui.dropdown').dropdown('hide');
 
+    $('#resetUsername').click(function () {
+        $('#username').text('Filter Usernames')
+    })
+
+    $('#resetProjectName').click(function () {
+        $('#projectName').text('Filter Projects')
+    })
+
+    $('.ui.dropdown')
+      .dropdown({
+        action: function (text, value, element) {
+          element.click()
+        }
+      })
 </script>
 <div class="ui very relaxed divided items">
     {{#each claims as |claim|}}
@@ -85,7 +99,7 @@
                 </a>
             </div>
             <div class="middle aligned content">
-                <a class="header user" href="/claims/view?username={{claim.user}}">{{claim.user}}</a>
+                <a class="header user" href="/claims/view?username={{claim.user}}&status={{status}}">{{claim.user}}</a>
                 <div class="meta">
                     <span>{{claim.repo}}</span>
                 </div>
@@ -149,12 +163,3 @@
         </div>
     </div>
 </div>
-<style>
-    .user.header {
-        color: red !important;
-    }
-
-    .user.header:hover {
-        color: grey !important;
-    }
-</style>
