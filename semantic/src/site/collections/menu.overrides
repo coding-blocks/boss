@@ -21,6 +21,9 @@
     color: white;
   }
 }
+.ui.secondary.menu .dropdown.item > .menu {
+  margin-top: 0;
+}
 .ui.item.menu {
     border-radius: 2rem;
 
