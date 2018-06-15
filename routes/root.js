@@ -152,7 +152,10 @@ route.get('/claims/view', (req, res) => {
             page : options.page ,
             size : options.size,
             claims: data[1].rows,
-            menu: {claims_view: 'active'},
+            menu: {
+                claims_view: 'active',
+                claims: 'claims-active',
+            },
             status: options.status,
             menuH,
             filter : filter,
@@ -169,7 +172,8 @@ route.get('/claims/view', (req, res) => {
 route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     res.render('pages/claims/add', {
         menu: {
-            claims_add: 'active'
+            claims_add: 'active',
+            claims: 'claims-active',
         }
     });
 })
