@@ -11,12 +11,19 @@
         .main.container {
             margin-top: 6em;
         }
-
         .hamburger-container {
             display: none !important;
         }
 
-        @media screen and (max-width: 900px) {
+        .ui.secondary.pointing.menu {
+          padding-bottom: 10px;
+        }
+
+        .boss-link-container {
+          padding: 15px 0 0 15px !important;
+        }
+
+        @media screen and (max-width: 768px) {
             .menu.fluid {
                 overflow: hidden;
                 height: 50px;
@@ -95,58 +102,58 @@
 <body>
 
 <div class="ui top fixed huge fluid secondary pointing stackable menu red">
-    <div class="ui stackable container">
-        <div class="header item">
-            <a href="/" class="boss-link-container wide column">
-                <span class="boss-link">BOSS</span>
-            </a>
-            <div class="separator"></div>
-            <span class="column hamburger-container">
+  <div class="item boss-link-container">
+    <a href="/">
+      <img height="38" class="boss-link" src="/images/bosslogo.png">
+    </a>
+    <div class="separator"></div>
+    <span class="column hamburger-container">
                 <center>
                     <i class="bars icon hamburger"></i>
                 </center>
             </span>
-        </div>
-        <a class="item {{menu.leaderboard}}" href="/leaderboard">
-            <i class="sort content descending icon"></i>
-            Leaderboard
-        </a>
+  </div>
+  <div class="ui stackable container">
+    <a class="item {{menu.leaderboard}}" href="/leaderboard">
+      <i class="sort content descending icon"></i>
+      Leaderboard
+    </a>
 
-        <div class="ui simple dropdown item  {{menu.claims}}">
-            <i class="checked calendar icon"></i>
-            Claim
-            <i class="dropdown icon"></i>
-            <div class="menu">
-                <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
-                {{#if isAuthenticated}}
-                <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
-                {{/if}}
-            </div>
-        </div>
-        <a class="item {{menu.stats}}" href="/stats">
-            <i class="chart line icon"></i>
-            Stats
-        </a>
-        <a class="item" href="http://lab.codingblocks.com/boss" target="_blank" >
-            <i class="info icon"></i>
-            Information
-        </a>
-        <a class="item" href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql+org%3Ahereisnaman" target="_blank" >
-            <i class="github icon"></i>
-            Open Issues
-        </a>
-        <a class="item" href="https://gitter.im/coding-blocks/boss-2018-lobby" target="_blank" >
-            <i class="gitter icon"></i> Gitter
-        </a>
+    <div class="ui simple dropdown item">
+      <i class="checked calendar icon"></i>
+      Claim
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
         {{#if isAuthenticated}}
-            <div class="item right">
-                <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
-            </div>
-            <a class="item" href="/logout">Logout </a>
-        {{else}}
-            <a class="right item" href="/login">Login</a>
+          <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
         {{/if}}
+      </div>
     </div>
+    <a class="item {{menu.stats}" href="/stats">
+      <i class="chart line icon"></i>
+      Stats
+    </a>
+    <a class="item" href="http://lab.codingblocks.com/boss" target="_blank" >
+      <i class="info icon"></i>
+      Information
+    </a>
+    <a class="item" href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql+org%3Ahereisnaman" target="_blank" >
+      <i class="github icon"></i>
+      Open Issues
+    </a>
+    <a class="item" href="https://gitter.im/coding-blocks/boss-2018-lobby" target="_blank" >
+      <i class="gitter icon"></i> Gitter
+    </a>
+  </div>
+  {{#if isAuthenticated}}
+    <div class="item right">
+      <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
+    </div>
+    <a class="item" href="/logout">Logout </a>
+  {{else}}
+    <a class="right item" href="/login">Login</a>
+  {{/if}}
 
 </div>
 
