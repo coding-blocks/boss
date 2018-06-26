@@ -98,6 +98,8 @@ route.get('/claims/view', (req, res) => {
         projectname: req.query.projectname,
         status : req.query.status || "claimed",
         page : req.query.page || 1,
+        bountyMin:req.query.bountyMin,
+        bountyMax:req.query.bountyMax,
         size : req.query.size || config.PAGINATION_SIZE
     };
 
@@ -116,6 +118,7 @@ route.get('/claims/view', (req, res) => {
 
         const pagination = [];
         const filter = [];
+        const filterBounty = [];
         const filterproj = [];
         const lastPage = Math.ceil(data[1].count / options.size);
 
@@ -124,6 +127,8 @@ route.get('/claims/view', (req, res) => {
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`);
             }else if(options.projectname){
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`);
+            }else if(options.bounty){
+                pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&bountyMin=${options.bountyMin}&bountyMax=${options.bountyMax}`);
             }else{
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`);
             }
@@ -143,6 +148,13 @@ route.get('/claims/view', (req, res) => {
                 });
         });
 
+        data[1].rows.forEach(function (item,index) {
+            filterBounty.push({
+                name:item.user,
+                url: `?status=${options.status}&bountyMin=${item.bountyMin}&bountyMax=${item.bountyMax}`
+            })
+        })
+
         res.render('pages/claims/view', {
             prevPage : options.page-1,
             nextPage : options.page+1,
@@ -160,6 +172,7 @@ route.get('/claims/view', (req, res) => {
             menuH,
             filter : filter,
             filterproj: filterproj,
+            filterBounty:filterBounty,
             username : options.username,
             projectname: options.projectname,
         })

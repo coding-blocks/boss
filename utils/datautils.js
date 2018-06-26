@@ -14,6 +14,11 @@ function getClaims(options) {
         whereClause = { status:  options.status, user : options.username };
     }else if(options.projectname){
         whereClause = { status:  options.status, repo : options.projectname };
+    }else if(options.bountyMin && options.bountyMax){
+        whereClause = { status:  options.status, bounty: {
+               $lt:options.bountyMax,
+                $gt:options.bountyMin
+        }};
     }
 
     const distinctUsers = db.Claim.aggregate('user', 'DISTINCT', { plain: false, where : { status:  options.status} })
@@ -21,7 +26,7 @@ function getClaims(options) {
     const allClaims = db.Claim.findAndCountAll({
         limit : options.size,
         offset : offset,
-        where :  whereClause ,
+        where :  whereClause,
         order: [['updatedAt', 'DESC']]
     });
 
