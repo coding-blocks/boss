@@ -86,6 +86,7 @@
       })
 </script>
 <div class="ui very relaxed divided items">
+  {{#if claims}}
     {{#each claims as |claim|}}
         <div class="four wide item">
             <div class="image">
@@ -129,6 +130,15 @@
             </div>
         </div>
     {{/each}}
+   {{else}}
+      {{#if menuH.claimed}}
+        <br><h1><center>No more claimed bounties! </center></h1><br>
+      {{else if menuH.accepted}}
+        <br><h1><center>Accepted bounties not found! </center></h1><br>
+      {{else if menuH.rejected}}
+        <br><h1><center>Rejected bounties not found! </center></h1><br>
+      {{/if}}
+   {{/if}}
 
     <div class="pagination">
         <div class="ui pagination menu">
@@ -162,4 +172,14 @@
             {{/if}}
         </div>
     </div>
+</div>
+<style>
+    .user.header {
+        color: red !important;
+    }
+
+    .user.header:hover {
+        color: grey !important;
+    }
+</style>
 </div>
