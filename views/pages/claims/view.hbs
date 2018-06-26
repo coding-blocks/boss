@@ -66,7 +66,33 @@
         </a>
     {{/if}}
 
+    <br>
+    <div class="bountyFilter" style="margin-top: 20px">
+        <div class="ui floating dropdown labeled icon button">
+            <i class="filter icon"></i>
+            <span >Filter Bounty Min</span>
+            <div>
+                <input type="range" min="0" max="2000"  step="100" class="slider" id="myRangeMin">
+                <label style="display: inline-block" id="valueMin"></label>
+            </div>
+        </div>
+
+        <div class="ui floating dropdown labeled icon button">
+            <i class="filter icon"></i>
+            <span >Filter Bounty Max</span>
+            <div>
+                <input type="range" min="2000" max="4000"  step="100" class="slider" id="myRangeMax">
+                <label style="display: inline-block" id="valueMax"></label>
+            </div>
+        </div>
+
+        <div id="result" class="ui button">
+            <i class="check icon"></i>
+        </div>
+    </div>
+
 </div>
+
 <script>
     $('.ui.dropdown').dropdown('hide');
 
@@ -84,6 +110,22 @@
           element.click()
         }
       })
+
+    var sliderMin = document.getElementById("myRangeMin");
+    var sliderMax = document.getElementById("myRangeMax");
+    var valueMin = document.getElementById("valueMin");
+    var valueMax = document.getElementById("valueMax");
+    sliderMin.oninput = function() {
+        valueMin.innerHTML = this.value;
+    }
+    sliderMax.oninput = function() {
+        valueMax.innerHTML = this.value;
+    }
+
+    var result = document.getElementById("result");
+    result.onclick = function () {
+        window.location = "?status={{status}}&bountyMin=" + sliderMin.value + "&bountyMax=" + sliderMax.value;
+    }
 </script>
 <div class="ui very relaxed divided items">
   {{#if claims}}
