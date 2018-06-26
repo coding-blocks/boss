@@ -99,8 +99,8 @@ route.get('/claims/view', (req, res) => {
         status : req.query.status || "claimed",
         page : req.query.page || 1,
         size : req.query.size || config.PAGINATION_SIZE,
-        minbounty : req.query.minbounty,
-        maxbounty : req.query.maxbounty,
+        minbounty : req.query.minbounty || 0,
+        maxbounty : req.query.maxbounty || 5000,
     };
 
     var menuH = {};
