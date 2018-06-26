@@ -48,3 +48,8 @@ fabric.properties
 .idea
 secrets.json
 audit/*.json
+
+# Semantic UI
+/semantic/*
+!/semantic/src/site
+!/semantic/src/theme.config
