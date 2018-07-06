@@ -66,8 +66,46 @@
         </a>
     {{/if}}
 
+    <div class="ui floating dropdown labeled icon button">
+        <i class="filter icon"></i>
+        {{#if minbounty}}
+            <span class="text">{{minbounty}}-{{maxbounty}}</span>
+        {{else}}
+            <span class="text">Bounty Amount</span>
+        {{/if}}
+        <div class="menu" id="gobounty">
+            <div class="ui search input">
+                <input type="text" id="min" readonly>
+                <input type="text" id="max" readonly>
+            </div>
+            <div class="ui btn-container">
+                <div id="bounty-range-slider"></div>
+                <a class="item" href="">Go</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 <script>
+
+    $( function() {
+        $( "#bounty-range-slider" ).slider({
+        range: true,
+        min: 0,
+        max: 5000,
+        values: [ {{minbounty}}, {{maxbounty}} ],
+        slide: function( event, ui ) {
+            $( "#min" ).val(ui.values[ 0 ]);
+            $( "#max" ).val(ui.values[ 1 ] );
+            $('#gobounty a').prop('href', '?minbounty='+ui.values[ 0 ]+"&maxbounty="+ui.values[ 1 ]);
+        }
+        });
+        var min = $( "#bounty-range-slider" ).slider( "values", 0 );
+        var max = $( "#bounty-range-slider" ).slider( "values", 1 )
+        $( "#min" ).val(min);
+        $( "#max" ).val(max);
+    });
+
     $('.ui.dropdown').dropdown('hide');
 
     $('#resetUsername').click(function () {

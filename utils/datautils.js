@@ -14,6 +14,8 @@ function getClaims(options) {
         whereClause = { status:  options.status, user : options.username };
     }else if(options.projectname){
         whereClause = { status:  options.status, repo : options.projectname };
+    }else if(options.minbounty && options.maxbounty){
+        whereClause = { status:  options.status, bounty : {$between: [options.minbounty, options.maxbounty] }};
     }
 
     const distinctUsers = db.Claim.aggregate('user', 'DISTINCT', { plain: false, where : { status:  options.status} })
