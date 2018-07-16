@@ -208,12 +208,21 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
 
 });
 
-route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
+route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
     du.updateClaim(req.params.id, req.body ).then(result => {
         res.redirect('/claims/' + req.params.id);
     }).catch((error) => {
         res.send("Error updating claim")
     })
+});
+
+route.post('/claim/:id', auth.ensureLoggedInGithub, (req, res) => {
+  du.removeClaim(req.params.id).then(()=>{
+    res.redirect('/claims/view')
+  }).catch(err => {
+    console.log(err)
+    res.send("Sorry. Could not delete the claim right now")
+  });
 });
 
 exports = module.exports = route;
