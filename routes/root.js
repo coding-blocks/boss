@@ -15,7 +15,6 @@ const request = require("request");
 
 const route = new Router();
 
-
 let adminUser = process.env.BOSS_ADMIN || 'theboss';
 let adminPass = process.env.BOSS_PASSWORD || 'khuljasimsim';
 let users = {};
@@ -93,6 +92,8 @@ route.get('/stats', (req, res) => {
 
 route.get('/claims/view', (req, res) => {
 
+  let gh_username = (req.user && req.user.usergithub) ? req.user.usergithub.username : '';
+
     const options = {
         username: req.query.username,
         projectname: req.query.projectname,
@@ -101,6 +102,7 @@ route.get('/claims/view', (req, res) => {
         size : req.query.size || config.PAGINATION_SIZE,
         minbounty : req.query.minbounty || 0,
         maxbounty : req.query.maxbounty || 5000,
+        gh_username: gh_username
     };
 
     var menuH = {};
@@ -165,10 +167,12 @@ route.get('/claims/view', (req, res) => {
             filter : filter,
             filterproj: filterproj,
             username : options.username,
+            gh_username : options.gh_username,
             projectname: options.projectname,
             minbounty : options.minbounty,
             maxbounty : options.maxbounty
         })
+
     }).catch((err) => {
         console.log(err);
         res.send("Error fetching claims")

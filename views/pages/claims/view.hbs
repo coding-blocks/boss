@@ -123,11 +123,7 @@
         }
       })
 </script>
-<script>
 
-
-
-</script>
 <div class="ui very relaxed divided items">
   {{#if claims}}
     {{#each claims as |claim|}}
@@ -162,11 +158,13 @@
                     {{#equal claim.status "claimed"}}
                       <div>
                         <div class="ui label yellow" style="display:inline-block;">{{claim.status}}</div>
+                        {{#ifeq claim.user ../gh_username}}
                         <div style="display:inline-block;">
                           <form action="/claim/{{claim.id}}" method="POST">
                             <button class="mini ui button red" type="submit" value="remove">remove claim</button>
                           </form>
                         </div>
+                        {{/ifeq}}
                       </div>
                     {{/equal}}
                     {{#equal claim.status "accepted"}}
@@ -174,8 +172,6 @@
                     {{/equal}}
                     {{#equal claim.status "rejected"}}
                         <div class="ui label red">{{claim.status}}</div>
-                    {{/equal}}
-                    {{#equal claim.status "claimed"}}
                     {{/equal}}
                 </div>
               </div>
