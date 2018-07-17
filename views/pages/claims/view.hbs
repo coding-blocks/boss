@@ -155,7 +155,16 @@
                         <p>Reason:  {{claim.reason}} </p>
                     {{/if}}
                     {{#equal claim.status "claimed"}}
-                        <div class="ui label yellow">{{claim.status}}</div>
+                      <div>
+                        <div class="ui label yellow" style="display:inline-block;">{{claim.status}}</div>
+                        {{#ifeq claim.user ../gh_username}}
+                          <div style="display:inline-block;">
+                            <form action="/claim/{{claim.id}}" method="POST">
+                              <button class="mini ui button red" type="submit" value="remove">remove claim</button>
+                            </form>
+                          </div>
+                        {{/ifeq}}
+                      </div>
                     {{/equal}}
                     {{#equal claim.status "accepted"}}
                         <div class="ui label green">{{claim.status}}</div>

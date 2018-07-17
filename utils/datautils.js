@@ -45,6 +45,17 @@ function delClaim(claimId) {
     })
 }
 
+function removeClaim(claimId) {
+    if (isNaN((+claimId))) {
+        return res.send("ClaimId must be a number");
+    }
+    return db.Claim.destroy({
+        where: {
+            id: claimId
+        }
+    })
+}
+
 function updateClaim(claimId, {status, reason, bounty}) {
 
     const claim = {
@@ -135,6 +146,7 @@ exports = module.exports = {
     delClaim,
     updateClaim,
     createClaim,
+    removeClaim,
     getLeaderboard,
     getClaimById,
     updateClaim,

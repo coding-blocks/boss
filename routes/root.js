@@ -93,6 +93,8 @@ route.get('/stats', (req, res) => {
 
 route.get('/claims/view', (req, res) => {
 
+    let gh_username = (req.user && req.user.usergithub) ? req.user.usergithub.username : '';
+
     const options = {
         username: req.query.username,
         projectname: req.query.projectname,
@@ -101,6 +103,7 @@ route.get('/claims/view', (req, res) => {
         size : req.query.size || config.PAGINATION_SIZE,
         minbounty : req.query.minbounty || 0,
         maxbounty : req.query.maxbounty || 5000,
+        gh_username : gh_username
     };
 
     var menuH = {};
@@ -165,6 +168,7 @@ route.get('/claims/view', (req, res) => {
             filter : filter,
             filterproj: filterproj,
             username : options.username,
+            gh_username : options.gh_username,
             projectname: options.projectname,
             minbounty : options.minbounty,
             maxbounty : options.maxbounty
@@ -208,12 +212,21 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
 
 });
 
-route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
+route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
     du.updateClaim(req.params.id, req.body ).then(result => {
         res.redirect('/claims/' + req.params.id);
     }).catch((error) => {
         res.send("Error updating claim")
     })
+});
+
+route.post('/claim/:id', auth.ensureLoggedInGithub, (req, res) => {
+  du.removeClaim(req.params.id).then(()=>{
+    res.redirect('/claims/view')
+  }).catch(err => {
+    console.log(err)
+    res.send("Sorry. Could not delete the claim right now")
+  });
 });
 
 exports = module.exports = route;

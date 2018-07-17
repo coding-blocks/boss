@@ -10,6 +10,7 @@ const session = require('express-session');
 
 const auth = require('./utils/auth');
 const secrets = require('./secrets.json');
+const hbsHelpers = require('./utils/handlebars')
 
 const routes = {
     api: require('./routes/api'),
