@@ -68,5 +68,18 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   });
 });
 
+route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+  du.editClaim(
+    req.user.usergithub.username,
+    req.body.issue_url,
+    req.body.pull_url,
+    req.body.bounty,
+  ).then(claim => {
+    res.send(claim)
+  }).catch(err => {
+    console.log(err);
+    res.send("Sorry. Could not add the claim right now.");
+  });
+});
 
 exports = module.exports = route;

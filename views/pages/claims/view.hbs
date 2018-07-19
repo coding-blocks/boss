@@ -156,6 +156,9 @@
                     {{/if}}
                     {{#equal claim.status "claimed"}}
                         <div class="ui label yellow">{{claim.status}}</div>
+                        <a href="/claims/{{claim.id}}/edit">
+                            <div class="ui label red">Edit</div>
+                        </a>
                     {{/equal}}
                     {{#equal claim.status "accepted"}}
                         <div class="ui label green">{{claim.status}}</div>

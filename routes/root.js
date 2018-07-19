@@ -216,4 +216,35 @@ route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
     })
 });
 
+route.get('/claims/:id/edit', auth.ensureLoggedInGithub,  (req, res) => {
+    du.getClaimById(req.params.id).then((claim) => {
+        if (!claim) throw new Error("No claim found")
+        res.render('pages/claims/edit', {claim})
+    }).catch((err) => {
+        res.send("Error fetching claim id = " + req.params.id);
+    })
+});
+
+route.post('/claims/:id/edit' ,auth.ensureLoggedInGithub,  (req, res) => {
+    du.editClaim(
+        req.params.id, 
+        req.body.issue_url,
+        req.body.pull_url,
+        req.body.bounty )
+        .then(result => {
+        res.redirect('/claims/view');
+    }).catch((error) => {
+        res.send("Error editing claim")
+    })
+});
+
+route.post('/claims/:id/delete' ,auth.ensureLoggedInGithub,  (req, res) => {
+    du.delClaim(req.params.id)
+        .then(result => {
+        res.redirect('/claims/view');
+    }).catch((error) => {
+        res.send("Error Deleting claim")
+    })
+});
+
 exports = module.exports = route;

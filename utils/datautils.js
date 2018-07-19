@@ -66,6 +66,25 @@ function updateClaim(claimId, {status, reason, bounty}) {
     })
 }
 
+function editClaim(claimId, issueUrl, pullUrl, bounty) {
+    const repo = pullUrl.split('github.com/')[1].split('/')[1]
+    const claim = {
+        action: 'edit',
+        claimId, issueUrl, pullUrl, bounty, repo
+    };
+    fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {
+    });
+
+    return db.Claim.update({
+        issueUrl, pullUrl, bounty, repo
+    }, {
+        where: {
+            id: claimId
+        },
+        returning: true
+    })
+}
+
 function createClaim(user, issueUrl, pullUrl, bounty, status) {
 
     const claim = {
@@ -133,6 +152,7 @@ function getCounts() {
 exports = module.exports = {
     getClaims,
     delClaim,
+    editClaim,
     updateClaim,
     createClaim,
     getLeaderboard,
