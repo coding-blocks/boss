@@ -156,13 +156,11 @@
                     {{/if}}
                     {{#equal claim.status "claimed"}}
                       <div>
-                        <div class="ui label yellow" style="display:inline-block;">{{claim.status}}</div>
+                        <div class="ui label yellow">{{claim.status}}</div>
                         {{#ifeq claim.user ../gh_username}}
-                          <div style="display:inline-block;">
-                            <form action="/claim/{{claim.id}}" method="POST">
-                              <button class="mini ui button red" type="submit" value="remove">remove claim</button>
-                            </form>
-                          </div>
+                          <a href="/claim/{{claim.id}}">
+                            <div class="ui label red">remove claim</div>
+                          </a>
                         {{/ifeq}}
                       </div>
                     {{/equal}}
