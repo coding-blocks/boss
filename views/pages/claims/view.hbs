@@ -122,6 +122,7 @@
           element.click()
         }
       })
+
 </script>
 <div class="ui very relaxed divided items">
   {{#if claims}}
@@ -156,11 +157,17 @@
                     {{/if}}
                     {{#equal claim.status "claimed"}}
                       <div>
-                        <div class="ui label yellow">{{claim.status}}</div>
+                        <div class="ui label yellow" style="display:inline-block;">{{claim.status}}</div>
                         {{#ifeq claim.user ../gh_username}}
-                          <a href="/claim/{{claim.id}}">
-                            <div class="ui label red">remove claim</div>
-                          </a>
+
+                          <div style="display:inline-block;">
+                            <form action="/claim/{{claim.id}}" method="POST">
+                              <button style="background:transparent; border: none !important">
+                                <div class="ui label red">remove claim</div>
+                              </button>
+                            </form>
+                          </div>
+
                         {{/ifeq}}
                       </div>
                     {{/equal}}
