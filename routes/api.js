@@ -54,7 +54,9 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     }
   }
 
-  if(Date.now()>Date.UTC(2018, 07, 16, 00, 00)){
+  let aug16 = new Date('August 16, 2018 00:00:00 GMT+05:30')
+
+  if(Date.now() > aug16.getTime()) {
     return res.send("Sorry. Boss has ended, can't add claim from now.");
   }
   
