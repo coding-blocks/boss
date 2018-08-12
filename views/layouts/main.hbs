@@ -23,6 +23,10 @@
           padding: 15px 0 0 15px !important;
         }
 
+        .claims-active {
+            border-color: #fc4f4f !important;
+        }
+
         @media screen and (max-width: 768px) {
             .menu.fluid {
                 overflow: hidden;
@@ -69,13 +73,18 @@
             }
 
             .boss-link-container {
+                padding: 3px 0 0 15px !important;
                 width: 85% !important;
+            }
+
+            .boss-link-container a {
+                width: 75%;
             }
 
             .boss-link {
                 display: block;
                 text-align: center;
-                margin-left: 15%;
+                margin-left: 5%;
                 /* margin-top: -4.5%; */
             }
         }
@@ -119,7 +128,7 @@
       Leaderboard
     </a>
 
-    <div class="ui simple dropdown item">
+    <div class="ui simple dropdown item {{menu.claims}}">
       <i class="checked calendar icon"></i>
       Claim
       <i class="dropdown icon"></i>
@@ -130,7 +139,7 @@
         {{/if}}
       </div>
     </div>
-    <a class="item" href="/stats">
+    <a class="item {{menu.stats}}" href="/stats">
       <i class="chart line icon"></i>
       Stats
     </a>

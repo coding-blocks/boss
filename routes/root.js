@@ -29,7 +29,15 @@ const authHandler = basicAuth({
 
 
 
-route.get('/', (req, res) => res.render('pages/index'));
+route.get('/', (req, res) => {
+
+    if(Date.now()>Date.parse('16 Aug 2018 00:00:00 GMT+05:30')){
+        res.render('pages/end')
+    }else{
+        res.render('pages/index')
+    }
+
+});
 
 route.get('/login', passport.authenticate('oauth2', { failureRedirect: '/failed' }) );
 route.get('/login/callback', passport.authenticate('oauth2', { failureRedirect: '/failed' }) , (req,res)=>{
@@ -83,7 +91,8 @@ route.get('/stats', (req, res) => {
             participants: data[0],
             claims: data[1],
             accepted: data[2],
-            totalclaimed: data[3]
+            totalclaimed: data[3],
+            menu: {stats: 'active'}
         });
     }).catch((error) => {
         res.send("Error fetching stats!")
@@ -151,7 +160,10 @@ route.get('/claims/view', (req, res) => {
             page : options.page ,
             size : options.size,
             claims: data[1].rows,
-            menu: {claims_view: 'active'},
+            menu: {
+                claims_view: 'active',
+                claims: 'claims-active',
+            },
             status: options.status,
             menuH,
             filter : filter,
@@ -168,7 +180,8 @@ route.get('/claims/view', (req, res) => {
 route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     res.render('pages/claims/add', {
         menu: {
-            claims_add: 'active'
+            claims_add: 'active',
+            claims: 'claims-active',
         }
     });
 })
