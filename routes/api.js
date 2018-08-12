@@ -46,8 +46,7 @@ route.get('/claims/:id/update', auth.adminOnly, (req, res) => {
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   
-  const end = new Date(2018,7,16,0,0,0,0)
-  const bossEnd = Date.parse(end)
+  const bossEnd = Date.parse('16 Aug 2018 00:00:00 GMT+05:30')
   
   if (bossEnd < Date.now()) {
     res.send("BOSS is now over!")
