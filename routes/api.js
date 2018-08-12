@@ -45,27 +45,34 @@ route.get('/claims/:id/update', auth.adminOnly, (req, res) => {
 });
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
-
-  if(process.env.BOSS_DEV === 'localhost'){
-    req.user = {
-      usergithub:{
-        username:'Dhroov7'
+  
+  const bossEnd = Date.parse('16 Aug 2018 00:00:00 GMT+05:30')
+  
+  if (bossEnd < Date.now()) {
+    res.send("BOSS is now over!")
+  }
+    
+    if(process.env.BOSS_DEV === 'localhost'){
+      req.user = {
+        usergithub:{
+          username:'Dhroov7'
+        }
       }
     }
-  }
 
-  du.createClaim(
-    req.user.usergithub.username,
-    req.body.issue_url,
-    req.body.pull_url,
-    req.body.bounty,
-    config.CLAIM_STATUS.CLAIMED
-  ).then(claim => {
-    res.send(claim)
-  }).catch(err => {
-    console.log(err);
-    res.send("Sorry. Could not add the claim right now.");
-  });
+    du.createClaim(
+      req.user.usergithub.username,
+      req.body.issue_url,
+      req.body.pull_url,
+      req.body.bounty,
+      config.CLAIM_STATUS.CLAIMED
+    ).then(claim => {
+      res.send(claim)
+    }).catch(err => {
+      console.log(err);
+      res.send("Sorry. Could not add the claim right now.");
+    });
+    
 });
 
 
