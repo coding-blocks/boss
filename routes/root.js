@@ -29,7 +29,15 @@ const authHandler = basicAuth({
 
 
 
-route.get('/', (req, res) => res.render('pages/index'));
+route.get('/', (req, res) => {
+
+    if(Date.now()>Date.parse('16 Aug 2018 00:00:00 GMT+05:30')){
+        res.render('pages/end')
+    }else{
+        res.render('pages/index')
+    }
+
+});
 
 route.get('/login', passport.authenticate('oauth2', { failureRedirect: '/failed' }) );
 route.get('/login/callback', passport.authenticate('oauth2', { failureRedirect: '/failed' }) , (req,res)=>{
