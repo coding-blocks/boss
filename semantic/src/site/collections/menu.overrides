@@ -10,7 +10,7 @@
   margin-bottom: 30px;
 
   .item {
-    border-radius: 2rem !important;
+    border-radius: 2rem;
 
     &:hover {
       box-shadow: 0 8px 20px 0 rgba(236,131,122,.2);
