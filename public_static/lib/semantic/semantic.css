@@ -23469,7 +23469,7 @@ Floated Menu / Item
 }
 
 .ui.pagination.menu .item {
-  border-radius: 2rem;
+  border-radius: 2rem !important;
 }
 
 .ui.pagination.menu .item:hover {
