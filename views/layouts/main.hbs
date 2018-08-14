@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>BOSS</title>
+    <link href="/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="/lib/semantic/semantic.min.css" rel="stylesheet">
     <script src="/lib/jquery-3.2.1.min.js"></script>
+    <script src="/lib/jquery-ui/jquery-ui.min.js"></script>
     <script src="/lib/semantic/semantic.js"></script>
     <style>
         .main.container {
@@ -22,6 +24,30 @@
         .boss-link-container {
           padding: 15px 0 0 15px !important;
         }
+
+        .claims-active {
+            border-color: #fc4f4f !important;
+        }
+
+        #bounty-range-slider{
+            margin: 5px 10px 15px 10px;
+        }
+
+        .btn-container a{
+            padding: 10px;
+            background: #fc4f4f;
+            color: #fff;
+            display: block;
+        }
+
+        #gobounty input {
+            width:100px;
+        }
+
+        #gobounty{
+            text-align: center;
+            overflow: hidden;
+        } 
 
         @media screen and (max-width: 768px) {
             .menu.fluid {
@@ -69,13 +95,18 @@
             }
 
             .boss-link-container {
+                padding: 3px 0 0 15px !important;
                 width: 85% !important;
+            }
+
+            .boss-link-container a {
+                width: 75%;
             }
 
             .boss-link {
                 display: block;
                 text-align: center;
-                margin-left: 15%;
+                margin-left: 5%;
                 /* margin-top: -4.5%; */
             }
         }
@@ -119,7 +150,7 @@
       Leaderboard
     </a>
 
-    <div class="ui simple dropdown item">
+    <div class="ui simple dropdown item {{menu.claims}}">
       <i class="checked calendar icon"></i>
       Claim
       <i class="dropdown icon"></i>
@@ -130,7 +161,7 @@
         {{/if}}
       </div>
     </div>
-    <a class="item" href="/stats">
+    <a class="item {{menu.stats}}" href="/stats">
       <i class="chart line icon"></i>
       Stats
     </a>

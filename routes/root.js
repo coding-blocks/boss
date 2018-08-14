@@ -91,7 +91,8 @@ route.get('/stats', (req, res) => {
             participants: data[0],
             claims: data[1],
             accepted: data[2],
-            totalclaimed: data[3]
+            totalclaimed: data[3],
+            menu: {stats: 'active'}
         });
     }).catch((error) => {
         res.send("Error fetching stats!")
@@ -105,7 +106,9 @@ route.get('/claims/view', (req, res) => {
         projectname: req.query.projectname,
         status : req.query.status || "claimed",
         page : req.query.page || 1,
-        size : req.query.size || config.PAGINATION_SIZE
+        size : req.query.size || config.PAGINATION_SIZE,
+        minbounty : req.query.minbounty || 0,
+        maxbounty : req.query.maxbounty || 5000,
     };
 
     var menuH = {};
@@ -131,6 +134,8 @@ route.get('/claims/view', (req, res) => {
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`);
             }else if(options.projectname){
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`);
+            }else if(options.minbounty && options.maxbounty){
+                pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`);
             }else{
                 pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`);
             }
@@ -159,13 +164,18 @@ route.get('/claims/view', (req, res) => {
             page : options.page ,
             size : options.size,
             claims: data[1].rows,
-            menu: {claims_view: 'active'},
+            menu: {
+                claims_view: 'active',
+                claims: 'claims-active',
+            },
             status: options.status,
             menuH,
             filter : filter,
             filterproj: filterproj,
             username : options.username,
             projectname: options.projectname,
+            minbounty : options.minbounty,
+            maxbounty : options.maxbounty
         })
     }).catch((err) => {
         console.log(err);
@@ -176,7 +186,8 @@ route.get('/claims/view', (req, res) => {
 route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     res.render('pages/claims/add', {
         menu: {
-            claims_add: 'active'
+            claims_add: 'active',
+            claims: 'claims-active',
         }
     });
 })
