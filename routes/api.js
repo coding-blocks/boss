@@ -59,7 +59,7 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   if(Date.now() > aug16.getTime()) {
     return res.send("Sorry. Boss has ended, can't add claim from now.");
   }
-  
+
   du.createClaim(
     req.user.usergithub.username,
     req.body.issue_url,
@@ -75,4 +75,4 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
 });
 
 
-exports = module.exports = route;
+module.exports = route;

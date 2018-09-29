@@ -202,13 +202,13 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
 });
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
-    
+
     let aug16 = new Date('August 16, 2018 00:00:00 GMT+05:30')
-    
+
     if(Date.now() > aug16.getTime()) {
         return res.send("Sorry. Boss has ended, can't add claim from now.");
     }
-    
+
     du.createClaim(
         req.user.usergithub.username, // github username already valid
         req.body.issue_url,
@@ -231,4 +231,4 @@ route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
     })
 });
 
-exports = module.exports = route;
+module.exports = route;
