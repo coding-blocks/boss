@@ -1,11 +1,12 @@
 /**
- * Created by championswimmer on 16/05/17.
- */
+* Created by championswimmer on 16/05/17.
+*/
 const basicAuth = require('express-basic-auth')
 const Sequelize = require('sequelize');
 const rp = require('request-promise');
 const passport = require('passport');
 const Router = require('express').Router;
+const escapeHtml = require('escape-html');
 
 const auth = require('./../utils/auth');
 const config = require('./../config');
@@ -66,7 +67,7 @@ route.get('/leaderboard', (req, res) => {
         const lastPage = Math.ceil(count / options.size);
 
         for(var i=1;i<=lastPage;i++)
-            pagination.push(`?page=${i}&size=${options.size}`);
+        pagination.push(`?page=${i}&size=${options.size}`);
 
         res.render('pages/leaderboard', {
             prevPage : options.page-1,
@@ -114,11 +115,11 @@ route.get('/claims/view', (req, res) => {
     var menuH = {};
 
     if (options.status == "claimed")
-        menuH[options.status] = 'active';
+    menuH[options.status] = 'active';
     else if (options.status == "accepted")
-        menuH[options.status] = 'active';
+    menuH[options.status] = 'active';
     else
-        menuH[options.status] = 'active';
+    menuH[options.status] = 'active';
 
     options.page = parseInt(options.page);
 
@@ -143,16 +144,16 @@ route.get('/claims/view', (req, res) => {
 
         data[0].forEach(function(item, index){
             filter.push({
-                    name : item.DISTINCT,
-                    url : `?status=${options.status}&username=${item.DISTINCT}`
-                });
+                name : item.DISTINCT,
+                url : `?status=${options.status}&username=${item.DISTINCT}`
+            });
         });
 
         data[2].forEach(function(item, index){
             filterproj.push({
-                    name : item.DISTINCT,
-                    url : `?status=${options.status}&projectname=${item.DISTINCT}`
-                });
+                name : item.DISTINCT,
+                url : `?status=${options.status}&projectname=${item.DISTINCT}`
+            });
         });
 
         res.render('pages/claims/view', {
@@ -197,38 +198,38 @@ route.get('/claims/:id', auth.adminOnly,  (req, res) => {
         if (!claim) throw new Error("No claim found")
         res.render('pages/claims/id', {claim})
     }).catch((err) => {
-        res.send("Error fetching claim id = " + req.params.id);
-    })
+        res.send("Error fetching claim id = " + escapeHtml(req.params.id));
+    });
 });
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
-    
+
     let aug16 = new Date('August 16, 2018 00:00:00 GMT+05:30')
-    
+
     if(Date.now() > aug16.getTime()) {
         return res.send("Sorry. Boss has ended, can't add claim from now.");
     }
-    
+
     du.createClaim(
         req.user.usergithub.username, // github username already valid
         req.body.issue_url,
         req.body.pull_url,
         req.body.bounty,
         config.CLAIM_STATUS.CLAIMED
-    ).then(claim => {
-        res.redirect('/claims/view')
-    }).catch((error) => {
-        res.render('pages/claims/unique')
+        ).then(claim => {
+            res.redirect('/claims/view')
+        }).catch((error) => {
+            res.render('pages/claims/unique')
+        });
+
     });
 
-});
+    route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
+        du.updateClaim(req.params.id, req.body ).then(result => {
+            res.redirect('/claims/' + req.params.id);
+        }).catch((error) => {
+            res.send("Error updating claim")
+        })
+    });
 
-route.post('/claims/:id/update', auth.adminOnly , (req, res) => {
-    du.updateClaim(req.params.id, req.body ).then(result => {
-        res.redirect('/claims/' + req.params.id);
-    }).catch((error) => {
-        res.send("Error updating claim")
-    })
-});
-
-exports = module.exports = route;
+    exports = module.exports = route;
