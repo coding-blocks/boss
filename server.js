@@ -7,6 +7,7 @@ const path = require('path');
 const exphbs = require('express-hbs');
 const passport = require('./auth/passportStrategies');
 const session = require('express-session');
+const csurf = require('csurf')
 
 const auth = require('./utils/auth');
 const secrets = require('./secrets.json');
@@ -68,12 +69,15 @@ app.use(session(sess)); // let api be stateless
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Prefent CSRF
+app.use(csurf({cookie: true}))
+
 
 app.use('/api', routes.api);
 app.use(auth.injectAuthData);
 app.use('/', routes.root);
 app.use('/', express.static(path.join(__dirname, 'public_static')));
-app.get('*', (req, res) => res.render('pages/404')); 
+app.get('*', (req, res) => res.render('pages/404'));
 
 exports = module.exports = {
     app
