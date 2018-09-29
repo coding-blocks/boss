@@ -232,4 +232,4 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
         })
     });
 
-    exports = module.exports = route;
+module.exports = route;

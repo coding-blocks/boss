@@ -79,6 +79,6 @@ app.use('/', routes.root);
 app.use('/', express.static(path.join(__dirname, 'public_static')));
 app.get('*', (req, res) => res.render('pages/404'));
 
-exports = module.exports = {
+module.exports = {
     app
 };
