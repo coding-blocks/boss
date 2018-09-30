@@ -133,7 +133,6 @@ function getCounts() {
 exports = module.exports = {
     getClaims,
     delClaim,
-    updateClaim,
     createClaim,
     getLeaderboard,
     getClaimById,
