@@ -17,8 +17,8 @@ const request = require("request");
 const route = new Router();
 
 
-let adminUser = process.env.BOSS_ADMIN || 'theboss';
-let adminPass = process.env.BOSS_PASSWORD || 'khuljasimsim';
+let adminUser = process.env.BOSS_ADMIN || config.secrets.BOSS_DB_USER;
+let adminPass = process.env.BOSS_PASSWORD || config.secrets.BOSS_DB_PASS;
 let users = {};
 users[adminUser] = adminPass;
 

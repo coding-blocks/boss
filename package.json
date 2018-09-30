@@ -2,7 +2,8 @@
   "scripts": {
     "test": "node_modules/.bin/_mocha",
     "prestart": "npm run theme:build",
-    "start": "node index.js",
+    "start": "NODE_ENV=production node index.js",
+    "start:dev": "NODE_ENV=devlopment node index.js",
     "theme:clean": "rimraf public_static/lib/semantic/*",
     "theme:build": "cd semantic && gulp build",
     "theme:watch": "cd semantic && gulp watch",

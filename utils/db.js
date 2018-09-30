@@ -3,16 +3,16 @@
  */
 const Sequelize = require('sequelize');
 const config = require('../config');
-const secrets = require('../secrets')
+const secrets = config.secrets
 
 
 const sequelize = process.env.DATABASE_URL ?
     new Sequelize(process.env.DATABASE_URL) :
 
     new Sequelize(
-        secrets.BOSS_DB_NAME || 'boss',
-        secrets.BOSS_DB_USER || 'boss',
-        secrets.BOSS_DB_PASS || 'boss',
+        secrets.BOSS_DB_NAME,
+        secrets.BOSS_DB_USER,
+        secrets.BOSS_DB_PASS,
         {
             host: secrets.BOSS_DB_HOST  || 'localhost',
             dialect: 'postgres',
