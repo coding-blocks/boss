@@ -10,7 +10,8 @@ const session = require('express-session');
 const csurf = require('csurf')
 
 const auth = require('./utils/auth');
-const secrets = require('./secrets.json');
+const config = require('./config');
+const secrets = config.secrets
 
 const routes = {
     api: require('./routes/api'),

@@ -49,6 +49,9 @@ fabric.properties
 secrets.json
 audit/*.json
 
+# IDE
+/.vscode/
+
 # Semantic UI
 /semantic/*
 !/semantic/src/site
