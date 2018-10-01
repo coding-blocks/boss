@@ -130,7 +130,7 @@ function getCounts() {
     return Promise.all([participants, claims, accepted, totalclaimed]);
 }
 
-exports = module.exports = {
+module.exports = {
     getClaims,
     delClaim,
     createClaim,
