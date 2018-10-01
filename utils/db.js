@@ -52,7 +52,7 @@ const Claim = sequelize.define('claim', {
 
 
 
-exports = module.exports = {
+module.exports = {
     Database: sequelize,
     Claim,
     User
