@@ -2,17 +2,13 @@
  * Created by championswimmer on 16/05/17.
  */
 const basicAuth = require('express-basic-auth')
-const Sequelize = require('sequelize')
-const rp = require('request-promise')
 const passport = require('passport')
 const Router = require('express').Router
 const escapeHtml = require('escape-html')
 
 const auth = require('./../utils/auth')
 const config = require('./../config')
-const db = require('./../utils/db')
 const du = require('./../utils/datautils')
-const request = require('request')
 
 const route = new Router()
 
@@ -21,11 +17,6 @@ let adminPass = process.env.BOSS_PASSWORD || config.secrets.BOSS_DB_PASS
 let users = {}
 users[adminUser] = adminPass
 
-const authHandler = basicAuth({
-  users: users,
-  challenge: true,
-  realm: 'BOSS Mentor Access Area'
-})
 
 route.get('/', (req, res) => {
   if (Date.now() > Date.parse('16 Aug 2018 00:00:00 GMT+05:30')) {

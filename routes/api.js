@@ -1,7 +1,6 @@
 /**
  * Created by championswimmer on 15/05/17.
  */
-const passport = require('passport')
 const Router = require('express').Router
 
 const auth = require('./../utils/auth')
