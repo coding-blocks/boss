@@ -7,7 +7,7 @@
 
 const rp = require('request-promise');
 const db = require('./db');
-const config = require('./../config.json');
+const config = require('./../config');
 
 module.exports = {
   injectAuthData(req,res,next){

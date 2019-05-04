@@ -72,7 +72,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // Prefent CSRF
-app.use(csurf({ cookie: true }))
+// app.use(csurf({ cookie: true }))
 
 app.use('/api', routes.api)
 app.use(auth.injectAuthData)

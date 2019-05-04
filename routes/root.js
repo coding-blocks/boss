@@ -19,8 +19,8 @@ users[adminUser] = adminPass
 
 
 route.get('/', (req, res) => {
-  if (Date.now() > Date.parse('16 Aug 2018 00:00:00 GMT+05:30')) {
-    res.render('pages/end')
+  if (Date.now() < Date.parse('15 May 2019 00:00:00 GMT+05:30')) {
+    res.render('pages/comingsoon')
   } else {
     res.render('pages/index')
   }
