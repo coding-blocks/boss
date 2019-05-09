@@ -7,6 +7,8 @@ const auth = require('./../utils/auth')
 const config = require('./../config')
 const du = require('./../utils/datautils')
 
+const { BOSS_END_DATE, BOSS_START_DATE } = require('./../utils/consts')
+
 const route = new Router()
 
 route.get('/claims', (req, res) => {
@@ -58,10 +60,11 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     }
   }
 
-  let aug16 = new Date('August 16, 2018 00:00:00 GMT+05:30')
-
-  if (Date.now() > aug16.getTime()) {
+  if (Date.now() > BOSS_END_DATE.getTime()) {
     return res.send("Sorry. Boss has ended, can't add claim from now.")
+  }
+  if (Date.now() < BOSS_START_DATE.getTime()) {
+    return res.send("Sorry. BOSS has not yet started")
   }
 
   du.createClaim(

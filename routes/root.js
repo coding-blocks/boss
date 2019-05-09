@@ -10,6 +10,9 @@ const auth = require('./../utils/auth')
 const config = require('./../config')
 const du = require('./../utils/datautils')
 
+const { BOSS_END_DATE, BOSS_START_DATE } = require('./../utils/consts')
+
+
 const route = new Router()
 
 let adminUser = process.env.BOSS_ADMIN || config.secrets.BOSS_DB_USER
@@ -19,8 +22,10 @@ users[adminUser] = adminPass
 
 
 route.get('/', (req, res) => {
-  if (Date.now() < Date.parse('15 May 2019 00:00:00 GMT+05:30')) {
+  if (Date.now() < BOSS_START_DATE.getTime()) {
     res.render('pages/comingsoon')
+  } else if (Date.now() > BOSS_END_DATE.getTime()) {
+    res.render('pages/end')
   } else {
     res.render('pages/index')
   }
@@ -212,10 +217,12 @@ route.get('/claims/:id', auth.adminOnly, (req, res) => {
 })
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
-  let aug16 = new Date('August 16, 2018 00:00:00 GMT+05:30')
 
-  if (Date.now() > aug16.getTime()) {
+  if (Date.now() > BOSS_END_DATE.getTime()) {
     return res.send("Sorry. Boss has ended, can't add claim from now.")
+  }
+  if (Date.now() < BOSS_START_DATE.getTime()) {
+    return res.send("Sorry. BOSS has not yet started")
   }
 
   du.createClaim(
