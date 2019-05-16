@@ -108,25 +108,8 @@ function getLeaderboard(options) {
 function getCounts() {
     const participants = db.Claim.aggregate('user', 'count', {distinct: true});
     const claims = db.Claim.aggregate('*', 'count');
-    var accepted = db.Claim.aggregate(
-        'bounty',
-        'sum',
-        {
-            where: {
-                "status": "accepted"
-            }
-        }
-    );
-    var totalclaimed = db.Claim.aggregate(
-        'bounty',
-        'sum'
-    );
-    if (Number.isNaN(accepted)) {
-        accepted = 0;
-    }
-    if (Number.isNaN(totalclaimed)) {
-        totalclaimed = 0;
-    }
+    const accepted = db.Database.query(`SELECT coalesce(sum("bounty"),0) AS "sum" FROM "claims" AS "claim" WHERE "claim"."status" = 'accepted'`,{ type: db.Database.QueryTypes.SELECT });
+    const totalclaimed = db.Database.query(`SELECT coalesce(sum("bounty"),0) AS "sum" FROM "claims" AS "claim"`,{ type: db.Database.QueryTypes.SELECT });
     return Promise.all([participants, claims, accepted, totalclaimed]);
 }
 
