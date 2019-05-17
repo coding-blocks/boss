@@ -121,13 +121,13 @@ function getCounts() {
         'bounty',
         'sum'
     );
-    if (Number.isNaN(accepted)) {
-        accepted = 0;
-    }
-    if (Number.isNaN(totalclaimed)) {
-        totalclaimed = 0;
-    }
-    return Promise.all([participants, claims, accepted, totalclaimed]);
+
+    var filterNaN = (data) => Number.isNaN(data)? 0 : data;
+
+    var counts = Promise.all([participants, claims, accepted, totalclaimed])
+                .then((values) => values.map(filterNaN));
+
+    return counts;
 }
 
 module.exports = {
