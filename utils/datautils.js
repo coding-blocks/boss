@@ -122,7 +122,7 @@ function getCounts() {
         'sum'
     );
 
-    var filterNaN = (data) => Number.isNaN(data)? 0 : data;
+    var filterNaN = (data) => data || 0;
 
     var counts = Promise.all([participants, claims, accepted, totalclaimed])
                 .then((values) => values.map(filterNaN));
