@@ -91,8 +91,8 @@ route.get('/stats', (req, res) => {
       res.render('pages/stats', {
         participants: data[0],
         claims: data[1],
-        accepted: data[2],
-        totalclaimed: data[3],
+        accepted: data[2] || 0,
+        totalclaimed: data[3] || 0,
         menu: { stats: 'active' }
       })
     })
