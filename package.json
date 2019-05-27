@@ -27,6 +27,9 @@
     "semantic-ui": "^2.3.1",
     "sequelize": "^3.30.4"
   },
+  "engines": {
+    "node": "10"
+  },
   "name": "boss-backend",
   "version": "0.0.2",
   "description": "Backend API to track BOSS submissions",

@@ -31,7 +31,14 @@ cd ./boss
 
 ```
 
-3. Install all project dependency packages via NPM
+3. Use nvm for using same node version
+
+```
+nvm use .nvmrc
+
+```
+
+4. Install all project dependency packages via NPM
 
 ```
 npm install
