@@ -8,8 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* NodeJS
-* Node Package Manager(NPM)
+* NodeJS v10.14.1 
+* Node Package Manager(NPM) v6.4.1
 * Git
 * PostgreSQL
 
@@ -30,8 +30,12 @@ git clone https://github.com/coding-blocks/boss.git
 cd ./boss
 
 ```
+You can change also use `.nvmrc` file to use appropriate node version.
 
-3. Install all project dependency packages via NPM
+```
+nvm use .nvmrc
+```
+3. Install all project dependency packages via NPM. 
 
 ```
 npm install
