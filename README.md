@@ -33,7 +33,7 @@ cd ./boss
 You can change also use `.nvmrc` file to use appropriate node version.
 
 ```
-nvm use .nvmrc
+nvm use 
 ```
 3. Install all project dependency packages via NPM. 
 
