@@ -113,6 +113,10 @@ route.get('/claims/view', (req, res) => {
   }
 
   var menuH = {}
+  var current 
+  if(req.user) {
+    current = req.user.usergithub.username
+  }
 
   if (options.status == 'claimed') menuH[options.status] = 'active'
   else if (options.status == 'accepted') menuH[options.status] = 'active'
@@ -182,6 +186,7 @@ route.get('/claims/view', (req, res) => {
         },
         status: options.status,
         menuH,
+        current,
         filter: filter,
         filterproj: filterproj,
         username: options.username,
@@ -248,6 +253,40 @@ route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
     .catch(error => {
       res.send('Error updating claim')
     })
+})
+
+route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+
+  du.getClaimById(req.params.id)
+    .then(claim => {
+      if (!claim) throw new Error('No claim found')
+      res.render('pages/claims/edit', { claim })
+    })
+    .catch(err => {
+      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
+    })
+})
+
+route.post('/claims/:id/edit', auth.ensureLoggedInGithub,(req, res) => {
+
+  du.updateClaim(req.params.id, req.body)
+   .then(result => {
+     res.redirect('/claims/view')
+   })
+   .catch(error => {
+     res.send('Error updating claim')
+   })
+})
+
+route.get('/claims/:id/delete', auth.ensureLoggedInGithub, (req, res) => {
+  
+  du.delClaim(req.params.id)
+  .then(() => {
+    res.redirect('/claims/view')
+  })
+  .catch(error => {
+    res.send('Error Deleting Claim')
+  })
 })
 
 module.exports = route
