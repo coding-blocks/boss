@@ -10,22 +10,25 @@
     "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
   },
   "dependencies": {
-    "body-parser": "^1.17.1",
-    "escape-html": "^1.0.3",
+    "body-parser": "^1.19.0",
     "csurf": "^1.9.0",
-    "express": "^4.15.2",
-    "express-basic-auth": "^1.0.2",
+    "escape-html": "^1.0.3",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0",
     "express-hbs": "^1.0.4",
-    "express-session": "^1.15.2",
+    "express-session": "^1.16.1",
     "passport": "^0.3.2",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2": "^1.4.0",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
-    "request-promise": "^4.2.1",
+    "request-promise": "^4.2.4",
     "rsvp": "^3.5.0",
-    "semantic-ui": "^2.3.1",
+    "semantic-ui": "^2.4.2",
     "sequelize": "^3.30.4"
+  },
+  "engines": {
+    "node": "10.14.1"
   },
   "name": "boss-backend",
   "version": "0.0.2",
@@ -40,6 +43,6 @@
     "gulp": "^3.9.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
-    "request": "^2.81.0"
+    "request": "^2.88.0"
   }
 }
