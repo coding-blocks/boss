@@ -33,6 +33,12 @@ cd ./boss
 
 3. Install all project dependency packages via NPM
 
+
+```
+npm use .nvmrc
+
+```
+
 ```
 npm install
 
