@@ -1,0 +1,32 @@
+<form class="ui form" method="post" action="/claims/{{claim.id}}/edit">
+    <div class="field">
+        <label>Github Username</label>
+        <input name="user" placeholder="Github Username, eg. 'championswimmer'" disabled type="text" value="{{claim.user}}" required>
+    </div>
+    <div class="field">
+        <label>Issue URL</label>
+        <input name="issue_url" placeholder="URL of Issue, eg. http://github.com/org/proj/issue/7" type="url" value="{{claim.issueUrl}}" required>
+    </div>
+    <div class="field">
+        <label>Pull Request URL</label>
+        <input name="pull_url" placeholder="URL of PR, eg. http://github.com/org/proj/pull/7" type="url" value="{{claim.pullUrl}}" required>
+    </div>
+    <div class="field">
+        <label>Bounty</label>
+        <input name="bounty" placeholder="Bounty Points you are claiming for this" type="number" value="{{claim.bounty}}" required>
+    </div>
+    <div class="ui container center aligned">
+        <button class="ui button green" type="submit">Save</button>
+    </div>
+    <div class="ui container center aligned">
+        <a href="/claims/{{claim.id}}/delete" class="ui button red">Delete
+        </a>
+    </div>
+</form>
+{{#if error}}
+<div class="ui negative message">
+  <div class="header" align="center">
+    {{error}}
+  </div>
+</div>
+{{/if}}
