@@ -12,14 +12,12 @@ const du = require('./../utils/datautils')
 
 const { BOSS_END_DATE, BOSS_START_DATE } = require('./../utils/consts')
 
-
 const route = new Router()
 
 let adminUser = process.env.BOSS_ADMIN || config.secrets.BOSS_DB_USER
 let adminPass = process.env.BOSS_PASSWORD || config.secrets.BOSS_DB_PASS
 let users = {}
 users[adminUser] = adminPass
-
 
 route.get('/', (req, res) => {
   if (Date.now() < BOSS_START_DATE.getTime()) {
@@ -31,28 +29,22 @@ route.get('/', (req, res) => {
   }
 })
 
-route.get(
-  '/login',
-  passport.authenticate('oauth2', { failureRedirect: '/failed' })
-)
-route.get(
-  '/login/callback',
-  passport.authenticate('oauth2', { failureRedirect: '/failed' }),
-  (req, res) => {
-    res.redirect('/')
-  }
-)
+route.get('/login', passport.authenticate('oauth2', { failureRedirect: '/failed' }))
+route.get('/login/callback', passport.authenticate('oauth2', { failureRedirect: '/failed' }), (req, res) => {
+  res.redirect('/')
+})
 
 route.get('/logout', (req, res) => {
   req.session.destroy()
   res.redirect('/')
 })
 
-route.get('/leaderboard', (req, res) => {
+route.get('/leaderboard/:year?', (req, res) => {
+  const { year } = req.params
   const options = {
     page: req.query.page || 1,
-
-    size: req.query.size || config.PAGINATION_SIZE
+    size: req.query.size || config.PAGINATION_SIZE,
+    year
   }
 
   options.page = parseInt(options.page)
@@ -64,8 +56,7 @@ route.get('/leaderboard', (req, res) => {
       const rows = data[1][0]
       const lastPage = Math.ceil(count / options.size)
 
-      for (var i = 1; i <= lastPage; i++)
-        pagination.push(`?page=${i}&size=${options.size}`)
+      for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
 
       res.render('pages/leaderboard', {
         prevPage: options.page - 1,
@@ -76,7 +67,11 @@ route.get('/leaderboard', (req, res) => {
         page: options.page,
         pagination: pagination,
         userstats: rows,
-        menu: { leaderboard: 'active' }
+        menu: {
+          leaderboard: 'active',
+          leaderboard2020: (year === '2020' || !year) && 'active',
+          leaderboard2019: year === '2019' && 'active'
+        }
       })
     })
     .catch(error => {
@@ -113,8 +108,8 @@ route.get('/claims/view', (req, res) => {
   }
 
   var menuH = {}
-  var current 
-  if(req.user) {
+  var current
+  if (req.user) {
     current = req.user.usergithub.username
   }
 
@@ -133,27 +128,15 @@ route.get('/claims/view', (req, res) => {
 
       for (var i = 1; i <= lastPage; i++) {
         if (options.username) {
-          pagination.push(
-            `?page=${i}&size=${options.size}&status=${
-              options.status
-            }&username=${options.username}`
-          )
+          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`)
         } else if (options.projectname) {
-          pagination.push(
-            `?page=${i}&size=${options.size}&status=${
-              options.status
-            }&projectname=${options.projectname}`
-          )
+          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`)
         } else if (options.minbounty && options.maxbounty) {
           pagination.push(
-            `?page=${i}&size=${options.size}&status=${
-              options.status
-            }&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`
+            `?page=${i}&size=${options.size}&status=${options.status}&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`
           )
         } else {
-          pagination.push(
-            `?page=${i}&size=${options.size}&status=${options.status}`
-          )
+          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`)
         }
       }
 
@@ -222,12 +205,11 @@ route.get('/claims/:id', auth.adminOnly, (req, res) => {
 })
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
-
   if (Date.now() > BOSS_END_DATE.getTime()) {
     return res.send("Sorry. Boss has ended, can't add claim from now.")
   }
   if (Date.now() < BOSS_START_DATE.getTime()) {
-    return res.send("Sorry. BOSS has not yet started")
+    return res.send('Sorry. BOSS has not yet started')
   }
 
   du.createClaim(
@@ -256,7 +238,6 @@ route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
 })
 
 route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
-
   du.getClaimById(req.params.id)
     .then(claim => {
       if (!claim) throw new Error('No claim found')
@@ -267,26 +248,24 @@ route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
     })
 })
 
-route.post('/claims/:id/edit', auth.ensureLoggedInGithub,(req, res) => {
-
+route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
   du.updateClaim(req.params.id, req.body)
-   .then(result => {
-     res.redirect('/claims/view')
-   })
-   .catch(error => {
-     res.send('Error updating claim')
-   })
+    .then(result => {
+      res.redirect('/claims/view')
+    })
+    .catch(error => {
+      res.send('Error updating claim')
+    })
 })
 
 route.get('/claims/:id/delete', auth.ensureLoggedInGithub, (req, res) => {
-  
   du.delClaim(req.params.id)
-  .then(() => {
-    res.redirect('/claims/view')
-  })
-  .catch(error => {
-    res.send('Error Deleting Claim')
-  })
+    .then(() => {
+      res.redirect('/claims/view')
+    })
+    .catch(error => {
+      res.send('Error Deleting Claim')
+    })
 })
 
 module.exports = route
