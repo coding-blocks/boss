@@ -50,6 +50,10 @@
             overflow: hidden;
         } 
 
+        a.leaderboard-menu:not(.active) {
+          color: rgba(0,0,0,.87);
+        }
+
         @media screen and (max-width: 768px) {
             .menu.fluid {
                 overflow: hidden;
@@ -146,10 +150,15 @@
             </span>
   </div>
   <div class="ui stackable container">
-    <a class="item {{menu.leaderboard}}" href="/leaderboard">
-      <i class="sort content descending icon"></i>
-      Leaderboard
-    </a>
+    <div class="ui simple dropdown item">
+      <i class="checked calendar icon"></i>
+        <a class="leaderboard-menu {{menu.leaderboard}}" href="/leaderboard/">Leaderboard</a>
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        <a class="item {{menu.leaderboard2020}}" href="/leaderboard/2020">2020</a>
+        <a class="item {{menu.leaderboard2019}}" href="/leaderboard/2019">2019</a>
+      </div>
+    </div>
 
     <div class="ui simple dropdown item {{menu.claims}}">
       <i class="checked calendar icon"></i>
