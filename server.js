@@ -21,14 +21,13 @@ const sess = {
   secret: secrets.secret,
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 360000 }
+  cookie: { maxAge: 360000, secure: false, httpOnly: false }
 }
 
 const app = express()
 
 if (app.get('env') === 'production') {
   app.set('trust proxy', 1) // trust first proxy
-  sess.cookie.secure = true // serve secure cookies
 }
 
 app.engine(
