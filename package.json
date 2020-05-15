@@ -11,13 +11,14 @@
   },
   "dependencies": {
     "body-parser": "^1.17.1",
-    "escape-html": "^1.0.3",
     "csurf": "^1.9.0",
+    "escape-html": "^1.0.3",
     "express": "^4.15.2",
     "express-basic-auth": "^1.0.2",
     "express-hbs": "^1.0.4",
     "express-session": "^1.15.2",
-    "passport": "^0.3.2",
+    "natives": "^1.1.6",
+    "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2": "^1.4.0",
     "pg": "^6.1.5",
@@ -25,7 +26,7 @@
     "request-promise": "^4.2.1",
     "rsvp": "^3.5.0",
     "semantic-ui": "^2.3.1",
-    "sequelize": "^3.30.4"
+    "sequelize": "^4.44.4"
   },
   "name": "boss-backend",
   "version": "0.0.3",

@@ -19,7 +19,7 @@ const routes = {
 }
 const sess = {
   secret: secrets.secret,
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   cookie: { maxAge: 360000 }
 }
