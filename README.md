@@ -53,7 +53,7 @@ Also, remember to change the callback URL to your desired url. You can use `http
 
 5. Set up PostgreSQL
 
-- If you don't have PostgreSQL setup on you machine you can download it from [here](https://www.postgresql.org/download/).
+- If you don't have PostgreSQL setup on your machine you can download it from [here](https://www.postgresql.org/download/).
 - If you have renamed the `secrets-sample.json` file to `secrets.json` then
   - After Installation is complete create a new PostgreSQL user **username** with password as **pass**.
   - Create a new database in PostgreSQL server with name **dbname**.
