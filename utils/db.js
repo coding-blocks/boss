@@ -7,7 +7,11 @@ const secrets = config.secrets
 
 const sequelize = process.env.DATABASE_URL
   ? new Sequelize(process.env.DATABASE_URL)
-  : new Sequelize(secrets.BOSS_DB_NAME, secrets.BOSS_DB_USER, secrets.BOSS_DB_PASS, {
+  : new Sequelize(
+    secrets.BOSS_DB_NAME,
+    secrets.BOSS_DB_USER,
+    secrets.BOSS_DB_PASS,
+    {
       host: secrets.BOSS_DB_HOST || 'localhost',
       dialect: 'postgres',
       pool: {
@@ -15,7 +19,8 @@ const sequelize = process.env.DATABASE_URL
         min: 0,
         idle: 10000
       }
-    })
+    }
+  )
 
 const User = sequelize.define('user', {
   id: {
@@ -39,7 +44,9 @@ const Claim = sequelize.define('claim', {
   repo: Sequelize.STRING,
   reason: Sequelize.STRING,
   bounty: Sequelize.INTEGER,
-  status: Sequelize.ENUM(Object.keys(config.CLAIM_STATUS).map(key => config.CLAIM_STATUS[key]))
+  status: Sequelize.ENUM(
+    Object.keys(config.CLAIM_STATUS).map((key) => config.CLAIM_STATUS[key])
+  )
 })
 
 module.exports = {

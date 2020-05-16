@@ -7,7 +7,7 @@ const path = require('path')
 const exphbs = require('express-hbs')
 const passport = require('./auth/passportStrategies')
 const session = require('express-session')
-const csurf = require('csurf')
+// const csurf = require('csurf')
 
 const auth = require('./utils/auth')
 const config = require('./config')
@@ -44,19 +44,21 @@ app.set('view engine', 'hbs')
 app.locals.clientId = secrets.clientId
 app.locals.callbackURL = secrets.callbackURL
 
-exphbs.registerHelper('equal', function(lvalue, rvalue, options) {
-  if (arguments.length < 3)
+exphbs.registerHelper('equal', function (lvalue, rvalue, options) {
+  if (arguments.length < 3) {
     throw new Error('Handlebars Helper equal needs 2 parameters')
-  if (lvalue != rvalue) {
+  }
+  if (lvalue !== rvalue) {
     return options.inverse(this)
   } else {
     return options.fn(this)
   }
 })
 
-exphbs.registerHelper('add', function(lvalue, rvalue, options) {
-  if (arguments.length < 3)
+exphbs.registerHelper('add', function (lvalue, rvalue, options) {
+  if (arguments.length < 3) {
     throw new Error('Handlebars Helper equal needs 2 parameters')
+  }
   return parseInt(lvalue) + parseInt(rvalue)
 })
 
@@ -66,7 +68,7 @@ app.use(bodyParser.raw())
 
 app.use(session(sess)) // let api be stateless
 
-//initialize passport
+// initialize passport
 app.use(passport.initialize())
 app.use(passport.session())
 

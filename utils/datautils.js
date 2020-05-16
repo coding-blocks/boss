@@ -1,3 +1,4 @@
+/* global res */
 /**
  * Created by championswimmer on 16/05/17.
  */
@@ -5,12 +6,13 @@ const db = require('./db')
 const fs = require('fs')
 const consts = require('./consts')
 
-function getContestPeriod(year) {
-  if (year)
+function getContestPeriod (year) {
+  if (year) {
     return {
       start_date: consts[`BOSS_${year}_START_DATE`].toISOString(),
       end_date: consts[`BOSS_${year}_END_DATE`].toISOString()
     }
+  }
 
   return {
     start_date: consts.BOSS_START_DATE.toISOString(),
@@ -18,7 +20,7 @@ function getContestPeriod(year) {
   }
 }
 
-function getClaims(options) {
+function getClaims (options) {
   const offset = (options.page - 1) * options.size
 
   const period = getContestPeriod()
@@ -44,11 +46,11 @@ function getClaims(options) {
   return Promise.all([distinctUsers, allClaims, distinctProjects])
 }
 
-function getClaimById(claimId) {
+function getClaimById (claimId) {
   return db.Claim.findById(claimId)
 }
 
-function delClaim(claimId) {
+function delClaim (claimId) {
   if (isNaN(+claimId)) {
     return res.send('ClaimId must be a number')
   }
@@ -59,14 +61,14 @@ function delClaim(claimId) {
   })
 }
 
-function updateClaim(claimId, { status, reason, bounty }) {
+function updateClaim (claimId, { status, reason, bounty }) {
   const claim = {
     action: 'update',
     claimId,
     status,
     bounty
   }
-  fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
+  fs.writeFile(`${__dirname}/../audit/` + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
 
   return db.Claim.update(
     {
@@ -83,7 +85,7 @@ function updateClaim(claimId, { status, reason, bounty }) {
   )
 }
 
-function createClaim(user, issueUrl, pullUrl, bounty, status) {
+function createClaim (user, issueUrl, pullUrl, bounty, status) {
   const claim = {
     action: 'create',
     user,
@@ -92,7 +94,7 @@ function createClaim(user, issueUrl, pullUrl, bounty, status) {
     bounty,
     status
   }
-  fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
+  fs.writeFile(`${__dirname}/../audit/` + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
 
   return db.Claim.create({
     user,
@@ -104,7 +106,7 @@ function createClaim(user, issueUrl, pullUrl, bounty, status) {
   })
 }
 
-function getLeaderboard(options = {}) {
+function getLeaderboard (options = {}) {
   options.size = parseInt(options.size || 0)
   const offset = (options.page - 1) * options.size
   const period = getContestPeriod(options.year)
@@ -130,7 +132,7 @@ function getLeaderboard(options = {}) {
   return Promise.all([userCount, results])
 }
 
-function getCounts() {
+function getCounts () {
   const where = {
     createdAt: {
       $between: [getContestPeriod().start_date, getContestPeriod().end_date]

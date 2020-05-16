@@ -1,7 +1,7 @@
 /**
  * Created by championswimmer on 16/05/17.
  */
-const basicAuth = require('express-basic-auth')
+// const basicAuth = require('express-basic-auth')
 const passport = require('passport')
 const Router = require('express').Router
 const escapeHtml = require('escape-html')
@@ -14,9 +14,9 @@ const { BOSS_END_DATE, BOSS_START_DATE } = require('./../utils/consts')
 
 const route = new Router()
 
-let adminUser = process.env.BOSS_ADMIN || config.secrets.BOSS_DB_USER
-let adminPass = process.env.BOSS_PASSWORD || config.secrets.BOSS_DB_PASS
-let users = {}
+const adminUser = process.env.BOSS_ADMIN || config.secrets.BOSS_DB_USER
+const adminPass = process.env.BOSS_PASSWORD || config.secrets.BOSS_DB_PASS
+const users = {}
 users[adminUser] = adminPass
 
 route.get('/', (req, res) => {
@@ -29,10 +29,17 @@ route.get('/', (req, res) => {
   }
 })
 
-route.get('/login', passport.authenticate('oauth2', { failureRedirect: '/failed' }))
-route.get('/login/callback', passport.authenticate('oauth2', { failureRedirect: '/failed' }), (req, res) => {
-  res.redirect('/')
-})
+route.get(
+  '/login',
+  passport.authenticate('oauth2', { failureRedirect: '/failed' })
+)
+route.get(
+  '/login/callback',
+  passport.authenticate('oauth2', { failureRedirect: '/failed' }),
+  (req, res) => {
+    res.redirect('/')
+  }
+)
 
 route.get('/logout', (req, res) => {
   req.session.destroy()
@@ -50,19 +57,19 @@ route.get('/leaderboard/:year?', (req, res) => {
   options.page = parseInt(options.page)
 
   du.getLeaderboard(options)
-    .then(data => {
+    .then((data) => {
       const pagination = []
       const count = data[0]
       const rows = data[1][0]
       const lastPage = Math.ceil(count / options.size)
 
-      for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
+      for (var i = 1; i <= lastPage; i++) { pagination.push(`?page=${i}&size=${options.size}`) }
 
       res.render('pages/leaderboard', {
         prevPage: options.page - 1,
         nextPage: options.page + 1,
-        isFirstPage: options.page == 1,
-        isLastPage: options.page == lastPage,
+        isFirstPage: options.page === 1,
+        isLastPage: options.page === lastPage,
         size: options.size,
         page: options.page,
         pagination: pagination,
@@ -74,7 +81,7 @@ route.get('/leaderboard/:year?', (req, res) => {
         }
       })
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error)
       res.send('Error fetching leaderboard')
     })
@@ -82,7 +89,7 @@ route.get('/leaderboard/:year?', (req, res) => {
 
 route.get('/stats', (req, res) => {
   du.getCounts()
-    .then(data => {
+    .then((data) => {
       res.render('pages/stats', {
         participants: data[0],
         claims: data[1],
@@ -91,7 +98,7 @@ route.get('/stats', (req, res) => {
         menu: { stats: 'active' }
       })
     })
-    .catch(error => {
+    .catch(() => {
       res.send('Error fetching stats!')
     })
 })
@@ -113,14 +120,14 @@ route.get('/claims/view', (req, res) => {
     current = req.user.usergithub.username
   }
 
-  if (options.status == 'claimed') menuH[options.status] = 'active'
-  else if (options.status == 'accepted') menuH[options.status] = 'active'
+  if (options.status === 'claimed') menuH[options.status] = 'active'
+  else if (options.status === 'accepted') menuH[options.status] = 'active'
   else menuH[options.status] = 'active'
 
   options.page = parseInt(options.page)
 
   du.getClaims(options)
-    .then(data => {
+    .then((data) => {
       const pagination = []
       const filter = []
       const filterproj = []
@@ -128,26 +135,32 @@ route.get('/claims/view', (req, res) => {
 
       for (var i = 1; i <= lastPage; i++) {
         if (options.username) {
-          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`)
+          pagination.push(
+            `?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`
+          )
         } else if (options.projectname) {
-          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`)
+          pagination.push(
+            `?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`
+          )
         } else if (options.minbounty && options.maxbounty) {
           pagination.push(
             `?page=${i}&size=${options.size}&status=${options.status}&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`
           )
         } else {
-          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`)
+          pagination.push(
+            `?page=${i}&size=${options.size}&status=${options.status}`
+          )
         }
       }
 
-      data[0].forEach(function(item, index) {
+      data[0].forEach(function (item, index) {
         filter.push({
           name: item.DISTINCT,
           url: `?status=${options.status}&username=${item.DISTINCT}`
         })
       })
 
-      data[2].forEach(function(item, index) {
+      data[2].forEach(function (item, index) {
         filterproj.push({
           name: item.DISTINCT,
           url: `?status=${options.status}&projectname=${item.DISTINCT}`
@@ -158,8 +171,8 @@ route.get('/claims/view', (req, res) => {
         prevPage: options.page - 1,
         nextPage: options.page + 1,
         pagination: pagination,
-        isFirstPage: options.page == 1,
-        isLastPage: lastPage == options.page,
+        isFirstPage: options.page === 1,
+        isLastPage: lastPage === options.page,
         page: options.page,
         size: options.size,
         claims: data[1].rows,
@@ -178,7 +191,7 @@ route.get('/claims/view', (req, res) => {
         maxbounty: options.maxbounty
       })
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err)
       res.send('Error fetching claims')
     })
@@ -195,11 +208,11 @@ route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
 
 route.get('/claims/:id', auth.adminOnly, (req, res) => {
   du.getClaimById(req.params.id)
-    .then(claim => {
+    .then((claim) => {
       if (!claim) throw new Error('No claim found')
       res.render('pages/claims/id', { claim })
     })
-    .catch(err => {
+    .catch(() => {
       res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
     })
 })
@@ -219,41 +232,41 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     req.body.bounty,
     config.CLAIM_STATUS.CLAIMED
   )
-    .then(claim => {
+    .then((claim) => {
       res.redirect('/claims/view')
     })
-    .catch(error => {
+    .catch(() => {
       res.render('pages/claims/unique')
     })
 })
 
 route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
   du.updateClaim(req.params.id, req.body)
-    .then(result => {
+    .then((result) => {
       res.redirect('/claims/' + req.params.id)
     })
-    .catch(error => {
+    .catch(() => {
       res.send('Error updating claim')
     })
 })
 
 route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
   du.getClaimById(req.params.id)
-    .then(claim => {
+    .then((claim) => {
       if (!claim) throw new Error('No claim found')
       res.render('pages/claims/edit', { claim })
     })
-    .catch(err => {
+    .catch(() => {
       res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
     })
 })
 
 route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
   du.updateClaim(req.params.id, req.body)
-    .then(result => {
+    .then((result) => {
       res.redirect('/claims/view')
     })
-    .catch(error => {
+    .catch(() => {
       res.send('Error updating claim')
     })
 })
@@ -263,7 +276,7 @@ route.get('/claims/:id/delete', auth.ensureLoggedInGithub, (req, res) => {
     .then(() => {
       res.redirect('/claims/view')
     })
-    .catch(error => {
+    .catch(() => {
       res.send('Error Deleting Claim')
     })
 })

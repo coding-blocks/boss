@@ -10,13 +10,13 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   secrets,
-  "CLAIM_STATUS": {
-    "CLAIMED": "claimed",
-    "ACCEPTED": "accepted",
-    "REJECTED": "rejected",
-    "DISPUTED": "disputed",
-    "REVOKED": "revoked"
+  CLAIM_STATUS: {
+    CLAIMED: 'claimed',
+    ACCEPTED: 'accepted',
+    REJECTED: 'rejected',
+    DISPUTED: 'disputed',
+    REVOKED: 'revoked'
   },
-  "PAGINATION_SIZE": 10,
-  "TEST_MODE": false
+  PAGINATION_SIZE: 10,
+  TEST_MODE: false
 }
