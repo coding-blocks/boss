@@ -1,218 +1,596 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>BOSS</title>
-    <link rel='shortcut icon' type='image/x-icon' href='/images/favicon.ico' />
-    <link href="/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="/lib/semantic/semantic.min.css" rel="stylesheet">
-    <script src="/lib/jquery-3.2.1.min.js"></script>
-    <script src="/lib/jquery-ui/jquery-ui.min.js"></script>
-    <script src="/lib/semantic/semantic.js"></script>
-    <style>
-        .main.container {
-            margin-top: 6em;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>BOSS</title>
+  <link rel='shortcut icon' type='image/x-icon' href='/images/favicon.ico' />
+  <link href="/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+  <link href="/lib/semantic/semantic.min.css" rel="stylesheet">
+  <script src="/lib/jquery-3.2.1.min.js"></script>
+  <script src="/lib/jquery-ui/jquery-ui.min.js"></script>
+  <script src="/lib/semantic/semantic.js"></script>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+  <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
+  <style>
+    .main.container {
+      margin-top: 6em;
+    }
+
+    .hamburger-container {
+      display: none !important;
+    }
+
+    .ui.secondary.pointing.menu {
+      padding-bottom: 10px;
+    }
+
+    .boss-link-container {
+      padding: 15px 0 0 15px !important;
+    }
+
+    .claims-active {
+      border-color: #fc4f4f !important;
+    }
+
+    #bounty-range-slider {
+      margin: 5px 10px 15px 10px;
+    }
+
+    .btn-container a {
+      padding: 10px;
+      background: #fc4f4f;
+      color: #fff;
+      display: block;
+    }
+
+    #gobounty input {
+      width: 100px;
+    }
+
+    #gobounty {
+      text-align: center;
+      overflow: hidden;
+    }
+
+    a.leaderboard-menu:not(.active) {
+      color: rgba(0, 0, 0, .87);
+    }
+
+
+
+    /*----------------------------FOOTER*--------------------------------*/
+
+    footer {
+      position: fixed;
+      bottom: 0;
+    }
+
+    .footer-distributed {
+      background-color: #292c2f;
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+      box-sizing: border-box;
+      width: 100%;
+      text-align: left;
+      font: bold 16px sans-serif;
+
+      padding: 55px 50px;
+      margin-top: 80px;
+    }
+
+    .footer-distributed .footer-left,
+    .footer-distributed .footer-center,
+    .footer-distributed .footer-right {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .footer-distributed .footer-left {
+      width: 40%;
+    }
+
+    .footer-distributed h3 {
+      color: #ffffff;
+      font: normal 36px 'Cookie', cursive;
+      margin: 0;
+    }
+
+    .footer-distributed h3 span {
+      color: #5383d3;
+    }
+
+
+    .footer-distributed .footer-links {
+      color: #ffffff;
+      margin: 20px 0 12px;
+      padding: 0;
+    }
+
+    .footer-distributed .footer-links a {
+      display: inline-block;
+      line-height: 1.8;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .footer-distributed .footer-company-name {
+      color: #8f9296;
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0;
+    }
+
+
+    .footer-distributed .footer-center {
+      width: 35%;
+    }
+
+    .footer-distributed .footer-center i {
+      background-color: #33383b;
+      color: #ffffff;
+      font-size: 25px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 42px;
+      margin: 10px 15px;
+      vertical-align: middle;
+    }
+
+    .footer-distributed .footer-center i.fa-envelope {
+      font-size: 17px;
+      line-height: 38px;
+    }
+
+    .footer-distributed .footer-center p {
+      display: inline-block;
+      color: #ffffff;
+      vertical-align: middle;
+      margin: 0;
+    }
+
+    .footer-distributed .footer-center p span {
+      display: block;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 2;
+    }
+
+    .footer-distributed .footer-center p a {
+      color: #5383d3;
+      text-decoration: none;
+      ;
+    }
+
+    .footer-distributed .footer-right {
+      width: 20%;
+    }
+
+    .footer-distributed .footer-company-about {
+      line-height: 20px;
+      color: #92999f;
+      font-size: 13px;
+      font-weight: normal;
+      margin: 0;
+    }
+
+    .footer-distributed .footer-company-about span {
+      display: block;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .footer-distributed .footer-icons {
+      margin-top: 25px;
+    }
+
+    .footer-distributed .footer-icons a {
+      display: inline-block;
+      width: 35px;
+
+      footer {
+        position: fixed;
+        bottom: 0;
+      }
+
+      .footer-distributed {
+        background-color: #292c2f;
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+        box-sizing: border-box;
+        width: 100%;
+        text-align: left;
+        font: bold 16px sans-serif;
+
+        padding: 55px 50px;
+        margin-top: 80px;
+      }
+
+      .footer-distributed .footer-left,
+      .footer-distributed .footer-center,
+      .footer-distributed .footer-right {
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      .footer-distributed .footer-left {
+        width: 40%;
+      }
+
+      .footer-distributed h3 {
+        color: #ffffff;
+        font: normal 36px "Cookie", cursive;
+        margin: 0;
+      }
+
+      .footer-distributed h3 span {
+        color: #5383d3;
+      }
+
+      .footer-distributed .footer-links {
+        color: #ffffff;
+        margin: 20px 0 12px;
+        padding: 0;
+      }
+
+      .footer-distributed .footer-links a {
+        display: inline-block;
+        line-height: 1.8;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .footer-distributed .footer-company-name {
+        color: #8f9296;
+        font-size: 14px;
+        font-weight: normal;
+        margin: 0;
+      }
+
+      .footer-distributed .footer-center {
+        width: 35%;
+      }
+
+      .footer-distributed .footer-center i {
+        background-color: #33383b;
+        color: #ffffff;
+        font-size: 25px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 42px;
+        margin: 10px 15px;
+        vertical-align: middle;
+      }
+
+      .footer-distributed .footer-center i.fa-envelope {
+        font-size: 17px;
+        line-height: 38px;
+      }
+
+      .footer-distributed .footer-center p {
+        display: inline-block;
+        color: #ffffff;
+        vertical-align: middle;
+        margin: 0;
+      }
+
+      .footer-distributed .footer-center p span {
+        display: block;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 2;
+      }
+
+      .footer-distributed .footer-center p a {
+        color: #5383d3;
+        text-decoration: none;
+      }
+
+      .footer-distributed .footer-right {
+        width: 20%;
+      }
+
+      .footer-distributed .footer-company-about {
+        line-height: 20px;
+        color: #92999f;
+        font-size: 13px;
+        font-weight: normal;
+        margin: 0;
+      }
+
+      .footer-distributed .footer-company-about span {
+        display: block;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .footer-distributed .footer-icons {
+        margin-top: 25px;
+      }
+
+      .footer-distributed .footer-icons a {
+        display: inline-block;
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        border-radius: 2px;
+
+        font-size: 20px;
+        color: #ffffff;
+        text-align: center;
+        line-height: 35px;
+
+        margin-right: 3px;
+        margin-bottom: 5px;
+      }
+
+      @media screen and (max-width: 768px) {
+        .menu.fluid {
+          overflow: hidden;
+          height: 50px;
+          -webkit-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
+          -moz-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
+          -o-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
+          transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
         }
+
+        .menu .ui.grid {
+          width: 100%;
+        }
+
+        .header.item {
+          border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+          height: 50px !important;
+        }
+
         .hamburger-container {
-            display: none !important;
+          display: block !important;
+          width: 21%;
+          position: relative;
+          /* margin-top: -4.5%; */
+          margin-right: -8%;
         }
 
-        .ui.secondary.pointing.menu {
-          padding-bottom: 10px;
-        }
-
-        .boss-link-container {
-          padding: 15px 0 0 15px !important;
-        }
-
-        .claims-active {
-            border-color: #fc4f4f !important;
-        }
-
-        #bounty-range-slider{
-            margin: 5px 10px 15px 10px;
-        }
-
-        .btn-container a{
-            padding: 10px;
-            background: #fc4f4f;
-            color: #fff;
-            display: block;
-        }
-
-        #gobounty input {
-            width:100px;
-        }
-
-        #gobounty{
-            text-align: center;
-            overflow: hidden;
-        } 
-
-        a.leaderboard-menu:not(.active) {
-          color: rgba(0,0,0,.87);
-        }
-
-        @media screen and (max-width: 768px) {
-            .menu.fluid {
-                overflow: hidden;
-                height: 50px;
-                -webkit-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-                -moz-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-                -o-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-                transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-            }
-            .menu .ui.grid {
-                width: 100%;
-            }
-
-            .header.item {
-                border-bottom: 1px solid rgba(0,0,0,0.2);
-                height: 50px !important;
-            }
-
-            .hamburger-container {
-                display: block !important;
-                width: 21%;
-                position: relative;
-                /* margin-top: -4.5%; */
-                margin-right: -8%;
-            }
-
-            .hamburger {
-                position: relative !important;
-                /* position: absolute;
+        .hamburger {
+          position: relative !important;
+          /* position: absolute;
                 top: 50%;
                 left: 100%;
                 -webkit-transform: translate(-50%,-50%);
                 -moz-transform: translate(-50%,-50%);
                 -o-transform: translate(-50%,-50%);
                 transform: translate(-50%,-50%); */
-            }
-
-            .separator {
-                height: 50px;
-                width: 1px;
-                background: rgba(0,0,0,0.2);
-                /* margin-top: -5%; */
-                vertical-align: top;
-            }
-
-            .boss-link-container {
-                padding: 3px 0 0 15px !important;
-                width: 85% !important;
-            }
-
-            .boss-link-container a {
-                width: 75%;
-            }
-
-            .boss-link {
-                display: block;
-                text-align: center;
-                margin-left: 5%;
-                /* margin-top: -4.5%; */
-            }
         }
-    </style>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var toggle = 0;
-            $(".hamburger-container").click(function() {
-                if (!toggle) {
-                    $(".menu.fluid").css({
-                        'height': '100%'
-                    });
-                    toggle = 1;
-                } else {
-                    $(".menu.fluid").css({
-                        'height': '50px'
-                    });
-                    toggle = 0;
-                }
-            });
-        });
-    </script>
+
+        .separator {
+          height: 50px;
+          width: 1px;
+          background: rgba(0, 0, 0, 0.2);
+          /* margin-top: -5%; */
+          vertical-align: top;
+        }
+
+        .boss-link-container {
+          padding: 3px 0 0 15px !important;
+          width: 85% !important;
+        }
+
+        .boss-link-container a {
+          width: 75%;
+        }
+
+        .boss-link {
+          display: block;
+          text-align: center;
+          margin-left: 5%;
+          /* margin-top: -4.5%; */
+        }
+
+        .footer-distributed {
+          font: bold 14px sans-serif;
+        }
+
+        .footer-distributed .footer-left,
+        .footer-distributed .footer-center,
+        .footer-distributed .footer-right {
+          display: block;
+          width: 100%;
+          margin-bottom: 40px;
+          text-align: center;
+        }
+
+        .footer-distributed .footer-center i {
+          margin-left: 0;
+        }
+
+      }
+    }
+
+    /*FOOTER additional @media*/
+
+      {
+        {
+         !-- @media (max-width: 880px) {}
+
+        --
+      }
+    }
+  </style>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var toggle = 0;
+      $(".hamburger-container").click(function () {
+        if (!toggle) {
+          $(".menu.fluid").css({
+            'height': '100%'
+          });
+          toggle = 1;
+        } else {
+          $(".menu.fluid").css({
+            'height': '50px'
+          });
+          toggle = 0;
+        }
+      });
+    });
+  </script>
 </head>
+
 <body>
 
-<div class="ui top fixed huge fluid secondary pointing stackable menu red">
-  <div class="item boss-link-container">
-    <a href="/">
-      <img height="38" class="boss-link" src="/images/bosslogo.png">
-    </a>
-    <div class="separator"></div>
-    <span class="column hamburger-container">
-                <center>
-                    <i class="bars icon hamburger"></i>
-                </center>
-            </span>
-  </div>
-  <div class="ui stackable container">
-    <div class="ui simple dropdown item">
-      <i class="checked calendar icon"></i>
+  <div class="ui top fixed huge fluid secondary pointing stackable menu red">
+    <div class="item boss-link-container">
+      <a href="/">
+        <img height="38" class="boss-link" src="/images/bosslogo.png">
+      </a>
+      <div class="separator"></div>
+      <span class="column hamburger-container">
+        <center>
+          <i class="bars icon hamburger"></i>
+        </center>
+      </span>
+    </div>
+    <div class="ui stackable container">
+      <div class="ui simple dropdown item">
+        <i class="checked calendar icon"></i>
         <a class="leaderboard-menu {{menu.leaderboard}}" href="/leaderboard/">Leaderboard</a>
-      <i class="dropdown icon"></i>
-      <div class="menu">
-        <a class="item {{menu.leaderboard2020}}" href="/leaderboard/2020">2020</a>
-        <a class="item {{menu.leaderboard2019}}" href="/leaderboard/2019">2019</a>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item {{menu.leaderboard2020}}" href="/leaderboard/2020">2020</a>
+          <a class="item {{menu.leaderboard2019}}" href="/leaderboard/2019">2019</a>
+        </div>
       </div>
-    </div>
 
-    <div class="ui simple dropdown item {{menu.claims}}">
-      <i class="checked calendar icon"></i>
-      Claim
-      <i class="dropdown icon"></i>
-      <div class="menu">
-        <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
-        {{#if isAuthenticated}}
+      <div class="ui simple dropdown item {{menu.claims}}">
+        <i class="checked calendar icon"></i>
+        Claim
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
+          {{#if isAuthenticated}}
           <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
-        {{/if}}
+          {{/if}}
+        </div>
       </div>
+      <a class="item {{menu.stats}}" href="/stats">
+        <i class="chart line icon"></i>
+        Stats
+      </a>
+      <a class="item" href="http://lab.codingblocks.com/boss" target="_blank">
+        <i class="info icon"></i>
+        Information
+      </a>
+      <a class="item"
+        href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql+org%3Ahereisnaman"
+        target="_blank">
+        <i class="github icon"></i>
+        Open Issues
+      </a>
+      <a class="item" href="https://gitter.im/coding-blocks/boss-2019-lobby" target="_blank">
+        <i class="gitter icon"></i> Gitter
+      </a>
     </div>
-    <a class="item {{menu.stats}}" href="/stats">
-      <i class="chart line icon"></i>
-      Stats
-    </a>
-    <a class="item" href="http://lab.codingblocks.com/boss" target="_blank" >
-      <i class="info icon"></i>
-      Information
-    </a>
-    <a class="item" href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql+org%3Ahereisnaman" target="_blank" >
-      <i class="github icon"></i>
-      Open Issues
-    </a>
-    <a class="item" href="https://gitter.im/coding-blocks/boss-2019-lobby" target="_blank" >
-      <i class="gitter icon"></i> Gitter
-    </a>
-  </div>
-  {{#if isAuthenticated}}
+    {{#if isAuthenticated}}
     <div class="item right">
       <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
     </div>
     <a class="item" href="/logout">Logout </a>
-  {{else}}
+    {{else}}
     <a class="right item" href="/login">Login</a>
-  {{/if}}
+    {{/if}}
 
-</div>
+  </div>
 
 
-<div class="ui main container">
+  <div class="ui main container">
     {{{body}}}
-</div>
+  </div>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-83327907-10"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <div>
+    <footer class="footer-distributed">
+      <div class="footer-left">
+        <h3>boss<span>.codingblocks.com</span></h3>
 
-  gtag('config', 'UA-83327907-10');
-</script>
+        <p class="footer-links">
+          <a href="https://codingblocks.com/">Coding Blocks</a>
+          <br />
+
+          <a href="https://hack.codingblocks.com/">Hacker Blocks</a>
+          <br />
+
+          <a href="https://codingblocks.com/team.html">Our Team</a>
+          <br />
+
+          <a href="https://codingblocks.com/events/">Events</a>
+          <br />
+          <a href="https://codingblocks.com/success-stories/">Wall of Fame</a>
+          <br />
+
+          <a href="https://codingblocks.com/reviews/">Reviews</a>
+          <br />
+          <a href="https://codingblocks.com/centres/">Contact Us</a>
+        </p>
+
+        <p class="footer-company-name">
+          &copy; Copyright 2019 - Coding Blocks Pvt. Ltd.
+        </p>
+      </div>
+
+      <div class="footer-center">
+        <div>
+          <div class="footer-icons">
+            <a href="http://twitter.com/codingblocksIN"><i class="fa fa-twitter"></i></a>
+            <br />
+
+            <a href="http://facebook.com/codingblocksindia"><i class="fa fa-facebook"></i></a>
+            <br />
+
+            <a href="https://www.linkedin.com/company/coding-blocks"><i class="fa fa-linkedin"></i></a>
+            <br />
+
+            <a href="http://github.com/coding-blocks"><i class="fa fa-github"></i></a>
+            <br />
+
+            <a href="https://www.instagram.com/codingblocks/"><i class="fa fa-instagram"></i></a>
+            <br />
+
+            <a href="https://www.youtube.com/codingblocksindia"><i class="fa fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <p class="footer-company-about">
+          <span>CODING BLOCKS</span>
+          Coding Blocks was founded in 2014 with a mission to create skilled
+          Software Engineers for our country and the world. We are here to
+          bridge the gap between the quality of skills demanded by industry and
+          the quality of skills imparted by conventional institutes. At Coding
+          Blocks, we strive to increase student interest by providing hands on
+          practical training on every concept taught in the classroom.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83327907-10"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-83327907-10');
+  </script>
 
 
 </body>
+
 </html>

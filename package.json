@@ -25,7 +25,7 @@
     "pg-hstore": "^2.3.2",
     "request-promise": "^4.2.1",
     "rsvp": "^3.5.0",
-    "semantic-ui": "^2.3.1",
+    "fomantic-ui": "^2.3.1",
     "sequelize": "^4.44.4"
   },
   "name": "boss-backend",
