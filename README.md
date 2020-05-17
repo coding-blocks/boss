@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* NodeJS
+* NodeJS (10.18.0 version suggested [download](https://nodejs.org/en/blog/release/v10.18.0/))
 * Node Package Manager(NPM)
 * Git
 * PostgreSQL
