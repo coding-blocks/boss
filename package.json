@@ -1,13 +1,14 @@
 {
   "scripts": {
     "test": "node_modules/.bin/_mocha",
+    "codecov": "codecov",
+    "cover": "nyc --reporter=lcov ./node_modules/mocha/bin/_mocha",
     "prestart": "npm run theme:build",
     "start": "NODE_ENV=production node index.js",
     "start:dev": "NODE_ENV=development node index.js",
     "theme:clean": "rimraf public_static/lib/semantic/*",
     "theme:build": "cd semantic && gulp build",
-    "theme:watch": "cd semantic && gulp watch",
-    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
+    "theme:watch": "cd semantic && gulp watch"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
@@ -18,6 +19,7 @@
     "express-hbs": "^1.0.4",
     "express-session": "^1.15.2",
     "natives": "^1.1.6",
+    "nyc": "^15.0.1",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2": "^1.4.0",
