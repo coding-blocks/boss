@@ -1,0 +1,21 @@
+language: node_js
+
+node_js:
+  - 10
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database boss;' -U postgres
+
+install:
+  - npm install
+  - echo $SECRETS > secrets.json
+
+script:
+  - npm run start
+  - npm run cover
+
+after_success:
+  - echo "DONE"
