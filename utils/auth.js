@@ -91,7 +91,7 @@ module.exports = {
                   next()
               }
               else {
-                  res.render('error', {error: 'You are not the claimer of this claim.'})
+                  res.render('error', {error: 'You are not authorized to edit this claim..'})
               }
           })
           .catch(err => {
