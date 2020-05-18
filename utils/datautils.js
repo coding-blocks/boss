@@ -59,12 +59,14 @@ function delClaim(claimId) {
   })
 }
 
-function updateClaim(claimId, { status, reason, bounty }) {
+function updateClaim(claimId, { status, reason, bounty, issue_url, pull_url }) {
   const claim = {
     action: 'update',
     claimId,
     status,
-    bounty
+    bounty,
+    issue_url,
+    pull_url
   }
   fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
 
@@ -72,7 +74,9 @@ function updateClaim(claimId, { status, reason, bounty }) {
     {
       status: status,
       reason: reason,
-      bounty: bounty
+      bounty: bounty,
+      issueUrl: issue_url,
+      pullUrl: pull_url
     },
     {
       where: {
