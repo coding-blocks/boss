@@ -7,6 +7,7 @@
 
 const rp = require('request-promise');
 const db = require('./db');
+const du = require('./datautils');
 const config = require('./../config');
 
 module.exports = {
@@ -80,5 +81,21 @@ module.exports = {
       } else {
           res.render('error',{error: 'You need to be logged in for this. Also make sure you have linked your github account at account.codingblocks.com'})
       }
+  },
+  ensureUserCanEdit(req, res, next) {
+      // check if the user is claimer of the claim
+      du.getClaimById(req.params.id)
+          .then(claim => {
+              if (!claim) throw new Error('No claim found')
+              if (claim.user === req.user.usergithub.username) {
+                  next()
+              }
+              else {
+                  res.render('error', {error: 'You are not the claimer of this claim.'})
+              }
+          })
+          .catch(err => {
+              res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
+          })
   }
 };
