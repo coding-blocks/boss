@@ -258,7 +258,7 @@ route.post('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit
     })
 })
 
-route.get('/claims/:id/delete', auth.ensureLoggedInGithub, (req, res) => {
+route.get('/claims/:id/delete', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.delClaim(req.params.id)
     .then(() => {
       res.redirect('/claims/view')
