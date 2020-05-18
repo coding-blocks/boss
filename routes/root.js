@@ -245,7 +245,7 @@ route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
     })
 })
 
-route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+route.get('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.getClaimById(req.params.id)
     .then(claim => {
       if (!claim) throw new Error('No claim found')
@@ -256,7 +256,7 @@ route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
     })
 })
 
-route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+route.post('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.updateClaim(req.params.id, req.body)
     .then(result => {
       res.redirect('/claims/view')
@@ -266,7 +266,7 @@ route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
     })
 })
 
-route.get('/claims/:id/delete', auth.ensureLoggedInGithub, (req, res) => {
+route.get('/claims/:id/delete', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.delClaim(req.params.id)
     .then(() => {
       res.redirect('/claims/view')
