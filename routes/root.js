@@ -40,12 +40,20 @@ route.get('/logout', (req, res) => {
 })
 
 route.get('/leaderboard/:year?', (req, res) => {
-  const { year } = req.params
-  const options = {
-    page: req.query.page || 1,
-    size: req.query.size || config.PAGINATION_SIZE,
-    year
-  }
+    let { year } = req.params
+    const validYears = [2020, 2019, 2018]
+  
+    if (!validYears.includes(year)) {
+        return res.status(404).render('pages/404');
+    } else {
+      year = parseInt(year)
+    }
+
+    const options = {
+        page: req.query.page || 1,
+        size: req.query.size || config.PAGINATION_SIZE,
+        year
+    }
 
   options.page = parseInt(options.page)
 
