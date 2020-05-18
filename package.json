@@ -2,8 +2,8 @@
   "scripts": {
     "test": "node_modules/.bin/_mocha",
     "prestart": "npm run theme:build",
-    "start": "NODE_ENV=production node index.js",
-    "start:dev": "NODE_ENV=development node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "start:dev": "cross-env NODE_ENV=development node index.js",
     "theme:clean": "rimraf public_static/lib/semantic/*",
     "theme:build": "cd semantic && gulp build",
     "theme:watch": "cd semantic && gulp watch",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "body-parser": "^1.17.1",
+    "cross-env": "^7.0.2",
     "csurf": "^1.9.0",
     "escape-html": "^1.0.3",
     "express": "^4.15.2",
