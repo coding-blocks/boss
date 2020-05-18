@@ -48,6 +48,18 @@ function getClaimById(claimId) {
   return db.Claim.findById(claimId)
 }
 
+function getConflictingClaimByPr(genericUrl) {
+  return db.Database.query(
+  `SELECT * FROM claims WHERE "pullUrl" LIKE '%${genericUrl}%';`
+  )
+}
+  
+function getConflictingClaimByIssue(genericUrl) {
+  return db.Database.query(
+    `SELECT * FROM claims WHERE "issueUrl" LIKE '%${genericUrl}%';`
+  )
+}
+
 function delClaim(claimId) {
   if (isNaN(+claimId)) {
     return res.send('ClaimId must be a number')
@@ -161,5 +173,7 @@ module.exports = {
   getLeaderboard,
   getClaimById,
   updateClaim,
-  getCounts
+  getCounts,
+  getConflictingClaimByIssue,
+  getConflictingClaimByPr
 }

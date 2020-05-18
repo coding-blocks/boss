@@ -193,15 +193,60 @@ route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   })
 })
 
-route.get('/claims/:id', auth.adminOnly, (req, res) => {
-  du.getClaimById(req.params.id)
-    .then(claim => {
-      if (!claim) throw new Error('No claim found')
-      res.render('pages/claims/id', { claim })
-    })
-    .catch(err => {
-      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
-    })
+route.get('/claims/:id', async (req, res) => {
+  try {
+    const claimInfo = await du.getClaimById(req.params.id)
+    if (!claimInfo) {
+      throw new Error('Error finding claim')
+    }
+
+    const genericUrl = new URL(claimInfo.pullUrl).pathname.replace(/\/+$/, '')
+    const urlDetails = {
+        project: genericUrl.split('github.com/')[1].split('/')[1],
+        type: genericUrl.split('github.com/')[1].split('/')[2],
+        id: genericUrl.split('github.com/')[1].split('/')[3],
+    }
+
+    let response, conflicts
+
+    /**
+     * the database has internal checks for duplicate items in the pull request column
+     * therefore the main task of this segment is to handle the conditions when
+     * 1. issue is passed in both fields, pull-request column and issue column
+     * 2. pull request is submitted with a tailing slash, or url modifications like
+     *    https, or hashes, or language slugs */
+    if (urlDetails.type === 'pull') {
+      /**
+       * this segment handles point number 2 mentioned above by checking only the
+       * useful and important , unchanged, and unique identity of a pull request
+       */
+      response = await du.getConflictingClaimByPr(genericUrl)
+      conflicts = response[0].filter((claim) => claim.id !== claimInfo.id)
+    } else {
+      /**
+       * this segment handles the point number 1 mentioned above, by checking the
+       * url of the issue passed into pull-request column of current claim uniquely
+       * across database table for similar entries in the issues column
+       */
+      response = await du.getConflictingClaimByIssue(genericUrl)
+      conflicts = response[0].filter((claim) => claim.id !== claimInfo.id)
+    }
+
+    /**
+     * now rendering the ui of the admin panel and populating it with conflicts data
+     * the following line displays the raw json used to build the page, use while debugging
+     * res.json({ claimInfo, conflicts })
+     */
+    res.json({claimInfo, conflicts})
+    //  res.render('pages/claims/id', { claim: claimInfo, conflicts })
+  } catch (err) {
+    console.log(err.message)
+    // res.status(500).json({
+    //   error: true,
+    //   message: 'There was some error processing your request'
+    // })
+    res.status(200).json({message:err.message})
+  }
 })
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
