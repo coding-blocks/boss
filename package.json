@@ -1,15 +1,17 @@
 {
   "scripts": {
     "test": "node_modules/.bin/_mocha",
+    "docs": "apidoc -i routes/ -o docs/",
     "prestart": "npm run theme:build",
     "start": "NODE_ENV=production node index.js",
-    "start:dev": "NODE_ENV=development node index.js",
+    "start:dev": "NODE_ENV=development index.js",
     "theme:clean": "rimraf public_static/lib/semantic/*",
     "theme:build": "cd semantic && gulp build",
     "theme:watch": "cd semantic && gulp watch",
     "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
   },
   "dependencies": {
+    "apidocs": "^2017.3.9",
     "body-parser": "^1.17.1",
     "csurf": "^1.9.0",
     "escape-html": "^1.0.3",

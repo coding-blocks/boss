@@ -1,0 +1,8 @@
+{
+  "name": "Coding Blocks BOSS API",
+  "version": "0.0.3",
+  "description": "API powering BOSS Portal operations",
+  "template": {
+    "forceLanguage": "en"
+  }
+}

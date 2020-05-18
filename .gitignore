@@ -49,6 +49,9 @@ fabric.properties
 secrets.json
 audit/*.json
 
+#docs
+docs
+
 # IDE
 /.vscode/
 
