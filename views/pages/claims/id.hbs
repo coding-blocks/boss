@@ -1,76 +1,114 @@
-<div class="four wide item">
-    <div class="image">
-        <div class="ui statistic">
-            <div class="value">
-                {{claim.bounty}}
+<div class="ui two column grid">
+    <div class="column">
+        <div class="four wide item">
+            <div class="image">
+                <div class="ui statistic">
+                    <div class="value">
+                        {{claim.bounty}}
+                    </div>
+                    <div class="label">
+                        BOUNTY POINTS
+                    </div>
+                </div>
             </div>
-            <div class="label">
-                BOUNTY POINTS
+            <div class="middle aligned content">
+                <a class="header">{{claim.user}}</a>
+                <div class="meta">
+                    <span>{{claim.repo}}</span>
+                </div>
+                <div class="description">
+                    <p>
+                        Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
+                    </p>
+                    <p>
+                        Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
+                    </p>
+                </div>
+                <div class="extra">
+                    {{#equal claim.status "claimed"}}
+                        <div class="ui label yellow">{{claim.status}}</div>
+                    {{/equal}}
+                    {{#equal claim.status "accepted"}}
+                        <div class="ui label green">{{claim.status}}</div>
+                    {{/equal}}
+                    {{#equal claim.status "rejected"}}
+                        <div class="ui label red">{{claim.status}}</div>
+                    {{/equal}}
+                </div>
             </div>
+            <form class="ui form" style="padding: 3em" method="post" action="/claims/{{claim.id}}/update">
+                <div class="four wide field">
+                    <label>Final Bounty Points</label>
+                    <input name="bounty" value="{{claim.bounty}}">
+                    <label>Update Status</label>
+                    <select name="status" class="ui dropdown" id="status">
+                        <option value="claimed">Claimed</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="disputed">Disputed</option>
+                        <option value="revoked">Revoked</option>
+                    </select>
+                </div>
+
+                <label>Reason </label>
+                <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
+                <br/>
+                <button class="ui button green" type="submit">Submit</button>
+
+
+            </form>
+            <script>
+
+                $('select.dropdown').dropdown();
+
+                {{#unless claim.reason}}
+                    $('#reason').hide();
+                {{/unless}}
+
+                $('select').on('change', function (e){
+                    let status = $('#status option:selected').text();
+                    if( ['Rejected' , 'Disputed' , 'Revoked'].includes(status) )
+                        $('#reason').show();
+                    else
+                        $('#reason').html('').hide();
+
+                });
+
+            </script>
         </div>
     </div>
-    <div class="middle aligned content">
-        <a class="header">{{claim.user}}</a>
-        <div class="meta">
-            <span>{{claim.repo}}</span>
-        </div>
-        <div class="description">
-            <p>
-                Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
-            </p>
-            <p>
-                Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
-            </p>
-        </div>
-        <div class="extra">
-            {{#equal claim.status "claimed"}}
-                <div class="ui label yellow">{{claim.status}}</div>
-            {{/equal}}
-            {{#equal claim.status "accepted"}}
-                <div class="ui label green">{{claim.status}}</div>
-            {{/equal}}
-            {{#equal claim.status "rejected"}}
-                <div class="ui label red">{{claim.status}}</div>
-            {{/equal}}
-        </div>
+    <div class="column">
+        {{#if hasConflict}}
+            <h2>Conflicting Claims</h2>
+            {{#each conflictedClaims as |conflict|}}
+                <div class="ui card">
+                    <div class="content">
+                        <div class="header">Claim ID: {{ conflict.id }}</div>
+                    </div>
+                    <div class="content">
+                        <h4 class="ui sub header">By : {{ conflict.user }}</h4>
+                        <div class="ui small feed">
+                            <div class="event">
+                                <div class="content">
+                                    <div class="summary">
+                                        <a href={{conflict.pullUrl}}>Pull Request</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="event">
+                                <div class="content">
+                                    <div class="summary">
+                                        <a href={{conflict.issueUrl}}>Issue</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{else}}
+            <h2>No Conflicting Claims</h2>
+        {{/if}}
     </div>
-    <form class="ui form" style="padding: 3em" method="post" action="/claims/{{claim.id}}/update">
-        <div class="four wide field">
-            <label>Final Bounty Points</label>
-            <input name="bounty" value="{{claim.bounty}}">
-            <label>Update Status</label>
-            <select name="status" class="ui dropdown" id="status">
-                <option value="claimed">Claimed</option>
-                <option value="rejected">Rejected</option>
-                <option value="accepted">Accepted</option>
-                <option value="disputed">Disputed</option>
-                <option value="revoked">Revoked</option>
-            </select>
-        </div>
-
-        <label>Reason </label>
-        <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
-        <br/>
-        <button class="ui button green" type="submit">Submit</button>
-
-
-    </form>
-    <script>
-
-        $('select.dropdown').dropdown();
-
-        {{#unless claim.reason}}
-            $('#reason').hide();
-        {{/unless}}
-
-        $('select').on('change', function (e){
-            let status = $('#status option:selected').text();
-            if( ['Rejected' , 'Disputed' , 'Revoked'].includes(status) )
-                $('#reason').show();
-            else
-                $('#reason').html('').hide();
-
-        });
-
-    </script>
 </div>
+

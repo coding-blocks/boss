@@ -11,6 +11,7 @@ const config = require('./../config')
 const du = require('./../utils/datautils')
 
 const { BOSS_END_DATE, BOSS_START_DATE } = require('./../utils/consts')
+const { getUrlDetails } = require('../utils/urlUtils')
 
 const route = new Router()
 
@@ -205,7 +206,23 @@ route.get('/claims/:id', auth.adminOnly, (req, res) => {
   du.getClaimById(req.params.id)
     .then(claim => {
       if (!claim) throw new Error('No claim found')
-      res.render('pages/claims/id', { claim })
+      pullUrlDetail = getUrlDetails(claim["pullUrl"])
+      issueUrlDetail = getUrlDetails(claim["issueUrl"])
+      if(pullUrlDetail.type === "pull") {
+        du.getConflictedClaims(claim,issueUrlDetail)
+          .then(conflictedClaims => {
+            if(!conflictedClaims)
+              res.render('pages/claims/id',{claim, hasConflict: false })
+            else
+              res.render('pages/claims/id',{ claim, hasConflict: true, conflictedClaims })
+          })
+          .catch(err => {
+            res.send('Error getting conflicting claims')
+          })
+      }
+      else {
+        res.render('pages/claims/id', { claim, hasConflict: false })
+      }
     })
     .catch(err => {
       res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
