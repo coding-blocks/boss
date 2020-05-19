@@ -120,11 +120,12 @@ function getLeaderboard(options = {}) {
 
   const results = db.Database.query(`SELECT "user",
         SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty",
-        COUNT("bounty") as "pulls"
+        COUNT("bounty") as "pulls",
+        ROW_NUMBER() OVER(ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC) as rank
         FROM "claims" AS "claim"
         where "createdAt" between '${period.start_date}' and '${period.end_date}'
         GROUP BY "user"
-        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC
+        ORDER BY "bounty" DESC, "pulls" DESC
         LIMIT ${options.size} OFFSET ${offset}`)
 
   return Promise.all([userCount, results])

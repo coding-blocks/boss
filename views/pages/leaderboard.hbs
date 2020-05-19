@@ -1,6 +1,7 @@
 <table class="ui celled padded table red unstackable">
     <thead>
     <tr>
+        <th>Rank</th>
         <th>Github User</th>
         <th>Points</th>
         <th>PRs Submitted</th>
@@ -8,14 +9,17 @@
     </thead>
     {{#each userstats as |user|}}
         <tr>
+            <td>
+                <div class="center aligned">{{user.rank}}</div>
+            </td>
             <td class="red text center aligned">
                 <b class="ui "><a class="red text" href="http://github.com/{{user.user}}">{{user.user}}</b>
             </td>
             <td>
-                <div class="right aligned">{{user.bounty}}</div>
+                <div class="center aligned">{{user.bounty}}</div>
             </td>
             <td>
-                <div class="right aligned">{{user.pulls}}</div>
+                <div class="center aligned">{{user.pulls}}</div>
             </td>
         </tr>
     {{/each}}
