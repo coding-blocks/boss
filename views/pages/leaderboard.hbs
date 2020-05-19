@@ -8,7 +8,7 @@
     </tr>
     </thead>
     {{#if showUserAtTop}}
-        <tr bgcolor="#fcfff5">
+        <tr class="colored-row">
             <td>
                 <div class="center aligned">{{loggedInUser.rank}}</div>
             </td>
@@ -24,7 +24,11 @@
         </tr>
     {{/if}}
     {{#each userstats as |user|}}
-        <tr bgcolor={{user.color}}>
+        {{#if user.isColored}}
+            <tr class="colored-row">
+        {{else}}
+            <tr>
+        {{/if}}
             <td>
                 <div class="center aligned">{{user.rank}}</div>
             </td>
@@ -63,5 +67,8 @@
 <style>
     .red.text {
         color: red;
+    }
+    .colored-row {
+        background-color: #fcfff5;
     }
 </style>

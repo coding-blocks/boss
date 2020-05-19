@@ -75,10 +75,7 @@ route.get('/leaderboard/:year?', async (req, res) => {
       const showUserAtTop = loggedInUser.user && !rows.some(row => row.user === loggedInUser.user)
       rows.forEach((row) => {
           if(githubDetails && githubDetails.username === row.user){
-              row.color = "#fcfff5"
-          }
-          else {
-              row.color = null;
+              row.isColored = true
           }
       })
       for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
