@@ -1,9 +1,3 @@
-{{#if userRank}}
-    <h2>
-        Your Rank: <span class="red text">{{userRank.rank}} </span>
-        Your Points: <span class="red text">{{userRank.bounty}} </span>
-    </h2>
-{{/if}}
 <table class="ui celled padded table red unstackable">
     <thead>
     <tr>
@@ -13,8 +7,24 @@
         <th>PRs Submitted</th>
     </tr>
     </thead>
+    {{#if showUserAtTop}}
+        <tr bgcolor="#90ee90">
+            <td>
+                <div class="center aligned">{{userRank.rank}}</div>
+            </td>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/{{userRank.user}}">{{userRank.user}}</b>
+            </td>
+            <td>
+                <div class="center aligned">{{userRank.bounty}}</div>
+            </td>
+            <td>
+                <div class="center aligned">{{userRank.pulls}}</div>
+            </td>
+        </tr>
+    {{/if}}
     {{#each userstats as |user|}}
-        <tr>
+        <tr bgcolor={{user.color}}>
             <td>
                 <div class="center aligned">{{user.rank}}</div>
             </td>
