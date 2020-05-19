@@ -56,16 +56,16 @@ route.get('/leaderboard/:year?', (req, res) => {
     }
 
   options.page = parseInt(options.page)
-
-  du.getLeaderboard(options)
+  const isLoggedIn = req.user && req.user.usergithub;
+  du.getLeaderboard(options, (isLoggedIn ? req.user.usergithub.username : null))
     .then(data => {
       const pagination = []
       const count = data[0]
       const rows = data[1][0]
+      const row = (isLoggedIn ? data[2][0][0] : null)
       const lastPage = Math.ceil(count / options.size)
 
       for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
-
       res.render('pages/leaderboard', {
         prevPage: options.page - 1,
         nextPage: options.page + 1,
@@ -75,6 +75,8 @@ route.get('/leaderboard/:year?', (req, res) => {
         page: options.page,
         pagination: pagination,
         userstats: rows,
+        userRank: row,
+        isLoggedIn,
         menu: {
           leaderboard: 'active',
           leaderboard2020: (year === '2020' || !year) && 'active',

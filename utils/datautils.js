@@ -104,7 +104,7 @@ function createClaim(user, issueUrl, pullUrl, bounty, status) {
   })
 }
 
-function getLeaderboard(options = {}) {
+function getLeaderboard(options = {}, username) {
   options.size = parseInt(options.size || 0)
   const offset = (options.page - 1) * options.size
   const period = getContestPeriod(options.year)
@@ -118,16 +118,35 @@ function getLeaderboard(options = {}) {
     }
   })
 
-  const results = db.Database.query(`SELECT "user",
-        SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty",
-        COUNT("bounty") as "pulls"
-        FROM "claims" AS "claim"
-        where "createdAt" between '${period.start_date}' and '${period.end_date}'
-        GROUP BY "user"
-        ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC
-        LIMIT ${options.size} OFFSET ${offset}`)
+  const results = db.Database.query(`SELECT ranking.user,
+        ranking.bounty,
+        ranking.pulls, 
+        RANK() OVER (ORDER BY ranking.bounty DESC, ranking.pulls DESC) as ranks
+        FROM (SELECT "user", 
+          SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty",
+          COUNT("bounty") as "pulls" 
+          FROM "claims" AS "claim" 
+          where "createdAt" between '${period.start_date}' and '${period.end_date}'
+          GROUP BY "user" 
+          ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC
+          LIMIT ${options.size} OFFSET ${offset}) AS ranking`)
+  let userResult = null
+  if(username)
+    userResult = db.Database.query(`SELECT * FROM 
+            (SELECT ranking.user,
+              ranking.bounty,
+              ranking.pulls, 
+              RANK() OVER (ORDER BY ranking.bounty DESC, ranking.pulls DESC) as ranks
+              FROM (SELECT "user", 
+                SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) as "bounty",
+                COUNT("bounty") as "pulls" 
+                FROM "claims" AS "claim" 
+                where "createdAt" between '${period.start_date}' and '${period.end_date}'
+                GROUP BY "user" 
+                ORDER BY SUM(CASE WHEN "claim"."status" = 'accepted' THEN "bounty" ELSE 0 END) DESC, COUNT("bounty") DESC) AS ranking) AS leaderboard
+            WHERE leaderboard.user = '${username}'`)
 
-  return Promise.all([userCount, results])
+  return Promise.all([userCount, results, userResult])
 }
 
 function getCounts() {
