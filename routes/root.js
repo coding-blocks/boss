@@ -39,7 +39,7 @@ route.get('/logout', (req, res) => {
   res.redirect('/')
 })
 
-route.get('/leaderboard/:year?', (req, res) => {
+route.get('/leaderboard/:year?', async (req, res) => {
     let { year } = req.params
     const validYears = ['2020', '2019', '2018']
   
@@ -57,13 +57,27 @@ route.get('/leaderboard/:year?', (req, res) => {
 
   options.page = parseInt(options.page)
 
+  let loggedInUser = {};
+  const githubDetails = req.user && req.user.usergithub
+  if (githubDetails) {
+    const result = await du.getLoggedInUserStats(options, githubDetails.username)
+    if (result[0][0]) {
+        loggedInUser = result[0][0]
+    }
+  }
+
   du.getLeaderboard(options)
     .then(data => {
       const pagination = []
       const count = data[0]
       const rows = data[1][0]
       const lastPage = Math.ceil(count / options.size)
-
+      const showUserAtTop = loggedInUser.user && !rows.some(row => row.user === loggedInUser.user)
+      rows.forEach((row) => {
+          if(githubDetails && githubDetails.username === row.user){
+              row.isColored = true
+          }
+      })
       for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
 
       res.render('pages/leaderboard', {
@@ -75,6 +89,8 @@ route.get('/leaderboard/:year?', (req, res) => {
         page: options.page,
         pagination: pagination,
         userstats: rows,
+        loggedInUser,
+        showUserAtTop,
         menu: {
           leaderboard: 'active',
           leaderboard2020: (year === '2020' || !year) && 'active',
