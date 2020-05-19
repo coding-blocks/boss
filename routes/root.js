@@ -39,7 +39,7 @@ route.get('/logout', (req, res) => {
   res.redirect('/')
 })
 
-route.get('/leaderboard/:year?', (req, res) => {
+route.get('/leaderboard/:year?', async (req, res) => {
     let { year } = req.params
     const validYears = ['2020', '2019', '2018']
   
@@ -56,7 +56,11 @@ route.get('/leaderboard/:year?', (req, res) => {
     }
 
   options.page = parseInt(options.page)
-
+  let userRank = null;
+  if (req.user && req.user.usergithub) {
+    const result = await du.getUserRank(options, req.user.usergithub.username)
+    userRank = result[0][0]
+  }
   du.getLeaderboard(options)
     .then(data => {
       const pagination = []
@@ -75,6 +79,7 @@ route.get('/leaderboard/:year?', (req, res) => {
         page: options.page,
         pagination: pagination,
         userstats: rows,
+        userRank,
         menu: {
           leaderboard: 'active',
           leaderboard2020: (year === '2020' || !year) && 'active',
