@@ -75,7 +75,7 @@ route.get('/leaderboard/:year?', async (req, res) => {
       const showUserAtTop = loggedInUser.user && !rows.some(row => row.user === loggedInUser.user)
       rows.forEach((row) => {
           if(githubDetails && githubDetails.username === row.user){
-              row.color = "#90ee90"
+              row.color = "#fcfff5"
           }
           else {
               row.color = null;
