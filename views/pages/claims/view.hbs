@@ -1,230 +1,350 @@
-<div class="ui stackable three item menu">
-    <a class="item {{menuH.claimed}}" href="?status=claimed">Claimed</a>
-    <a class="item {{menuH.accepted}}" href="?status=accepted">Accepted</a>
-    <a class="item {{menuH.rejected}}" href="?status=rejected">Rejected</a>
-</div>
-<div align="right">
-    <div class="ui floating dropdown labeled icon button">
-        <i class="filter icon"></i>
-        {{#if username}}
-            <span id="username" class="text">{{username}}</span>
-        {{else}}
-            <span class="text">Filter Usernames</span>
-        {{/if}}
-        <div class="menu">
-            <div class="ui icon search input">
-                <i class="search icon"></i>
-                <input type="text" placeholder="Search users...">
-            </div>
-
-            <div class="scrolling menu">
-                {{#each filter as |user|}}
-                    <a class="item" href="{{user.url}}">
-                        {{user.name}}
-                    </a>
-                {{/each}}
-            </div>
+<div class="card border-primary mb-3">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link {{menuH.claimed}}" href="?status=claimed">Claimed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{menuH.accepted}}" href="?status=accepted">Accepted</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{menuH.rejected}}" href="?status=rejected">Rejected</a>
+                </li>
+            </ul>
         </div>
     </div>
 
-    {{#if username}}
+    <div class="card-body">
+        <!--  -->
+        <div class="container">
+            {{#if claims}}
+            <div class="row">
+                <div class="col-md-8">
+                    {{#each claims as |claim|}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center">
+                                                <h1>
+                                                    <span>{{claim.bounty}}</span>
+                                                </h1>
+                                                <small>bounty points</small>
+                                                <hr />
+                                                {{#equal claim.status "claimed"}}
+                                                <span class="badge badge-pill badge-warning">{{claim.status}}</span>
+                                                {{#equal claim.user ../current }}
+                                                <a href="/claims/{{claim.id}}/edit" class="badge badge-info">Edit
+                                                    Claim</a>
+                                                {{/equal}}
+                                                {{/equal}}
+                                                {{#equal claim.status "accepted"}}
+                                                <span class="badge badge-pill badge-success">{{claim.status}}</span>
+                                                {{/equal}}
+                                                {{#equal claim.status "rejected"}}
+                                                <span class="badge badge-pill badge-danger">{{claim.status}}</span>
+                                                {{/equal}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <a href="/claims/view?username={{claim.user}}&status={{status}}">
+                                                <h5 class="card-title">{{claim.user}}</h5>
+                                            </a>
+                                            <p class="card-text">
+                                                {{#if claim.reason}}
+                                                <small class="text-muted">Reason: {{claim.reason}}</small>
+                                                {{/if}}
+                                                <small class="text-muted">Project : <a
+                                                        href="https://www.github.com/coding-blocks/">{{claim.repo}}</a></small>
+                                                <br />
+                                            </p>
+                                            <p class="card-text">
+                                                <span class="text-muted">Issue: <small><a
+                                                            href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                                                <br />
+
+                                                <span class="text-muted">Pull Request: <small><a
+                                                            href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                                                <br />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <br />
+                    {{/each}}
+                </div>
+                <div class="col-md-4">
+                    {{!-- <div class="collapse" id="collapseExample"> --}}
+                    <div id="collapseExample">
+                        {{!-- user search --}}
+                        <div class="card card-body">
+                            <div class="form-group">
+                                <select id="filter-user-selector" class="selectpicker form-control"
+                                    data-live-search="true">
+                                    <option data-icon="fa fa-user" selected disabled>Search User</option>
+                                    {{#each filter as |user|}}
+                                    <option data-token="{{user.url}}" value="{{user.url}}">
+                                        <a href="{{user.url}}">{{user.name}}</a>
+                                    </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{!-- user search ends --}}
+                            <br />
+                            {{!-- project search --}}
+                            <div class="form-group">
+                                <select id="filter-project-selector" class="selectpicker form-control"
+                                    data-live-search="true">
+                                    <option data-icon="fa fa-book" selected disabled>Search by Project</option>
+                                    {{#each filterproj as |project|}}
+                                    <option data-token="{{project.name}}" value="{{project.url}}">
+                                        <a href="{{project.url}}">{{project.name}}</a>
+                                    </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        {{!-- project search ends --}}
+                        <br />
+                        {{!--by  bounty amount search --}}
+                        {{!-- by bounty amount search --}}
+                    </div>
+
+                </div>
+            </div>
+            {{else}}
+            {{#if menuH.claimed}}
+            <div class="card card-body text-primary text-center">
+                There are no claimed bounties
+            </div>
+            {{else if menuH.accepted}}
+            <div class="card card-body text-primary text-center">
+                There are no accepted bounties
+            </div>
+            {{else if menuH.rejected}}
+            <div class="card card-body text-primary text-center">
+                There are no rejected bounties
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+    </div>
+    <!--  -->
+</div>
+
+{{#if claims}}
+{{!-- pagination starts --}}
+<div class="card-footer">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <div id="page-selection"></div>
+        </ul>
+    </nav>
+</div>
+{{!-- pagination ends --}}
+{{/if}}
+
+</div>
+<div>
+
+    <script>
+        $(document).ready(function () {
+            // #filter-user-selector
+            // #filter-project-selector
+            $("#filter-user-selector").on('change', function () {
+                window.location.href = $(this).val()
+            })
+
+            $("#filter-project-selector").on('change', function () {
+                window.location.href = $(this).val()
+            })
+
+        });
+
+        $(document).ready(function () {
+            let initialTrigger = false;
+            $('#page-selection').twbsPagination({
+            totalPages: {{pagination.length}},
+            visiblePages: 5,
+            startPage: {{page}},
+            next: 'Next',
+            prev: 'Prev',
+            onPageClick: function (event, page) {
+                    //fetch content and render here
+                    if (!initialTrigger) {
+                        initialTrigger = true;
+                    } else {
+                        {{#if projectname}}
+                        window.location.href = `?page=${page}&size={{size}}&status={{status}}&projectname={{projectname}}`
+                        {{else if username}}
+                        window.location.href = `?page=${page}&size={{size}}&status={{status}}&username={{username}}`
+                        {{else}}
+                        window.location.href = `?page=${page}&size={{size}}&status={{status}}`
+                        {{/if}}
+                    }
+                }
+            })
+        });
+    </script>
+
+    {{!-- <div align="right">
+        <div class="ui floating dropdown labeled icon button">
+            <i class="filter icon"></i>
+            {{#if username}}
+            <span id="username" class="text">{{username}}</span>
+            {{else}}
+            <span class="text">Filter Usernames</span>
+            {{/if}}
+            <div class="menu">
+                <div class="ui icon search input">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search users...">
+                </div>
+
+                <div class="scrolling menu">
+                    {{#each filter as |user|}}
+                    <a class="item" href="{{user.url}}">
+                        {{user.name}}
+                    </a>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        {{#if username}}
         <a href="?status={{status}}">
             <div id="resetUsername" class="ui icon button">
                 <i class="undo icon"></i>
             </div>
         </a>
-    {{/if}}
-
-    <div class="ui floating dropdown labeled icon button">
-        <i class="filter icon"></i>
-        {{#if projectname}}
-            <span id="projectName" class="text">{{projectname}}</span>
-        {{else}}
-            <span class="text">Filter Projects</span>
         {{/if}}
-        <div class="menu">
-            <div class="ui icon search input">
-                <i class="search icon"></i>
-                <input type="text" placeholder="Search Projects...">
-            </div>
 
-            <div class="scrolling menu">
-                {{#each filterproj as |project|}}
+        <div class="ui floating dropdown labeled icon button">
+            <i class="filter icon"></i>
+            {{#if projectname}}
+            <span id="projectName" class="text">{{projectname}}</span>
+            {{else}}
+            <span class="text">Filter Projects</span>
+            {{/if}}
+            <div class="menu">
+                <div class="ui icon search input">
+                    <i class="search icon"></i>
+                    <input type="text" placeholder="Search Projects...">
+                </div>
+
+                <div class="scrolling menu">
+                    {{#each filterproj as |project|}}
                     <a class="item" href="{{project.url}}">
                         {{project.name}}
                     </a>
-                {{/each}}
+                    {{/each}}
+                </div>
             </div>
         </div>
-    </div>
 
-    {{#if projectname}}
+        {{#if projectname}}
         <a href="?status={{status}}">
             <div id="resetProjectName" class="ui icon button">
                 <i class="undo icon"></i>
             </div>
         </a>
-    {{/if}}
-
-    <div class="ui floating dropdown labeled icon button">
-        <i class="filter icon"></i>
-        {{#if minbounty}}
-            <span class="text">{{minbounty}}-{{maxbounty}}</span>
-        {{else}}
-            <span class="text">Bounty Amount</span>
         {{/if}}
-        <div class="menu" id="gobounty">
-            <div class="ui search input">
-                <input type="text" id="min" readonly>
-                <input type="text" id="max" readonly>
-            </div>
-            <div class="ui btn-container">
-                <div id="bounty-range-slider"></div>
-                <a class="item" href="">Go</a>
+
+        <div class="ui floating dropdown labeled icon button">
+            <i class="filter icon"></i>
+            {{#if minbounty}}
+            <span class="text">{{minbounty}}-{{maxbounty}}</span>
+            {{else}}
+            <span class="text">Bounty Amount</span>
+            {{/if}}
+            <div class="menu" id="gobounty">
+                <div class="ui search input">
+                    <input type="text" id="min" readonly>
+                    <input type="text" id="max" readonly>
+                </div>
+                <div class="ui btn-container">
+                    <div id="bounty-range-slider"></div>
+                    <a class="item" href="">Go</a>
+                </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
-</div>
-<script>
+    <script>
+        $(function () {
+            //     $("#bounty-range-slider").slider({
+            //         range: true,
+            //         min: 0,
+            //         max: 5000,
+            //         values: [{{ minbounty }}, {{ maxbounty }} ],
+            //     slide: function (event, ui) {
+            //         $("#min").val(ui.values[0]);
+            //         $("#max").val(ui.values[1]);
+            //         $('#gobounty a').prop('href', '?minbounty=' + ui.values[0] + "&maxbounty=" + ui.values[1]);
+            //     }
+            //     });
+            // var min = $("#bounty-range-slider").slider("values", 0);
+            // var max = $("#bounty-range-slider").slider("values", 1)
+            // $("#min").val(min);
+            // $("#max").val(max);
+            // });
 
-    $( function() {
-        $( "#bounty-range-slider" ).slider({
-        range: true,
-        min: 0,
-        max: 5000,
-        values: [ {{minbounty}}, {{maxbounty}} ],
-        slide: function( event, ui ) {
-            $( "#min" ).val(ui.values[ 0 ]);
-            $( "#max" ).val(ui.values[ 1 ] );
-            $('#gobounty a').prop('href', '?minbounty='+ui.values[ 0 ]+"&maxbounty="+ui.values[ 1 ]);
-        }
+            // $('.ui.dropdown').dropdown('hide');
+
+            $('#resetUsername').click(function () {
+                $('#username').text('Filter Usernames')
+            })
+
+            // $('#resetProjectName').click(function () {
+            //     $('#projectName').text('Filter Projects')
+            // })
+
+            $('.ui.dropdown')
+                .dropdown({
+                    action: function (text, value, element) {
+                        element.click()
+                    }
+                })
         });
-        var min = $( "#bounty-range-slider" ).slider( "values", 0 );
-        var max = $( "#bounty-range-slider" ).slider( "values", 1 )
-        $( "#min" ).val(min);
-        $( "#max" ).val(max);
-    });
-
-    $('.ui.dropdown').dropdown('hide');
-
-    $('#resetUsername').click(function () {
-        $('#username').text('Filter Usernames')
-    })
-
-    $('#resetProjectName').click(function () {
-        $('#projectName').text('Filter Projects')
-    })
-
-    $('.ui.dropdown')
-      .dropdown({
-        action: function (text, value, element) {
-          element.click()
-        }
-      })
-</script>
-<div class="ui very relaxed divided items">
-  {{#if claims}}
-    {{#each claims as |claim|}}
-        <div class="four wide item">
-            <div class="image">
-                <a class="ui statistic" href="/claims/{{claim.id}}">
-                    <div class="value">
-                        {{claim.bounty}}
-                    </div>
-                    <div class="label">
-                        BOUNTY POINTS
-                    </div>
-                </a>
-            </div>
-            <div class="middle aligned content">
-                <a class="header user" href="/claims/view?username={{claim.user}}&status={{status}}">{{claim.user}}</a>
-                <div class="meta">
-                    <span>{{claim.repo}}</span>
-                </div>
-                <div class="description">
-                    <p>
-                        Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
-                    </p>
-                    <p>
-                        Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
-                    </p>
-                </div>
-                <div class="extra">
-                    {{#if claim.reason}}
-                        <p>Reason:  {{claim.reason}} </p>
-                    {{/if}}
-                    {{#equal claim.status "claimed"}}
-                        <div class="ui label yellow">{{claim.status}}</div>
-                        {{#equal claim.user ../current }}
-                            <a href="/claims/{{claim.id}}/edit" style="color:white">
-                                <div class="ui label blue">
-                                    Edit
-                                </div>
-                            </a>
-                        {{/equal}}
-                    {{/equal}}
-                    {{#equal claim.status "accepted"}}
-                        <div class="ui label green">{{claim.status}}</div>
-                    {{/equal}}
-                    {{#equal claim.status "rejected"}}
-                        <div class="ui label red">{{claim.status}}</div>
-                    {{/equal}}
-
-                </div>
-            </div>
-        </div>
-    {{/each}}
-   {{else}}
-      {{#if menuH.claimed}}
-        <br><h1><center>No more claimed bounties! </center></h1><br>
-      {{else if menuH.accepted}}
-        <br><h1><center>Accepted bounties not found! </center></h1><br>
-      {{else if menuH.rejected}}
-        <br><h1><center>Rejected bounties not found! </center></h1><br>
-      {{/if}}
-   {{/if}}
-
+    </script>
+    <div class="ui very relaxed divided items">
+        <!-- 
     <div class="pagination">
         <div class="ui pagination menu">
             {{#if isFirstPage}}
-                <a class="item disabled"> Prev</a>
+            <a class="item disabled"> Prev</a>
             {{else}}
-                {{#if projectname}}
-                    <a class="item"
-                       href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Prev </a>
-                {{else}}
-                    <a class="item"
-                       href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}">Prev </a>
-                {{/if}}
+            {{#if projectname}}
+            <a class="page-link" href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Prev
+            </a>
+            {{else}}
+            <a class="page-link" href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}">Prev </a>
+            {{/if}}
             {{/if}}
 
             {{#each pagination as |link index|}}
-                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
-                    {{add index 1}}
-                </a>
+            <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
+                {{add index 1}}
+            </a>
             {{/each}}
             {{#if isLastPage}}
-                <a class="item disabled"> Next </a>
+            <a class="item disabled"> Next </a>
             {{else}}
-                {{#if projectname}}
-                    <a class="item"
-                       href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Next </a>
-                {{else}}
-                    <a class="item"
-                       href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}">Next </a>
-                {{/if}}
+            {{#if projectname}}
+            <a class="page-link" href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Next
+            </a>
+            {{else}}
+            <a class="page-link" href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}">Next </a>
+            {{/if}}
             {{/if}}
         </div>
+    </div> -->
     </div>
-</div>
-<style>
-    .user.header {
-        color: red !important;
-    }
-
-    .user.header:hover {
-        color: grey !important;
-    }
-</style>
 </div>

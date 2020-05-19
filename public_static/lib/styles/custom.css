@@ -1,0 +1,51 @@
+nav {
+  margin-bottom: 20px;
+}
+
+body {
+  margin-bottom: 20px;
+}
+.stats-card-icon {
+  position: absolute;
+  left: 45%;
+  top: -20px;
+  border-radius: 50%;
+}
+
+.stats-card {
+  margin: 20px;
+}
+
+.stats-text {
+  padding-top: 50px;
+}
+
+.advanced-filter-button {
+  color: #e74e4b;
+  border-color: #e74e4b;
+  text-decoration: none;
+  background-color: transparent;
+  display: block;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+  text-align: center;
+  margin-bottom: -1px;
+  position: absolute;
+  right: 20px;
+}
+
+.set-aside {
+  position: absolute;
+  right: 20px;
+}
+
+.add-claim-error-card {
+  margin-bottom: 20px;
+}
+
+.update-claim-button {
+  position: absolute;
+  right: 20px;
+}
