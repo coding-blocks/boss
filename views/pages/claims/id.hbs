@@ -82,8 +82,15 @@
             <h2>Conflicting Claims</h2>
             {{#each conflictedClaims as |conflict|}}
                 <div class="ui card">
-                    <div class="content">
-                        <div class="header">Claim ID: {{ conflict.id }}</div>
+                    <div class="ui two column grid header">
+                        <div class="column">
+                            <div class="content">Claim ID: {{ conflict.id }}</div>
+                        </div>
+                        <div class="column">
+                           <div class="right floated content">
+                                <button class="ui blue right floated tiny button" id="conflict-button" onclick="viewConflict({{ conflict.id }})">View</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="content">
                         <h4 class="ui sub header">By : {{ conflict.user }}</h4>
@@ -91,14 +98,14 @@
                             <div class="event">
                                 <div class="content">
                                     <div class="summary">
-                                        <a href={{conflict.pullUrl}}>Pull Request</a>
+                                      <a href={{conflict.pullUrl}}>Open Pull Request</a>
                                     </div>
                                 </div>
                             </div>
                             <div class="event">
                                 <div class="content">
                                     <div class="summary">
-                                        <a href={{conflict.issueUrl}}>Issue</a>
+                                        <a href={{conflict.issueUrl}}>Open Issue</a>
                                     </div>
                                 </div>
                             </div>
@@ -109,6 +116,11 @@
         {{else}}
             <h2>No Conflicting Claims</h2>
         {{/if}}
+        <script>
+            function viewConflict(id) {
+                $('#conflict-button').click(window.location.href=id)
+            }
+        </script>
     </div>
 </div>
 

@@ -51,30 +51,32 @@ function getClaimById(claimId) {
 
 function getConflictedClaims(claim,issueUrlDetail) {
   projectName = '/' + issueUrlDetail.project + '/'
-  issueId = ['/' + issueUrlDetail.id + '/', '/' + issueUrlDetail.id ]
+  issueId = '/' + issueUrlDetail.id 
   return db.Claim.findAll({
     where : {
       [Op.and] : [
         {
-          issueUrl: {
-            [Op.like]: '%' + projectName + '%'
-          }
-        },
-        {
           [Op.or] : [
             {
               issueUrl: {
-                [Op.like]: '%' + issueId[0]
-              },
+                [Op.like]: '%' + projectName + '%' + issueId
+              }
+            },
+            {
               issueUrl: {
-                [Op.like]: '%' + issueId[1]
+                [Op.like]: '%' + projectName + '%' + issueId + '/'
               }
             }
           ]
         },
         {
+          pullUrl: {
+            [Op.like]: '%/pull/%'
+          }
+        },
+        {
           id : {
-            [Op.ne]: claim.id
+            [Op.ne] : claim.id
           }
         }
       ]
