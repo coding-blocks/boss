@@ -40,12 +40,20 @@ route.get('/logout', (req, res) => {
 })
 
 route.get('/leaderboard/:year?', (req, res) => {
-  const { year } = req.params
-  const options = {
-    page: req.query.page || 1,
-    size: req.query.size || config.PAGINATION_SIZE,
-    year
-  }
+    let { year } = req.params
+    const validYears = ['2020', '2019', '2018']
+  
+    if (!validYears.includes(year)) {
+        return res.status(404).render('pages/404');
+    } else {
+      year = parseInt(year)
+    }
+
+    const options = {
+        page: req.query.page || 1,
+        size: req.query.size || config.PAGINATION_SIZE,
+        year
+    }
 
   options.page = parseInt(options.page)
 
@@ -237,7 +245,7 @@ route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
     })
 })
 
-route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+route.get('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.getClaimById(req.params.id)
     .then(claim => {
       if (!claim) throw new Error('No claim found')
@@ -248,7 +256,7 @@ route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
     })
 })
 
-route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+route.post('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.updateClaim(req.params.id, req.body)
     .then(result => {
       res.redirect('/claims/view')
@@ -258,7 +266,7 @@ route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
     })
 })
 
-route.get('/claims/:id/delete', auth.ensureLoggedInGithub, (req, res) => {
+route.get('/claims/:id/delete', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.delClaim(req.params.id)
     .then(() => {
       res.redirect('/claims/view')
