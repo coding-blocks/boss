@@ -145,22 +145,52 @@ route.get('/claims/view', (req, res) => {
 
   du.getClaims(options)
     .then(data => {
-      const pagination = []
+      let pagination = []
       const filter = []
       const filterproj = []
       const lastPage = Math.ceil(data[1].count / options.size)
 
       for (var i = 1; i <= lastPage; i++) {
         if (options.username) {
-          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`)
+          pagination.push({link: `?page=${i}&size=${options.size}&status=${options.status}&username=${options.username}`, index: i})
         } else if (options.projectname) {
-          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`)
+          pagination.push({link: `?page=${i}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`, index: i})
         } else if (options.minbounty && options.maxbounty) {
           pagination.push(
-            `?page=${i}&size=${options.size}&status=${options.status}&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`
+            {link: `?page=${i}&size=${options.size}&status=${options.status}&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`, index: i}
           )
         } else {
-          pagination.push(`?page=${i}&size=${options.size}&status=${options.status}`)
+          pagination.push({link: `?page=${i}&size=${options.size}&status=${options.status}`, index: i})
+        }
+      }
+      
+      let newPagination = pagination.slice(Math.max(0, options.page - 3), Math.min(options.page + 2, pagination.length));
+      if(newPagination[0].index != 1){
+        newPagination.unshift({link: "#", index: ". . ."});
+        if (options.username) {
+          newPagination.unshift({link: `?page=${1}&size=${options.size}&status=${options.status}&username=${options.username}`, index: 1})
+        } else if (options.projectname) {
+          newPagination.unshift({link: `?page=${1}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`, index: 1})
+        } else if (options.minbounty && options.maxbounty) {
+          newPagination.unshift(
+            {link: `?page=${1}&size=${options.size}&status=${options.status}&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`, index: 1}
+          )
+        } else {
+          newPagination.unshift({link: `?page=${1}&size=${options.size}&status=${options.status}`, index: 1})
+        }
+      }
+      if(newPagination[newPagination.length -1].index != lastPage){
+        newPagination.push({link: "#", index: ". . ."});
+        if (options.username) {
+          newPagination.push({link: `?page=${lastPage}&size=${options.size}&status=${options.status}&username=${options.username}`, index: lastPage})
+        } else if (options.projectname) {
+          newPagination.push({link: `?page=${lastPage}&size=${options.size}&status=${options.status}&projectname=${options.projectname}`, index: lastPage})
+        } else if (options.minbounty && options.maxbounty) {
+          newPagination.push(
+            {link: `?page=${lastPage}&size=${options.size}&status=${options.status}&minbounty=${options.minbounty}&maxbounty=${options.maxbounty}`, index: lastPage}
+          )
+        } else {
+          newPagination.push({link: `?page=${lastPage}&size=${options.size}&status=${options.status}`, index: lastPage})
         }
       }
 
@@ -181,7 +211,7 @@ route.get('/claims/view', (req, res) => {
       res.render('pages/claims/view', {
         prevPage: options.page - 1,
         nextPage: options.page + 1,
-        pagination: pagination,
+        pagination: newPagination,
         isFirstPage: options.page == 1,
         isLastPage: lastPage == options.page,
         page: options.page,

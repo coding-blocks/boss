@@ -199,9 +199,9 @@
                 {{/if}}
             {{/if}}
 
-            {{#each pagination as |link index|}}
-                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
-                    {{add index 1}}
+            {{#each pagination as |page index|}}
+                <a class="item  {{#equal page.index ../page}} active  {{/equal}} " href="{{page.link}}">
+                    {{page.index}}
                 </a>
             {{/each}}
             {{#if isLastPage}}
