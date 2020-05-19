@@ -1,8 +1,13 @@
 module.exports = app => {
-  app.log('Yay, the boss bot was loaded!')
+  const adminUsernames = ['championswimmer','abhishek97','himankbhalla','jatinkatyal13','tathagat2006','hereisnaman','TdevM']
 
+  app.log('Yay, the boss bot was loaded!')
   app.on('issues.opened', async context => {
     const issue = context.payload.issue
+    if(adminUsernames.includes(issue.user.login)){
+      app.log(`Ignoring new issue ${issue.id} created by admin ${issue.user.login}`)
+      return
+    }
     if (!issue.closed_at) {
       app.log(`Issue Opened: ${issue.id}`)
 
@@ -20,6 +25,10 @@ Star ⭐ this project and [tweet](https://twitter.com/intent/tweet?text=I%20am%2
 
   app.on('pull_request.opened', async context => {
     const pr = context.payload.pull_request
+    if(adminUsernames.includes(issue.user.login)){
+      app.log(`Ignoring new pr ${pr.id} opened by admin ${pr.user.login}`)
+      return
+    }
     if (!pr.closed_at) {
       app.log(`Pull Request Opened: ${pr.id}`)
 
@@ -37,6 +46,10 @@ Star ⭐ this project and [tweet](https://twitter.com/intent/tweet?text=I%20am%2
 
   app.on('pull_request.closed', async context => {
     const pr = context.payload.pull_request
+    if(adminUsernames.includes(pr.user.login)){
+      app.log(`Ignoring pr ${issue.id} closing by admin ${pr.user.login}`)
+      return
+    }
     if (!!pr.merged_at) {
       app.log(`Pull Request Closed: ${pr.id}`)
 
