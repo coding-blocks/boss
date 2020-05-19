@@ -104,7 +104,7 @@ function createClaim(user, issueUrl, pullUrl, bounty, status) {
   })
 }
 
-async function getUserRank(options = {}, username) {
+async function getLoggedInUserStats(options = {}, username) {
   const period = getContestPeriod(options.year)
 
   const result = await db.Database.query(`with RankTable as (
@@ -177,7 +177,7 @@ module.exports = {
   delClaim,
   createClaim,
   getLeaderboard,
-  getUserRank,
+  getLoggedInUserStats,
   getClaimById,
   updateClaim,
   getCounts

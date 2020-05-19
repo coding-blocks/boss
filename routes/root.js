@@ -57,11 +57,13 @@ route.get('/leaderboard/:year?', async (req, res) => {
 
   options.page = parseInt(options.page)
 
-  let userRank = {};
+  let loggedInUser = {};
   const githubDetails = req.user && req.user.usergithub
   if (githubDetails) {
-    const result = await du.getUserRank(options, githubDetails.username)
-    userRank = result[0][0]
+    const result = await du.getLoggedInUserStats(options, githubDetails.username)
+    if (result[0][0]) {
+        loggedInUser = result[0][0]
+    }
   }
 
   du.getLeaderboard(options)
@@ -70,7 +72,7 @@ route.get('/leaderboard/:year?', async (req, res) => {
       const count = data[0]
       const rows = data[1][0]
       const lastPage = Math.ceil(count / options.size)
-      const showUserAtTop = userRank.user && !rows.some(row => row.user === userRank.user)
+      const showUserAtTop = loggedInUser.user && !rows.some(row => row.user === loggedInUser.user)
       rows.forEach((row) => {
           if(githubDetails && githubDetails.username === row.user){
               row.color = "#90ee90"
@@ -90,7 +92,7 @@ route.get('/leaderboard/:year?', async (req, res) => {
         page: options.page,
         pagination: pagination,
         userstats: rows,
-        userRank,
+        loggedInUser,
         showUserAtTop,
         menu: {
           leaderboard: 'active',

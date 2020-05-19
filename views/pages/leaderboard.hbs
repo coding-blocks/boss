@@ -10,16 +10,16 @@
     {{#if showUserAtTop}}
         <tr bgcolor="#90ee90">
             <td>
-                <div class="center aligned">{{userRank.rank}}</div>
+                <div class="center aligned">{{loggedInUser.rank}}</div>
             </td>
             <td class="red text center aligned">
-                <b class="ui "><a class="red text" href="http://github.com/{{userRank.user}}">{{userRank.user}}</b>
+                <b class="ui "><a class="red text" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
             </td>
             <td>
-                <div class="center aligned">{{userRank.bounty}}</div>
+                <div class="center aligned">{{loggedInUser.bounty}}</div>
             </td>
             <td>
-                <div class="center aligned">{{userRank.pulls}}</div>
+                <div class="center aligned">{{loggedInUser.pulls}}</div>
             </td>
         </tr>
     {{/if}}
