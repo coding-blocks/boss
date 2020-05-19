@@ -8,23 +8,25 @@
     </tr>
     </thead>
     {{#if isLoggedIn}}
-        <tr class="row">
-            <td>
-                <div class="center aligned">{{userRank.ranks}}(You)</div>
-            </td>
-            <td class="red text center aligned">
-                <b class="ui "><a class="red text" href="http://github.com/{{userRank.user}}">{{userRank.user}}</a></b>
-            </td>
-            <td>
-                <div class="center aligned">{{userRank.bounty}}</div>
-            </td>
-            <td>
-                <div class="center aligned">{{userRank.pulls}}</div>
-            </td>
-        </tr>
+        {{#if showOnTop}}
+            <tr>
+                <td>
+                    <div class="center aligned">{{userRank.ranks}}</div>
+                </td>
+                <td class="red text center aligned">
+                    <b class="ui "><a class="red text" href="http://github.com/{{userRank.user}}">{{userRank.user}}</a></b>
+                </td>
+                <td>
+                    <div class="center aligned">{{userRank.bounty}}</div>
+                </td>
+                <td>
+                    <div class="center aligned">{{userRank.pulls}}</div>
+                </td>
+            </tr>
+        {{/if}}
     {{/if}}
     {{#each userstats as |user|}}
-        <tr>
+        <tr style="background-color: {{user.bgColor}};">
             <td>
                 <div class="center aligned">{{user.ranks}}</div>
             </td>
@@ -63,8 +65,5 @@
 <style>
     .red.text {
         color: red;
-    }
-    .row{
-        background-color: #fcfff5;
     }
 </style>

@@ -56,16 +56,29 @@ route.get('/leaderboard/:year?', (req, res) => {
     }
 
   options.page = parseInt(options.page)
-  const isLoggedIn = req.user && req.user.usergithub;
-  du.getLeaderboard(options, (isLoggedIn ? req.user.usergithub.username : null))
+  const isLoggedIn = req.user && req.user.usergithub
+  const username = isLoggedIn ? req.user.usergithub.username.toString() : null
+
+  du.getLeaderboard(options, (isLoggedIn ? username : null))
     .then(data => {
       const pagination = []
       const count = data[0]
       const rows = data[1][0]
       const row = (isLoggedIn ? data[2][0][0] : null)
       const lastPage = Math.ceil(count / options.size)
-
+      
+      let showOnTop = true;
+      if(isLoggedIn)
+        for (var i = 0; i < rows.length; ++i) {
+          if (rows[i].user == username){
+            showOnTop = false;
+            rows[i].bgColor = "#fcfff5"
+          }else{
+            rows[i].bgColor = "#ffffff"
+          }
+        }
       for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
+      
       res.render('pages/leaderboard', {
         prevPage: options.page - 1,
         nextPage: options.page + 1,
@@ -77,6 +90,8 @@ route.get('/leaderboard/:year?', (req, res) => {
         userstats: rows,
         userRank: row,
         isLoggedIn,
+        showOnTop,
+        username,
         menu: {
           leaderboard: 'active',
           leaderboard2020: (year === '2020' || !year) && 'active',
