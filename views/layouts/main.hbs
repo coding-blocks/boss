@@ -1,218 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>BOSS</title>
-    <link rel='shortcut icon' type='image/x-icon' href='/images/favicon.ico' />
-    <link href="/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="/lib/semantic/semantic.min.css" rel="stylesheet">
-    <script src="/lib/jquery-3.2.1.min.js"></script>
-    <script src="/lib/jquery-ui/jquery-ui.min.js"></script>
-    <script src="/lib/semantic/semantic.js"></script>
-    <style>
-        .main.container {
-            margin-top: 6em;
-        }
-        .hamburger-container {
-            display: none !important;
-        }
-
-        .ui.secondary.pointing.menu {
-          padding-bottom: 10px;
-        }
-
-        .boss-link-container {
-          padding: 15px 0 0 15px !important;
-        }
-
-        .claims-active {
-            border-color: #fc4f4f !important;
-        }
-
-        #bounty-range-slider{
-            margin: 5px 10px 15px 10px;
-        }
-
-        .btn-container a{
-            padding: 10px;
-            background: #fc4f4f;
-            color: #fff;
-            display: block;
-        }
-
-        #gobounty input {
-            width:100px;
-        }
-
-        #gobounty{
-            text-align: center;
-            overflow: hidden;
-        } 
-
-        a.leaderboard-menu:not(.active) {
-          color: rgba(0,0,0,.87);
-        }
-
-        @media screen and (max-width: 768px) {
-            .menu.fluid {
-                overflow: hidden;
-                height: 50px;
-                -webkit-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-                -moz-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-                -o-transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-                transition: all 600ms cubic-bezier(0.86, 0, 0.07, 1);
-            }
-            .menu .ui.grid {
-                width: 100%;
-            }
-
-            .header.item {
-                border-bottom: 1px solid rgba(0,0,0,0.2);
-                height: 50px !important;
-            }
-
-            .hamburger-container {
-                display: block !important;
-                width: 21%;
-                position: relative;
-                /* margin-top: -4.5%; */
-                margin-right: -8%;
-            }
-
-            .hamburger {
-                position: relative !important;
-                /* position: absolute;
-                top: 50%;
-                left: 100%;
-                -webkit-transform: translate(-50%,-50%);
-                -moz-transform: translate(-50%,-50%);
-                -o-transform: translate(-50%,-50%);
-                transform: translate(-50%,-50%); */
-            }
-
-            .separator {
-                height: 50px;
-                width: 1px;
-                background: rgba(0,0,0,0.2);
-                /* margin-top: -5%; */
-                vertical-align: top;
-            }
-
-            .boss-link-container {
-                padding: 3px 0 0 15px !important;
-                width: 85% !important;
-            }
-
-            .boss-link-container a {
-                width: 75%;
-            }
-
-            .boss-link {
-                display: block;
-                text-align: center;
-                margin-left: 5%;
-                /* margin-top: -4.5%; */
-            }
-        }
-    </style>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var toggle = 0;
-            $(".hamburger-container").click(function() {
-                if (!toggle) {
-                    $(".menu.fluid").css({
-                        'height': '100%'
-                    });
-                    toggle = 1;
-                } else {
-                    $(".menu.fluid").css({
-                        'height': '50px'
-                    });
-                    toggle = 0;
-                }
-            });
-        });
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>BOSS</title>
+  <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css" type="text/css" />
+  <script src="/lib/bootstrap/js/jquery-3.4.1.js"></script>
+  <script src="/lib/bootstrap/js/popper.js"></script>
+  <script src="/lib/bootstrap/js/bootstrap.js"></script>
+  <link rel='shortcut icon' type='image/x-icon' href='/images/favicon.ico' />
 </head>
+
 <body>
-
-<div class="ui top fixed huge fluid secondary pointing stackable menu red">
-  <div class="item boss-link-container">
-    <a href="/">
-      <img height="38" class="boss-link" src="/images/bosslogo.png">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">
+      <img src="/images/bosslogo.png" width="210" height="40" class="d-inline-block align-top" alt="">
     </a>
-    <div class="separator"></div>
-    <span class="column hamburger-container">
-                <center>
-                    <i class="bars icon hamburger"></i>
-                </center>
-            </span>
-  </div>
-  <div class="ui stackable container">
-    <div class="ui simple dropdown item">
-      <i class="checked calendar icon"></i>
-        <a class="leaderboard-menu {{menu.leaderboard}}" href="/leaderboard/">Leaderboard</a>
-      <i class="dropdown icon"></i>
-      <div class="menu">
-        <a class="item {{menu.leaderboard2020}}" href="/leaderboard/2020">2020</a>
-        <a class="item {{menu.leaderboard2019}}" href="/leaderboard/2019">2019</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/leaderboard" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Leaderboard
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/leaderboard/2020">2020</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/leaderboard/2019">2019</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Claims
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/claims/view">View</a>
+
+            {{#if isAuthenticated}}
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/claims/add">Add</a>
+            {{/if}}
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/stats">Stats</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://lab.codingblocks.com/boss">Information</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+            href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql+org%3Ahereisnaman">Open
+            Issue</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/CV4fUna">Discord</a>
+        </li>
+
+      </ul>
+      {{#if isAuthenticated}}
+      <div class="ml-auto px-2">
+        <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
+        <button type="button" class="btn btn-primary my-2 my-sm-0"><a style="color:white"
+            href="/logout">Logout</a></button>
       </div>
-    </div>
-
-    <div class="ui simple dropdown item {{menu.claims}}">
-      <i class="checked calendar icon"></i>
-      Claim
-      <i class="dropdown icon"></i>
-      <div class="menu">
-        <a class="item {{menu.claims_view}}" href="/claims/view">View</a>
-        {{#if isAuthenticated}}
-          <a class="item {{menu.claims_add}}" href="/claims/add">Add</a>
-        {{/if}}
+      {{else}}
+      <div class="ml-auto px-2">
+        <button type="button" class="btn btn-primary my-2 my-sm-0"><a style="color:white"
+            href="/login">Login</a></button>
       </div>
+      {{/if}}
     </div>
-    <a class="item {{menu.stats}}" href="/stats">
-      <i class="chart line icon"></i>
-      Stats
-    </a>
-    <a class="item" href="http://lab.codingblocks.com/boss" target="_blank" >
-      <i class="info icon"></i>
-      Information
-    </a>
-    <a class="item" href="https://github.com/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+archived%3Afalse+label%3Aboss+org%3Acoding-blocks+org%3Ajagql+org%3Ahereisnaman" target="_blank" >
-      <i class="github icon"></i>
-      Open Issues
-    </a>
-    <a class="item" href="https://discord.gg/CV4fUna" target="_blank" >
-      <i class="discord icon"></i> Discord
-    </a>
-  </div>
-  {{#if isAuthenticated}}
-    <div class="item right">
-      <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
-    </div>
-    <a class="item" href="/logout">Logout </a>
-  {{else}}
-    <a class="right item" href="/login">Login</a>
-  {{/if}}
-
-</div>
+  </nav>
 
 
-<div class="ui main container">
+  <div class="ui main container">
     {{{body}}}
-</div>
+  </div>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-83327907-10"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-83327907-10"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'UA-83327907-10');
-</script>
+    gtag('config', 'UA-83327907-10');
+  </script>
 
 
 </body>
+
 </html>

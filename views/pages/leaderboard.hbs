@@ -1,73 +1,74 @@
-<table class="ui celled padded table red unstackable">
+<table class="table">
     <thead>
-    <tr>
-        <th>Rank</th>
-        <th>Github User</th>
-        <th>Points</th>
-        <th>PRs Submitted</th>
-    </tr>
+        <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Github User</th>
+            <th scope="col">Points</th>
+            <th scope="col">PRs Submitted</th>
+        </tr>
     </thead>
     {{#if showUserAtTop}}
-        <tr class="colored-row">
-            <td>
-                <div class="center aligned">{{loggedInUser.rank}}</div>
-            </td>
-            <td class="red text center aligned">
-                <b class="ui "><a class="red text" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
-            </td>
-            <td>
-                <div class="center aligned">{{loggedInUser.bounty}}</div>
-            </td>
-            <td>
-                <div class="center aligned">{{loggedInUser.pulls}}</div>
-            </td>
-        </tr>
+    <tr class="colored-row">
+        <td>
+            <div class="center aligned" scope="row">{{loggedInUser.rank}}</div>
+        </td>
+        <td class="red text center aligned">
+            <b class="ui "><a class="red text" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
+        </td>
+        <td>
+            <div class="center aligned">{{loggedInUser.bounty}}</div>
+        </td>
+        <td>
+            <div class="center aligned">{{loggedInUser.pulls}}</div>
+        </td>
+    </tr>
     {{/if}}
     {{#each userstats as |user|}}
-        {{#if user.isColored}}
-            <tr class="colored-row">
+    {{#if user.isColored}}
+    <tr class="colored-row">
         {{else}}
-            <tr>
+    <tr>
         {{/if}}
-            <td>
-                <div class="center aligned">{{user.rank}}</div>
-            </td>
-            <td class="red text center aligned">
-                <b class="ui "><a class="red text" href="http://github.com/{{user.user}}">{{user.user}}</b>
-            </td>
-            <td>
-                <div class="center aligned">{{user.bounty}}</div>
-            </td>
-            <td>
-                <div class="center aligned">{{user.pulls}}</div>
-            </td>
-        </tr>
+        <td>
+            <div class="center aligned" scope="row">{{user.rank}}</div>
+        </td>
+        <td class="red text center aligned">
+            <b class="ui "><a class="red text" href="http://github.com/{{user.user}}">{{user.user}}</b>
+        </td>
+        <td>
+            <div class="center aligned">{{user.bounty}}</div>
+        </td>
+        <td>
+            <div class="center aligned">{{user.pulls}}</div>
+        </td>
+    </tr>
     {{/each}}
 </table>
 
 <div class="ui pagination menu">
-               {{#if isFirstPage}}
-                    <a class="item disabled"> Prev</a>
-                {{else}}
-                    <a class="item" href="?page={{prevPage}}&size={{size}}" >Prev </a>
-                {{/if}}
+    {{#if isFirstPage}}
+    <a class="item disabled"> Prev</a>
+    {{else}}
+    <a class="item" href="?page={{prevPage}}&size={{size}}">Prev </a>
+    {{/if}}
 
-                {{#each pagination as |link index|}}
-                    <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} "  href="{{link}}" >
-                        {{add index 1}}
-                    </a>
-                {{/each}}
-                {{#if isLastPage}}
-                    <a class="item disabled"> Next </a>
-                {{else}}
-                    <a class="item" href="?page={{nextPage}}&size={{size}}" >Next </a>
-                {{/if}}
-            </div>
+    {{#each pagination as |link index|}}
+    <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
+        {{add index 1}}
+    </a>
+    {{/each}}
+    {{#if isLastPage}}
+    <a class="item disabled"> Next </a>
+    {{else}}
+    <a class="item" href="?page={{nextPage}}&size={{size}}">Next </a>
+    {{/if}}
+</div>
 
 <style>
     .red.text {
         color: red;
     }
+
     .colored-row {
         background-color: #fcfff5;
     }

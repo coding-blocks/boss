@@ -1,29 +1,28 @@
-<form class="ui form" method="post" action="/claims/add">
-    <div class="field">
+<form style="margin-top:10xp" method="post" action="/claims/add">
+    <div class="form-group">
         <label>Github Username</label>
-        <input name="user" placeholder="Github Username, eg. 'championswimmer'" disabled type="text" value="{{user.usergithub.username}}" required>
+        <input class="form-control" name="user" placeholder="Github Username, eg. 'championswimmer'" disabled
+            type="text" value="{{user.usergithub.username}}" required>
     </div>
-    <div class="field">
+    <div class="form-group">
         <label>Issue URL</label>
-        <input name="issue_url" placeholder="URL of Issue, eg. http://github.com/org/proj/issue/7" type="url" required>
+        <input class="form-control" name="issue_url" placeholder="URL of Issue, eg. http://github.com/org/proj/issue/7"
+            type="url" required>
     </div>
-    <div class="field">
+    <div class="form-group">
         <label>Pull Request URL</label>
-        <input name="pull_url" placeholder="URL of PR, eg. http://github.com/org/proj/pull/7" type="url" required>
+        <input class="form-control" name="pull_url" placeholder="URL of PR, eg. http://github.com/org/proj/pull/7"
+            type="url" required>
     </div>
-    <div class="field">
+    <div class="form-group">
         <label>Bounty</label>
-        <input name="bounty" placeholder="Bounty Points you are claiming for this" type="number" required>
+        <input class="form-control" name="bounty" placeholder="Bounty Points you are claiming for this" type="number"
+            required>
     </div>
-    <div class="ui container center aligned">
-        <button class="ui button green" type="submit">Submit</button>
-
-    </div>
+    <button class="btn btn-success" type="submit">Submit</button>
 </form>
 {{#if error}}
-<div class="ui negative message">
-  <div class="header" align="center">
+<div class="alert alert-danger">
     {{error}}
-  </div>
 </div>
 {{/if}}
