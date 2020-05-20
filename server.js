@@ -44,7 +44,7 @@ app.set('view engine', 'hbs')
 app.locals.clientId = secrets.clientId
 app.locals.callbackURL = secrets.callbackURL
 
-exphbs.registerHelper('equal', function(lvalue, rvalue, options) {
+exphbs.registerHelper('equal', function (lvalue, rvalue, options) {
   if (arguments.length < 3)
     throw new Error('Handlebars Helper equal needs 2 parameters')
   if (lvalue != rvalue) {
@@ -54,7 +54,7 @@ exphbs.registerHelper('equal', function(lvalue, rvalue, options) {
   }
 })
 
-exphbs.registerHelper('add', function(lvalue, rvalue, options) {
+exphbs.registerHelper('add', function (lvalue, rvalue, options) {
   if (arguments.length < 3)
     throw new Error('Handlebars Helper equal needs 2 parameters')
   return parseInt(lvalue) + parseInt(rvalue)
@@ -77,6 +77,9 @@ app.use('/api', routes.api)
 app.use(auth.injectAuthData)
 app.use('/', routes.root)
 app.use('/', express.static(path.join(__dirname, 'public_static')))
+app.get('/new', (req, res) => {
+  res.render('pages/claims/id')
+})
 app.get('*', (req, res) => res.render('pages/404'))
 
 module.exports = {

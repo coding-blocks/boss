@@ -1,84 +1,100 @@
-<div class="stats">
-    <div class="ui two stackable cards">
-        <div class="ui fluid card">
-            <div class="ui statistic">
-                <div class="value" data-count="{{totalclaimed}}">
+<p style="text-align: center;line-height:0;margin-top:20px" class="h1"><br><img
+        src="https://img.icons8.com/color/80/000000/statistics.png" />
+    Statisitcs</p>
+<hr style="border:3px solid #FF0000">
+<div class="row stats">
+    <div class="col-sm-6 cards-margin">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title value" data-count="{{totalclaimed}}">
                     0
-                </div>
+                </h5>
                 <br />
-                <div class="label">
-                    Total Bounties Claimed
-                </div>
+                <p class="card-text">
+                    TOTAL BOUNTIES CLAIMED
+                </p>
             </div>
+
         </div>
-        <div class="ui fluid card">
-            <div class="ui statistic">
-                <div class="value" data-count="{{accepted}}">
+    </div>
+    <div class="col-sm-6">
+        <div class="card h-70 ">
+            <div class="card-body">
+                <h5 class="card-title value" data-count="{{accepted}}">
                     0
-                </div>
+                </h5>
                 <br />
-                <div class="label">
-                    Total Bounties Accepted
-                </div>
+                <p class="card-text">
+                    TOTAL BOUNTIES ACCEPTED
+                </p>
             </div>
+
         </div>
-        <div class="ui fluid card">
-            <div class="ui statistic">
-                <div class="value" data-count="{{claims}}">
+    </div>
+    <div class="col-sm-6">
+        <div class="card h-70 ">
+            <div class="card-body">
+                <h5 class="card-title value" data-count="{{claims}}">
                     0
-                </div>
+                </h5>
                 <br />
-                <div class="label">
-                    Total Claims Filed
-                </div>
+                <p class="card-text">
+                    TOTAL CLAIMS FILED
+                </p>
             </div>
+
         </div>
-        <div class="ui fluid card">
-            <div class="ui statistic">
-                <div class="value" data-count="{{participants}}">
+    </div>
+    <div class="col-sm-6">
+        <div class="card h-70 ">
+            <div class="card-body">
+                <h5 class="card-title value" data-count="{{participants}}">
                     0
-                </div>
+                </h5>
                 <br />
-                <div class="label">
-                    Total Participants
-                </div>
+                <p class="card-text">
+                    TOTAL PARTICIPANTS
+                </p>
             </div>
+
         </div>
     </div>
 </div>
 
 <style>
     .stats {
-        margin-top: 125px;
+        margin-top: 20px;
     }
-    .ui.statistic {
-        display: block;
-        margin: 0 auto !important;
+
+    .cards-margin {
+        margin-bottom: 20px;
     }
-    .ui.fluid.card .value {
-        padding-top: 50px !important;
+
+    .card {
+        text-align: center
     }
-    .ui.fluid.card .label {
-        padding-top: 25px !important;
-        padding-bottom: 50px !important;
+
+    .card-title {
+        font-size: 40pt;
+
     }
 </style>
 
 <script type="text/javascript">
-$('.value').each(function() {
-    var $this = $(this),
-    countTo = $this.attr('data-count');
-    $({ countNum: $this.text()}).animate({
-        countNum: countTo
-    }, {
-        duration: 500,
-        easing:'linear',
-        step: function() {
-            $this.text(Math.floor(this.countNum));
-    },
-    complete: function() {
-        $this.text(this.countNum);
-    }
+    $('.value').each(function () {
+        var $this = $(this),
+            countTo = $this.attr('data-count');
+        $({ countNum: $this.text() }).animate({
+            countNum: countTo
+        }, {
+            duration: 500,
+            easing: 'linear',
+            step: function () {
+                $this.text(Math.floor(this.countNum));
+            },
+            complete: function () {
+                $this.text(this.countNum);
+            }
+        });
     });
-});
 </script>

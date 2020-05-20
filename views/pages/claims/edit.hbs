@@ -1,34 +1,45 @@
-<form class="ui form" method="post" action="/claims/{{claim.id}}/edit">
-    <div class="field">
+<p style="text-align: center;line-height:0;margin-top:20px" class="h1"><br><img
+        src="https://img.icons8.com/office/80/000000/edit.png" />
+    Edit claim</p>
+<hr style="border:3px solid #FF0000">
+<form style="margin-top:20px" class="ui form" method="post" action="/claims/{{claim.id}}/edit">
+    <div class="form-group">
         <label>Github Username</label>
-        <input name="user" placeholder="Github Username, eg. 'championswimmer'" disabled type="text" value="{{claim.user}}" required>
+        <input class="form-control" name="user" placeholder="Github Username, eg. 'championswimmer'" disabled
+            type="text" value="{{claim.user}}" required>
     </div>
-    <div class="field">
+    <div class="form-group">
         <label>Issue URL</label>
-        <input name="issue_url" placeholder="URL of Issue, eg. http://github.com/org/proj/issue/7" type="url" value="{{claim.issueUrl}}" required>
+        <input class="form-control" name="issue_url" placeholder="URL of Issue, eg. http://github.com/org/proj/issue/7"
+            type="url" value="{{claim.issueUrl}}" required>
     </div>
-    <div class="field">
+    <div class="form-group">
         <label>Pull Request URL</label>
-        <input name="pull_url" placeholder="URL of PR, eg. http://github.com/org/proj/pull/7" type="url" value="{{claim.pullUrl}}" required>
+        <input class="form-control" name="pull_url" placeholder="URL of PR, eg. http://github.com/org/proj/pull/7"
+            type="url" value="{{claim.pullUrl}}" required>
     </div>
-    <div class="field">
+    <div class="form-group">
         <label>Bounty</label>
-        <input name="bounty" placeholder="Bounty Points you are claiming for this" type="number" value="{{claim.bounty}}" required>
+        <input class="form-control" name="bounty" placeholder="Bounty Points you are claiming for this" type="number"
+            value="{{claim.bounty}}" required>
     </div>
     <div style="margin-top: 25px">
-        <div style="display: inline !important;" class="ui container center aligned">
-            <button class="ui button green" type="submit">Save</button>
+        <div style="display: inline !important;">
+            <button class="btn btn-success" type="submit">Save</button>
         </div>
-        <div style="display: inline !important;"  class="ui container center aligned">
-            <a href="/claims/{{claim.id}}/delete" class="ui button red">Delete
-            </a>
+        <div style="display: inline !important;">
+            <button class="btn btn-danger">
+                <a href="/claims/{{claim.id}}/delete" style="color:white">Delete
+                </a>
+            </button>
+
         </div>
     </div>
 </form>
 {{#if error}}
-<div class="ui negative message">
-  <div class="header" align="center">
-    {{error}}
-  </div>
+<div class=" ui negative message">
+    <div class="header" align="center">
+        {{error}}
+    </div>
 </div>
 {{/if}}
