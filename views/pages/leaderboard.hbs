@@ -1,21 +1,45 @@
 <table class="ui celled padded table red unstackable">
     <thead>
     <tr>
+        <th>Rank</th>
         <th>Github User</th>
         <th>Points</th>
         <th>PRs Submitted</th>
     </tr>
     </thead>
+    {{#if showUserAtTop}}
+        <tr class="colored-row">
+            <td>
+                <div class="center aligned">{{loggedInUser.rank}}</div>
+            </td>
+            <td class="red text center aligned">
+                <b class="ui "><a class="red text" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
+            </td>
+            <td>
+                <div class="center aligned">{{loggedInUser.bounty}}</div>
+            </td>
+            <td>
+                <div class="center aligned">{{loggedInUser.pulls}}</div>
+            </td>
+        </tr>
+    {{/if}}
     {{#each userstats as |user|}}
-        <tr>
+        {{#if user.isColored}}
+            <tr class="colored-row">
+        {{else}}
+            <tr>
+        {{/if}}
+            <td>
+                <div class="center aligned">{{user.rank}}</div>
+            </td>
             <td class="red text center aligned">
                 <b class="ui "><a class="red text" href="http://github.com/{{user.user}}">{{user.user}}</b>
             </td>
             <td>
-                <div class="right aligned">{{user.bounty}}</div>
+                <div class="center aligned">{{user.bounty}}</div>
             </td>
             <td>
-                <div class="right aligned">{{user.pulls}}</div>
+                <div class="center aligned">{{user.pulls}}</div>
             </td>
         </tr>
     {{/each}}
@@ -43,9 +67,5 @@
 <style>
     .red.text {
         color: red;
-    }
-
-    .right.aligned {
-        text-align: center;
     }
 </style>

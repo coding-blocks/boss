@@ -7,7 +7,9 @@
     "theme:clean": "rimraf public_static/lib/semantic/*",
     "theme:build": "cd semantic && gulp build",
     "theme:watch": "cd semantic && gulp watch",
-    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
+    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha",
+    "probot": "probot",
+    "probot:run": "probot run ./bot/index.js --private-key ./bot_key.pem"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
@@ -17,15 +19,16 @@
     "express-basic-auth": "^1.0.2",
     "express-hbs": "^1.0.4",
     "express-session": "^1.15.2",
+    "semantic-ui": "^2.3.1",
     "natives": "^1.1.6",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
     "passport-oauth2": "^1.4.0",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
+    "probot": "^9.11.3",
     "request-promise": "^4.2.1",
     "rsvp": "^3.5.0",
-    "semantic-ui": "^2.3.1",
     "sequelize": "^4.44.4"
   },
   "name": "boss-backend",
@@ -41,6 +44,8 @@
     "gulp": "^3.9.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
-    "request": "^2.81.0"
+    "nock": "^12.0.3",
+    "request": "^2.81.0",
+    "smee-client": "^1.1.0"
   }
 }

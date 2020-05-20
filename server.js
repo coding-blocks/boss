@@ -21,7 +21,7 @@ const sess = {
   secret: secrets.secret,
   resave: true,
   saveUninitialized: true,
-  cookie: { maxAge: 360000, secure: false, httpOnly: false }
+  cookie: { maxAge: 86400000, secure: false, httpOnly: false }
 }
 
 const app = express()

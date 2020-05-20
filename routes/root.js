@@ -39,15 +39,32 @@ route.get('/logout', (req, res) => {
   res.redirect('/')
 })
 
-route.get('/leaderboard/:year?', (req, res) => {
-  const { year } = req.params
-  const options = {
-    page: req.query.page || 1,
-    size: req.query.size || config.PAGINATION_SIZE,
-    year
-  }
+route.get('/leaderboard/:year?', async (req, res) => {
+    let { year } = req.params
+    const validYears = ['2020', '2019', '2018']
+  
+    if (!validYears.includes(year)) {
+        return res.status(404).render('pages/404');
+    } else {
+      year = parseInt(year)
+    }
+
+    const options = {
+        page: req.query.page || 1,
+        size: req.query.size || config.PAGINATION_SIZE,
+        year
+    }
 
   options.page = parseInt(options.page)
+
+  let loggedInUser = {};
+  const githubDetails = req.user && req.user.usergithub
+  if (githubDetails) {
+    const result = await du.getLoggedInUserStats(options, githubDetails.username)
+    if (result[0][0]) {
+        loggedInUser = result[0][0]
+    }
+  }
 
   du.getLeaderboard(options)
     .then(data => {
@@ -55,7 +72,12 @@ route.get('/leaderboard/:year?', (req, res) => {
       const count = data[0]
       const rows = data[1][0]
       const lastPage = Math.ceil(count / options.size)
-
+      const showUserAtTop = loggedInUser.user && !rows.some(row => row.user === loggedInUser.user)
+      rows.forEach((row) => {
+          if(githubDetails && githubDetails.username === row.user){
+              row.isColored = true
+          }
+      })
       for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
 
       res.render('pages/leaderboard', {
@@ -67,6 +89,8 @@ route.get('/leaderboard/:year?', (req, res) => {
         page: options.page,
         pagination: pagination,
         userstats: rows,
+        loggedInUser,
+        showUserAtTop,
         menu: {
           leaderboard: 'active',
           leaderboard2020: (year === '2020' || !year) && 'active',
@@ -237,7 +261,7 @@ route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
     })
 })
 
-route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+route.get('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.getClaimById(req.params.id)
     .then(claim => {
       if (!claim) throw new Error('No claim found')
@@ -248,7 +272,7 @@ route.get('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
     })
 })
 
-route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
+route.post('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.updateClaim(req.params.id, req.body)
     .then(result => {
       res.redirect('/claims/view')
@@ -258,7 +282,7 @@ route.post('/claims/:id/edit', auth.ensureLoggedInGithub, (req, res) => {
     })
 })
 
-route.get('/claims/:id/delete', auth.ensureLoggedInGithub, (req, res) => {
+route.get('/claims/:id/delete', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
   du.delClaim(req.params.id)
     .then(() => {
       res.redirect('/claims/view')
