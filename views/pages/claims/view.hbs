@@ -20,10 +20,10 @@
             {{/if}}
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                </form>
-                <div class="scrolling menu">
+
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+                <div class="customClassForDropDown">
                     {{#each filter as |user|}}
                     <a class="dropdown-item" href="{{user.url}}">
                         {{user.name}}
@@ -53,10 +53,10 @@
             {{/if}}
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                </form>
-                <div class="scrolling menu">
+
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+
+                <div class="customClassForDropDown">
                     {{#each filterproj as |project|}}
                     <a class="dropdown-item" href="{{project.url}}">
                         {{project.name}}
@@ -172,41 +172,50 @@
         </h1><br>
         {{/if}}
         {{/if}}
-
-        <div class="pagination">
-            <div class="ui pagination menu">
+        <nav style="margin-top: 10px">
+            <ul class="pagination justify-content-center">
                 {{#if isFirstPage}}
-                <a class="item disabled"> Prev</a>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
                 {{else}}
                 {{#if projectname}}
-                <a class="item"
-                    href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Prev
-                </a>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}"
+                        tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
                 {{else}}
-                <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}">Prev
-                </a>
-                {{/if}}
-                {{/if}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}"
+                        tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
 
+                {{/if}}
+                {{/if}}
                 {{#each pagination as |link index|}}
-                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
-                    {{add index 1}}
-                </a>
+                <li class="page-item {{#equal (add index 1) ../page}} active  {{/equal}}"><a class="page-link"
+                        href="{{link}}">{{add index 1}}</a></li>
                 {{/each}}
                 {{#if isLastPage}}
-                <a class="item disabled"> Next </a>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
                 {{else}}
                 {{#if projectname}}
-                <a class="item"
-                    href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Next
-                </a>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Next</a>
+                </li>
                 {{else}}
-                <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}">Next
-                </a>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}">Next</a>
+                </li>
                 {{/if}}
                 {{/if}}
-            </div>
-        </div>
+            </ul>
+        </nav>
     </div>
 </div>
 </div>
@@ -256,6 +265,11 @@
 
     .user.header:hover {
         color: grey !important;
+    }
+
+    .customClassForDropDown {
+        height: 100px;
+        overflow-y: auto;
     }
 </style>
 </div>
