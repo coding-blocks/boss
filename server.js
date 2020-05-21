@@ -77,9 +77,6 @@ app.use('/api', routes.api)
 app.use(auth.injectAuthData)
 app.use('/', routes.root)
 app.use('/', express.static(path.join(__dirname, 'public_static')))
-app.get('/new', (req, res) => {
-  res.render('pages/claims/id')
-})
 app.get('*', (req, res) => res.render('pages/404'))
 
 module.exports = {
