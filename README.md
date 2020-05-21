@@ -31,6 +31,8 @@ cd ./boss
 
 ```
 
+Note: *Use Node v10.18.0 (LTS) and NPM v6.13.0 for installing all project dependency packages.*  
+
 3. Install all project dependency packages via NPM
 
 ```
