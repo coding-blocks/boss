@@ -48,6 +48,36 @@ function getClaimById(claimId) {
   return db.Claim.findById(claimId)
 }
 
+function getAllAdmins() {
+  return db.User.findAll({
+    where: {
+      role: 'admin'
+    }
+  })
+}
+
+function makeUserAdmin(oneauthId) {
+  return db.User.update(
+    {
+      role: 'admin'
+    },
+    {
+      where: {
+        oneauthId: oneauthId
+      },
+      returning: true
+    }
+  )
+}
+
+function getUserByOneAuthId(oneauthId) {
+  return db.User.findOne({
+    where: {
+      oneauthId: oneauthId
+    }
+  })
+}
+
 function delClaim(claimId) {
   if (isNaN(+claimId)) {
     return res.send('ClaimId must be a number')
@@ -180,5 +210,8 @@ module.exports = {
   getLoggedInUserStats,
   getClaimById,
   updateClaim,
-  getCounts
+  getCounts,
+  getAllAdmins,
+  makeUserAdmin,
+  getUserByOneAuthId
 }

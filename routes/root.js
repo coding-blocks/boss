@@ -29,6 +29,37 @@ route.get('/', (req, res) => {
   }
 })
 
+route.get('/admin', auth.adminOnly, (req,res) => {
+  du.getAllAdmins()
+    .then((users) => {
+      res.render('pages/admin',{ users })
+    })
+    .catch((error) => {
+      console.log(error)
+      res.send('Error in getting Admin Page')
+    })
+})
+
+route.post('/admin', auth.adminOnly, (req,res) => {
+  du.getUserByOneAuthId(req.body.id)
+  .then((user) => {
+    console.log(user)
+    if(!user) {
+      res.redirect('/admin')
+    }
+    else {
+      du.makeUserAdmin(req.body.id)
+        .then((result) => {
+          res.redirect('/admin')
+        })
+        .catch((error) => {
+          console.log(error)
+          res.send('Error in making Admin')
+        })
+    }
+  })
+})
+
 route.get('/login', passport.authenticate('oauth2', { failureRedirect: '/failed' }))
 route.get('/login/callback', passport.authenticate('oauth2', { failureRedirect: '/failed' }), (req, res) => {
   res.redirect('/')

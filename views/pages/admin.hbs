@@ -1,0 +1,23 @@
+<div class="ui two column grid">
+    <div class="column">
+        <h2>BOSS Admins :</h2>
+        {{#each users as |user|}}
+            <div>{{ user.oneauthId }}</div>
+        {{/each}}
+    </div>
+    <div class="column">
+        <h2>Create new Admin</h2>
+        <form class="ui form" action="/admin" method="POST">
+            <div class="field">
+                <h4>Oneauth Id</h4>
+                <input type="text" name="id" placeholder="Oneauth Id">
+            </div>
+            <button class="ui blue tiny button" type="submit">Submit</button>
+        </form>
+        {{#if hasMsg}}
+            <div class="ui visible message">
+                <p>{{msg}}</p>
+            </div>
+        {{/if}}
+    </div>
+</div>
