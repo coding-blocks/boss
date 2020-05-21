@@ -57,28 +57,12 @@ function getConflictedClaims(claim,issueUrlDetail) {
       [Op.and] : [
         {
           [Op.or] : [
-            {
-              issueUrl: {
-                [Op.like]: '%' + projectName + '%' + issueId
-              }
-            },
-            {
-              issueUrl: {
-                [Op.like]: '%' + projectName + '%' + issueId + '/'
-              }
-            }
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
           ]
         },
-        {
-          pullUrl: {
-            [Op.like]: '%/pull/%'
-          }
-        },
-        {
-          id : {
-            [Op.ne] : claim.id
-          }
-        }
+        { pullUrl: { [Op.like]: '%/pull/%' } },
+        { id : { [Op.ne] : claim.id } }
       ]
     }
   })

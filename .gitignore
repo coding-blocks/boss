@@ -48,7 +48,6 @@ fabric.properties
 .idea
 secrets.json
 audit/*.json
-public_static/
 
 # IDE
 /.vscode/
