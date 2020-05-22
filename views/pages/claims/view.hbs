@@ -201,23 +201,6 @@
         });
     });
 
-
-    $('.ui.dropdown').dropdown('hide');
-
-    $('#resetUsername').click(function () {
-        $('#username').text('Filter Usernames')
-    })
-
-    $('#resetProjectName').click(function () {
-        $('#projectName').text('Filter Projects')
-    })
-
-    $('.ui.dropdown')
-        .dropdown({
-            action: function (text, value, element) {
-                element.click()
-            }
-        })
 </script>
 
 <style>
