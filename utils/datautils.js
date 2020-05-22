@@ -72,9 +72,7 @@ function updateClaim(claimId, { status, reason, bounty }) {
     {
       status: status,
       reason: reason,
-      bounty: bounty,
-      issueUrl: issue_url,
-      pullUrl: pull_url
+      bounty: bounty
     },
     {
       where: {
