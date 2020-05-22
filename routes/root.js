@@ -78,7 +78,17 @@ route.get('/leaderboard/:year?', async (req, res) => {
               row.isColored = true
           }
       })
-      for (var i = 1; i <= lastPage; i++) pagination.push(`?page=${i}&size=${options.size}`)
+      for (var i = 1; i <= lastPage; i++) pagination.push({link: `?page=${i}&size=${options.size}`, index: i})
+
+      let newPagination = pagination.slice(Math.max(0, options.page - 3), Math.min(options.page + 2, pagination.length));
+      if(newPagination[0].index != 1){
+        newPagination.unshift({link: "#", index: ". . ."});
+        newPagination.unshift({link: `?page=${1}&size=${options.size}`, index: 1})
+      }
+      if(newPagination[newPagination.length -1].index != lastPage){
+        newPagination.push({link: "#", index: ". . ."});
+        newPagination.push({link: `?page=${lastPage}&size=${options.size}`, index: lastPage});
+      }
 
       res.render('pages/leaderboard', {
         prevPage: options.page - 1,
@@ -87,7 +97,7 @@ route.get('/leaderboard/:year?', async (req, res) => {
         isLastPage: options.page == lastPage,
         size: options.size,
         page: options.page,
-        pagination: pagination,
+        pagination: newPagination,
         userstats: rows,
         loggedInUser,
         showUserAtTop,

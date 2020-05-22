@@ -52,9 +52,9 @@
                     <a class="item" href="?page={{prevPage}}&size={{size}}" >Prev </a>
                 {{/if}}
 
-                {{#each pagination as |link index|}}
-                    <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} "  href="{{link}}" >
-                        {{add index 1}}
+                {{#each pagination as |link|}}
+                    <a class="item  {{#equal link.index ../page}} active  {{/equal}} "  href="{{link.link}}" >
+                        {{link.index}}
                     </a>
                 {{/each}}
                 {{#if isLastPage}}
