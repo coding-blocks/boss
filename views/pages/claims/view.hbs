@@ -9,7 +9,11 @@
         <div style="margin-bottom:10px">
             <select style="margin-bottom:10px" id="filter-user-selector" class="selectpicker" data-live-search="true"
                 onchange="location = this.options[this.selectedIndex].value;">
+                {{#if username}}
+                <option data-icon="fa fa-user" selected disabled>{{username}}</option>
+                {{else}}
                 <option data-icon="fa fa-user" selected disabled>Search User</option>
+                {{/if}}
                 {{#each filter as |user|}}
                 <option data-token="{{user.url}}" value="{{user.url}}">
                     <a href="{{user.url}}">{{user.name}}</a>
@@ -21,7 +25,11 @@
         <div style="margin-bottom:10px">
             <select style="margin-bottom:10px" class="selectpicker" data-live-search="true"
                 onchange="location = this.options[this.selectedIndex].value;">
+                {{#if projectname}}
+                <option data-icon="fa fa-book" selected disabled>{{projectname}}</option>
+                {{else}}
                 <option data-icon="fa fa-book" selected disabled>Search by Project</option>
+                {{/if}}
                 {{#each filterproj as |project|}}
                 <option data-token="{{project.name}}" value="{{project.url}}">
                     {{project.name}}
@@ -32,50 +40,35 @@
 
 
         <div style="margin-bottom: 10px;" class="dropdown">
+            {{#if minbounty}}
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                {{maxbounty}} - {{minbounty}}
+            </button>
+            {{else}}
             <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 Bounty
             </button>
+            {{/if}}
 
-
-            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <div style="margin:10px">
                     <div class="form">
                         <div class="form-row" id="gobounty">
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" value={{minbounty}} readOnly>
+                                <input type="text" class="form-control" id="min" value={{minbounty}}>
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" class="form-control" value={{maxbounty}} readOnly>
+                                <input type="text" class="form-control" id="max" value={{maxbounty}}>
                             </div>
                         </div>
                     </div>
-                    <div class="ui btn-container">
-                        <input type="range" class="custom-range" min={{minbounty}} max={{maxbounty}} step="5"
-                            id="slider">
-                        <button class="btn btn-success" id="bounty-submit">Submit</button>
-                    </div>
+                    <button class="btn btn-success" id="bounty-submit">Submit</button>
                 </div>
 
-            </div> -->
-            <div class="ui floating dropdown labeled icon button">
-                <i class="filter icon"></i>
-                {{#if minbounty}}
-                <span class="text">{{minbounty}}-{{maxbounty}}</span>
-                {{else}}
-                <span class="text">Bounty Amount</span>
-                {{/if}}
-                <div class="menu" id="gobounty">
-                    <div class="ui search input">
-                        <input type="text" id="min" readonly>
-                        <input type="text" id="max" readonly>
-                    </div>
-                    <div class="ui btn-container">
-                        <div id="bounty-range-slider"></div>
-                        <a class="item" href="">Go</a>
-                    </div>
-                </div>
             </div>
+
         </div>
     </div>
     <div class="col-lg-8 col-sm-12">
@@ -201,33 +194,12 @@
 <script>
     $(document).ready(function () {
         $("#bounty-submit").click(function () {
-            console.log("FUnciton Called")
-            var slidertext = $('#slider').val()
-            console.log(slidertext)
-            if (slidertext <= 0) {
-                $('#dropdownMenuButton').text('Bounty')
-            }
-            $('#dropdownMenuButton').text(slidertext)
-        });
-    });
-    $(function () {
-        $("#bounty-range-slider").slider({
-            range: true,
-            min: 0,
-            max: 5000,
-            values: [{{ minbounty }}, {{ maxbounty }} ],
-        slide: function (event, ui) {
-            $("#min").val(ui.values[0]);
-            $("#max").val(ui.values[1]);
-            $('#gobounty a').prop('href', '?minbounty=' + ui.values[0] + "&maxbounty=" + ui.values[1]);
-        }
-        });
-    var min = $("#bounty-range-slider").slider("values", 0);
-    var max = $("#bounty-range-slider").slider("values", 1)
-    $("#min").val(min);
-    $("#max").val(max);
-    });
+            var min = $('#min').val()
+            var max = $('#max').val()
+            location = "?minbounty=" + min + "&maxbounty=" + max
 
+        });
+    });
 
 
     $('.ui.dropdown').dropdown('hide');
