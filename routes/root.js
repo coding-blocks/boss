@@ -40,9 +40,9 @@ route.get('/logout', (req, res) => {
 })
 
 route.get('/leaderboard/:year?', async (req, res) => {
-    let { year } = req.params
+    let { year = '2020'} = req.params
     const validYears = ['2020', '2019', '2018']
-  
+    
     if (!validYears.includes(year)) {
         return res.status(404).render('pages/404');
     } else {
