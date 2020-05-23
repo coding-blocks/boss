@@ -39,14 +39,13 @@ route.get('/logout', (req, res) => {
   res.redirect('/')
 })
 
-route.get('/leaderboard',(req,res) => {
-  res.redirect('/leaderboard/2020')
-})
-
 route.get('/leaderboard/:year?', async (req, res) => {
     let { year } = req.params
     const validYears = ['2020', '2019', '2018']
   
+    if(year === undefined)
+      year = '2020'
+
     if (!validYears.includes(year)) {
         return res.status(404).render('pages/404');
     } else {
