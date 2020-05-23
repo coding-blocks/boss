@@ -20,6 +20,9 @@
                 </option>
                 {{/each}}
             </select>
+            {{#if username}}
+            <a href="?status={{status}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+            {{/if}}
         </div>
 
         <div style="margin-bottom:10px">
@@ -36,18 +39,24 @@
                 </option>
                 {{/each}}
             </select>
+            {{#if projectname}}
+            <a href="?status={{status}}"><i class="fa fa-times" aria-hidden="true"></i></a>
+            {{/if}}
         </div>
 
 
         <div style="margin-bottom: 10px;" class="dropdown">
             {{#if minbounty}}
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+            <button style="color: grey" class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-filter" aria-hidden="true"></i>
                 {{maxbounty}} - {{minbounty}}
             </button>
+            <a href="?status={{status}}"><i class="fa fa-times" aria-hidden="true"></i></a>
             {{else}}
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+            <button style="color: grey" data-icon="fa fa-filter" class="btn btn-light dropdown-toggle" type="button"
+                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-filter" aria-hidden="true"></i>
                 Bounty
             </button>
             {{/if}}
