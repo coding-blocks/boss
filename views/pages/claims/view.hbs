@@ -4,12 +4,12 @@
     <a class="item {{menuH.rejected}}" href="?status=rejected">Rejected</a>
 </div>
 <div align="right">
-    <div class="ui floating dropdown labeled icon button">
+    <div class="ui floating dropdown labeled icon button centre">
         <i class="filter icon"></i>
         {{#if username}}
-            <span id="username" class="text">{{username}}</span>
+        <span id="username" class="text">{{username}}</span>
         {{else}}
-            <span class="text">Filter Usernames</span>
+        <span class="text">Filter Usernames</span>
         {{/if}}
         <div class="menu">
             <div class="ui icon search input">
@@ -19,28 +19,28 @@
 
             <div class="scrolling menu">
                 {{#each filter as |user|}}
-                    <a class="item" href="{{user.url}}">
-                        {{user.name}}
-                    </a>
+                <a class="item" href="{{user.url}}">
+                    {{user.name}}
+                </a>
                 {{/each}}
             </div>
         </div>
     </div>
 
     {{#if username}}
-        <a href="?status={{status}}">
-            <div id="resetUsername" class="ui icon button">
-                <i class="undo icon"></i>
-            </div>
-        </a>
+    <a href="?status={{status}}">
+        <div id="resetUsername" class="ui icon button">
+            <i class="undo icon"></i>
+        </div>
+    </a>
     {{/if}}
 
-    <div class="ui floating dropdown labeled icon button">
+    <div class="ui floating dropdown labeled icon button centre">
         <i class="filter icon"></i>
         {{#if projectname}}
-            <span id="projectName" class="text">{{projectname}}</span>
+        <span id="projectName" class="text">{{projectname}}</span>
         {{else}}
-            <span class="text">Filter Projects</span>
+        <span class="text">Filter Projects</span>
         {{/if}}
         <div class="menu">
             <div class="ui icon search input">
@@ -50,28 +50,28 @@
 
             <div class="scrolling menu">
                 {{#each filterproj as |project|}}
-                    <a class="item" href="{{project.url}}">
-                        {{project.name}}
-                    </a>
+                <a class="item" href="{{project.url}}">
+                    {{project.name}}
+                </a>
                 {{/each}}
             </div>
         </div>
     </div>
 
     {{#if projectname}}
-        <a href="?status={{status}}">
-            <div id="resetProjectName" class="ui icon button">
-                <i class="undo icon"></i>
-            </div>
-        </a>
+    <a href="?status={{status}}">
+        <div id="resetProjectName" class="ui icon button">
+            <i class="undo icon"></i>
+        </div>
+    </a>
     {{/if}}
 
-    <div class="ui floating dropdown labeled icon button">
+    <div class="ui floating dropdown labeled icon button centre">
         <i class="filter icon"></i>
         {{#if minbounty}}
-            <span class="text">{{minbounty}}-{{maxbounty}}</span>
+        <span class="text">{{minbounty}}-{{maxbounty}}</span>
         {{else}}
-            <span class="text">Bounty Amount</span>
+        <span class="text">Bounty Amount</span>
         {{/if}}
         <div class="menu" id="gobounty">
             <div class="ui search input">
@@ -88,22 +88,22 @@
 </div>
 <script>
 
-    $( function() {
-        $( "#bounty-range-slider" ).slider({
-        range: true,
-        min: 0,
-        max: 5000,
-        values: [ {{minbounty}}, {{maxbounty}} ],
-        slide: function( event, ui ) {
-            $( "#min" ).val(ui.values[ 0 ]);
-            $( "#max" ).val(ui.values[ 1 ] );
-            $('#gobounty a').prop('href', '?minbounty='+ui.values[ 0 ]+"&maxbounty="+ui.values[ 1 ]);
+    $(function () {
+        $("#bounty-range-slider").slider({
+            range: true,
+            min: 0,
+            max: 5000,
+            values: [{{ minbounty }}, {{ maxbounty }} ],
+        slide: function (event, ui) {
+            $("#min").val(ui.values[0]);
+            $("#max").val(ui.values[1]);
+            $('#gobounty a').prop('href', '?minbounty=' + ui.values[0] + "&maxbounty=" + ui.values[1]);
         }
         });
-        var min = $( "#bounty-range-slider" ).slider( "values", 0 );
-        var max = $( "#bounty-range-slider" ).slider( "values", 1 )
-        $( "#min" ).val(min);
-        $( "#max" ).val(max);
+    var min = $("#bounty-range-slider").slider("values", 0);
+    var max = $("#bounty-range-slider").slider("values", 1)
+    $("#min").val(min);
+    $("#max").val(max);
     });
 
     $('.ui.dropdown').dropdown('hide');
@@ -117,103 +117,110 @@
     })
 
     $('.ui.dropdown')
-      .dropdown({
-        action: function (text, value, element) {
-          element.click()
-        }
-      })
+        .dropdown({
+            action: function (text, value, element) {
+                element.click()
+            }
+        })
 </script>
 <div class="ui very relaxed divided items">
-  {{#if claims}}
+    {{#if claims}}
     {{#each claims as |claim|}}
-        <div class="four wide item">
-            <div class="image">
-                <a class="ui statistic" href="/claims/{{claim.id}}">
-                    <div class="value">
-                        {{claim.bounty}}
-                    </div>
-                    <div class="label">
-                        BOUNTY POINTS
+    <div class="four wide item">
+        <div class="image">
+            <a class="ui statistic" href="/claims/{{claim.id}}">
+                <div class="value">
+                    {{claim.bounty}}
+                </div>
+                <div class="label">
+                    BOUNTY POINTS
+                </div>
+            </a>
+        </div>
+        <div class="middle aligned content">
+            <a class="header user" href="/claims/view?username={{claim.user}}&status={{status}}">{{claim.user}}</a>
+            <div class="meta">
+                <span>{{claim.repo}}</span>
+            </div>
+            <div class="description">
+                <p>
+                    Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
+                </p>
+                <p>
+                    Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
+                </p>
+            </div>
+            <div class="extra">
+                {{#if claim.reason}}
+                <p>Reason: {{claim.reason}} </p>
+                {{/if}}
+                {{#equal claim.status "claimed"}}
+                <div class="ui label yellow">{{claim.status}}</div>
+                {{#equal claim.user ../current }}
+                <a href="/claims/{{claim.id}}/edit" style="color:white">
+                    <div class="ui label blue">
+                        Edit
                     </div>
                 </a>
-            </div>
-            <div class="middle aligned content">
-                <a class="header user" href="/claims/view?username={{claim.user}}&status={{status}}">{{claim.user}}</a>
-                <div class="meta">
-                    <span>{{claim.repo}}</span>
-                </div>
-                <div class="description">
-                    <p>
-                        Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
-                    </p>
-                    <p>
-                        Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
-                    </p>
-                </div>
-                <div class="extra">
-                    {{#if claim.reason}}
-                        <p>Reason:  {{claim.reason}} </p>
-                    {{/if}}
-                    {{#equal claim.status "claimed"}}
-                        <div class="ui label yellow">{{claim.status}}</div>
-                        {{#equal claim.user ../current }}
-                            <a href="/claims/{{claim.id}}/edit" style="color:white">
-                                <div class="ui label blue">
-                                    Edit
-                                </div>
-                            </a>
-                        {{/equal}}
-                    {{/equal}}
-                    {{#equal claim.status "accepted"}}
-                        <div class="ui label green">{{claim.status}}</div>
-                    {{/equal}}
-                    {{#equal claim.status "rejected"}}
-                        <div class="ui label red">{{claim.status}}</div>
-                    {{/equal}}
+                {{/equal}}
+                {{/equal}}
+                {{#equal claim.status "accepted"}}
+                <div class="ui label green">{{claim.status}}</div>
+                {{/equal}}
+                {{#equal claim.status "rejected"}}
+                <div class="ui label red">{{claim.status}}</div>
+                {{/equal}}
 
-                </div>
             </div>
         </div>
+    </div>
     {{/each}}
-   {{else}}
-      {{#if menuH.claimed}}
-        <br><h1><center>No more claimed bounties! </center></h1><br>
-      {{else if menuH.accepted}}
-        <br><h1><center>Accepted bounties not found! </center></h1><br>
-      {{else if menuH.rejected}}
-        <br><h1><center>Rejected bounties not found! </center></h1><br>
-      {{/if}}
-   {{/if}}
+    {{else}}
+    {{#if menuH.claimed}}
+    <br>
+    <h1>
+        <center>No more claimed bounties! </center>
+    </h1><br>
+    {{else if menuH.accepted}}
+    <br>
+    <h1>
+        <center>Accepted bounties not found! </center>
+    </h1><br>
+    {{else if menuH.rejected}}
+    <br>
+    <h1>
+        <center>Rejected bounties not found! </center>
+    </h1><br>
+    {{/if}}
+    {{/if}}
 
     <div class="pagination">
         <div class="ui pagination menu">
             {{#if isFirstPage}}
-                <a class="item disabled"> Prev</a>
+            <a class="item disabled"> Prev</a>
             {{else}}
-                {{#if projectname}}
-                    <a class="item"
-                       href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Prev </a>
-                {{else}}
-                    <a class="item"
-                       href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}">Prev </a>
-                {{/if}}
+            {{#if projectname}}
+            <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Prev
+            </a>
+            {{else}}
+            <a class="item" href="?page={{prevPage}}&size={{size}}&status={{status}}&username={{username}}">Prev </a>
+            {{/if}}
             {{/if}}
 
             {{#each pagination as |link index|}}
-                <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
-                    {{add index 1}}
-                </a>
+            <a class="item  {{#equal (add index 1) ../page}} active  {{/equal}} " href="{{link}}">
+                {{add index 1}}
+            </a>
             {{/each}}
             {{#if isLastPage}}
-                <a class="item disabled"> Next </a>
+            <a class="item disabled"> Next </a>
             {{else}}
-                {{#if projectname}}
-                    <a class="item"
-                       href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Next </a>
-                {{else}}
-                    <a class="item"
-                       href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}">Next </a>
-                {{/if}}
+            {{#if projectname}}
+            <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}&projectname={{projectname}}">Next
+            </a>
+            {{else}}
+            <a class="item" href="?page={{nextPage}}&size={{size}}&status={{status}}&username={{username}}">Next </a>
+            {{/if}}
             {{/if}}
         </div>
     </div>
@@ -226,5 +233,14 @@
     .user.header:hover {
         color: grey !important;
     }
+
+    @media only screen and (max-width: 768px){
+        .centre {
+            margin: 1rem auto !important;
+            display: table !important;
+            width: 60%; 
+        }
+    }
+
 </style>
 </div>
