@@ -20,6 +20,7 @@
 
         .ui.secondary.pointing.menu {
           padding-bottom: 10px;
+          background-color: white;
         }
 
         .boss-link-container {
@@ -52,6 +53,10 @@
 
         a.leaderboard-menu:not(.active) {
           color: rgba(0,0,0,.87);
+        }
+
+        a.item:hover{
+          color: #4399e4 !important;
         }
 
         @media screen and (max-width: 768px) {
@@ -122,7 +127,7 @@
             $(".hamburger-container").click(function() {
                 if (!toggle) {
                     $(".menu.fluid").css({
-                        'height': '100%'
+                        'height': 'fit-content'
                     });
                     toggle = 1;
                 } else {
@@ -136,7 +141,6 @@
     </script>
 </head>
 <body>
-
 <div class="ui top fixed huge fluid secondary pointing stackable menu red">
   <div class="item boss-link-container">
     <a href="/">
