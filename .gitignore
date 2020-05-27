@@ -52,8 +52,4 @@ audit/*.json
 # IDE
 /.vscode/
 
-# Semantic UI
-# /semantic/*
-# !/semantic/src/site
-# !/semantic/src/theme.config
 bot_key.pem
