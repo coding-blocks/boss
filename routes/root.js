@@ -12,6 +12,8 @@ const du = require('./../utils/datautils')
 
 const { BOSS_END_DATE, BOSS_START_DATE } = require('./../utils/consts')
 
+const { getUrlDetails } = require('../utils/urlUtils')
+
 const route = new Router()
 
 let adminUser = process.env.BOSS_ADMIN || config.secrets.BOSS_DB_USER
@@ -218,6 +220,35 @@ route.get('/claims/view', (req, res) => {
     })
 })
 
+route.get('/claims/:id', auth.adminOnly, (req, res) => {
+  du.getClaimById(req.params.id)
+    .then(claim => {
+      if (!claim) throw new Error('No claim found')
+      pullUrlDetail = getUrlDetails(claim["pullUrl"])
+      issueUrlDetail = getUrlDetails(claim["issueUrl"])
+      if(pullUrlDetail.type === "pull") {
+        du.getConflictedClaims(claim,issueUrlDetail)
+          .then(conflictedClaims => {
+            console.log(conflictedClaims)
+            if(!conflictedClaims)
+              res.render('pages/claims/id',{claim, hasConflict: false })
+            else
+              res.render('pages/claims/id',{ claim, hasConflict: true, conflictedClaims })
+          })
+          .catch(err => {
+            res.send('Error getting conflicting claims')
+          })
+      }
+      else {
+        res.render('pages/claims/id', { claim, hasConflict: false })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
+    })
+})
+
 route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   res.render('pages/claims/add', {
     menu: {
@@ -225,17 +256,6 @@ route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
       claims: 'claims-active'
     }
   })
-})
-
-route.get('/claims/:id', auth.adminOnly, (req, res) => {
-  du.getClaimById(req.params.id)
-    .then(claim => {
-      if (!claim) throw new Error('No claim found')
-      res.render('pages/claims/id', { claim })
-    })
-    .catch(err => {
-      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
-    })
 })
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {

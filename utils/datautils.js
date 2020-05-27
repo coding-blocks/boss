@@ -4,6 +4,7 @@
 const db = require('./db')
 const fs = require('fs')
 const consts = require('./consts')
+const {Op} = require('sequelize')
 
 function getContestPeriod(year) {
   if (year)
@@ -55,6 +56,25 @@ function delClaim(claimId) {
   return db.Claim.destroy({
     where: {
       id: claimId
+    }
+  })
+}
+
+function getConflictedClaims(claim,issueUrlDetail) {
+  projectName = '/' + issueUrlDetail.project + '/'
+  issueId = '/' + issueUrlDetail.id 
+  return db.Claim.findAll({
+    where : {
+      [Op.and] : [
+        {
+          [Op.or] : [
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
+          ]
+        },
+        { pullUrl: { [Op.like]: '%/pull/%' } },
+        { id : { [Op.ne] : claim.id } }
+      ]
     }
   })
 }
@@ -180,5 +200,6 @@ module.exports = {
   getLoggedInUserStats,
   getClaimById,
   updateClaim,
-  getCounts
+  getCounts,
+  getConflictedClaims
 }
