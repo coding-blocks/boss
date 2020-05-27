@@ -13,10 +13,26 @@
                 </tr>
             </thead>
             <tbody>
+                {{#if showUserAtTop}}
+                    <tr>
+                        <td>
+                            <p class="right-aligned align-middle">{{loggedInUser.rank}}</p>
+                        </td>
+                        <td scope="row">
+                            <b><a class="text-primary align-middle" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
+                        </td>
+                        <td>
+                            <p class="right-aligned align-middle">{{loggedInUser.bounty}}</p>
+                        </td>
+                        <td>
+                            <p class="text-secondary right-aligned align-middle">{{loggedInUser.pulls}}</p>
+                        </td>
+                    </tr>
+                {{/if}}
                 {{#each userstats as |user|}}
                 <tr>
                     <td>
-                        <p class="right-aligned align-middle">#</p>
+                        <p class="right-aligned align-middle">{{user.rank}}</p>
                     </td>
                     <td scope="row">
                         <b><a class="text-primary align-middle" href="http://github.com/{{user.user}}">{{user.user}}</b>
