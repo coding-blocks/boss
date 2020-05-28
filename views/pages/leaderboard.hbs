@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <table class="table table-hover">
-            <thead class="leaderboard-head">
+            <thead>
                 <tr>
                     <th scope="col">Rank</th>
                     <th scope="col">Github Username</th>
@@ -14,18 +14,18 @@
             </thead>
             <tbody>
                 {{#if showUserAtTop}}
-                    <tr>
+                    <tr class="bg-dark shadow-lg highlight">
                         <td>
-                            <p class="right-aligned align-middle">{{loggedInUser.rank}}</p>
+                            <p class="text-primary right-aligned align-middle font-weight-bold">{{loggedInUser.rank}}</p>
                         </td>
                         <td scope="row">
-                            <b><a class="text-primary align-middle" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
+                            <b><a class="text-primary align-middle font-weight-bold" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
                         </td>
                         <td>
-                            <p class="right-aligned align-middle">{{loggedInUser.bounty}}</p>
+                            <p class="text-primary right-aligned align-middle font-weight-bold">{{loggedInUser.bounty}}</p>
                         </td>
                         <td>
-                            <p class="text-secondary right-aligned align-middle">{{loggedInUser.pulls}}</p>
+                            <p class="text-primary right-aligned align-middle font-weight-bold">{{loggedInUser.pulls}}</p>
                         </td>
                     </tr>
                 {{/if}}

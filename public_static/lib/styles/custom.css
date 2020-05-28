@@ -49,3 +49,22 @@ body {
   position: absolute;
   right: 20px;
 }
+
+tr.highlight {
+  border-radius: 1.5rem;
+  box-shadow: red;
+}
+
+tr.highlight td:first-child {
+  -moz-border-radius-topleft: 2rem;
+  -moz-border-radius-bottomleft: 2rem;
+  -webkit-border-top-left-radius: 2rem;
+  -webkit-border-bottom-left-radius: 2rem;
+}
+
+tr.highlight td:last-child {
+  -moz-border-radius-topright: 2rem;
+  -moz-border-radius-bottomright: 2rem;
+  -webkit-border-top-right-radius: 2rem;
+  -webkit-border-bottom-right-radius: 2rem;
+}
