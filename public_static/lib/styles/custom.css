@@ -49,3 +49,7 @@ body {
   position: absolute;
   right: 20px;
 }
+
+.dropdown-toggle.btn-light:focus {
+  outline: none !important;
+}
