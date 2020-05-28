@@ -1,42 +1,4 @@
 <div class="row">
-    <div class="col-md-5">
-        <form method="post" action="/claims/{{claim.id}}/update">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <input name="user" type="number" class="form-control" id="bounty" type="number"
-                                value="{{claim.bounty}}">
-                            <small id="bountyHelper" class="form-text text-muted">Final Bounty to award to user</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <select name="status" id="updateStatus" class="custom-select form-control">
-                                <option value="claimed" selected>Claimed</option>
-                                <option value="rejected">Rejected</option>
-                                <option value="accepted">Accepted</option>
-                                <option value="disputed">Disputed</option>
-                                <option value="revoked">Revoked</option>
-                            </select>
-                            <small id="updateStatusHelper" class="form-text text-muted">Update status of claim</small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <textarea name="reason" class="form-control" id="reason" rows="3"></textarea>
-                            <small id="reason" class="form-text text-muted">Update Reason</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="card-footer text-center">
-                <button type="submit" class="btn btn-primary btn-sm">Update Claim Status</a>
-            </div>
-        </form>
-    </div>
     <div class="col-md-7 ">
         <div class="card">
             <div class="card-body">
@@ -88,6 +50,91 @@
                 </div>
             </div>
         </div>
+        {{#if hasConflict}}
+            <h3 style="margin-top: 1em;">Conflicted claims</h3>
+            {{#each conflictedClaims as |conflictedClaim|}}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h1>
+                                    <span>{{conflictedClaim.bounty}}</span>
+                                </h1>
+                                <small>bounty points</small>
+                                <hr />
+                                <button class="btn btn-primary btn-sm" onclick="OpenConflict({{conflictedClaim.id}})">View conflict</button>
+                                <script>
+                                    function OpenConflict(conflictId) {
+                                        window.location.href = conflictId
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <a href="/claims/view?username={{conflictedClaim.user}}&status={{status}}">
+                                <h5 class="card-title">{{conflictedClaim.user}}</h5>
+                            </a>
+                            <p class="card-text">
+                                <small class="text-muted">Project : <a
+                                href="https://www.github.com/coding-blocks/">{{conflictedClaim.repo}}</a></small>
+                                <br />
+                            </p>
+                            <p class="card-text">
+                                <span class="text-muted">Issue: <small><a
+                                        href="{{conflictedClaim.issueUrl}}">{{conflictedClaim.issueUrl}}</a></small></span>
+                                <br />
+
+                                <span class="text-muted">Pull Request: <small><a
+                                        href="{{conflictedClaim.pullUrl}}">{{conflictedClaim.pullUrl}}</a></small></span>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+        {{else}}
+            <h3 style="margin-top: 1em;">No Conflicted claims</h3>
+        {{/if}}
+    </div>
+    <div class="col-md-5">
+        <form method="post" action="/claims/{{claim.id}}/update">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <input name="user" type="number" class="form-control" id="bounty" type="number"
+                                value="{{claim.bounty}}">
+                            <small id="bountyHelper" class="form-text text-muted">Final Bounty to award to user</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <select name="status" id="updateStatus" class="custom-select form-control">
+                                <option value="claimed" selected>Claimed</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="disputed">Disputed</option>
+                                <option value="revoked">Revoked</option>
+                            </select>
+                            <small id="updateStatusHelper" class="form-text text-muted">Update status of claim</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <textarea name="reason" class="form-control" id="reason" rows="3"></textarea>
+                            <small id="reason" class="form-text text-muted">Update Reason</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary btn-sm">Update Claim Status</a>
+            </div>
+        </form>
     </div>
 </div>
 {{!-- <div class="four wide item">

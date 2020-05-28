@@ -229,7 +229,6 @@ route.get('/claims/:id', auth.adminOnly, (req, res) => {
       if(pullUrlDetail.type === "pull") {
         du.getConflictedClaims(claim,issueUrlDetail)
           .then(conflictedClaims => {
-            console.log(conflictedClaims)
             if(!conflictedClaims)
               res.render('pages/claims/id',{claim, hasConflict: false })
             else
