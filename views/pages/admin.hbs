@@ -1,23 +1,22 @@
-<div class="ui two column grid">
-    <div class="column">
-        <h2>BOSS Admins :</h2>
-        {{#each users as |user|}}
-            <div>{{ user.oneauthId }}</div>
-        {{/each}}
+<div class="row">
+    <div class="col-md-6">
+        <h3 class="text-primary">BOSS Admins :</h2>
+        <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+                {{#each users as |user|}}
+                <li class="list-group-item">{{ user.oneauthId }}</li>
+                {{/each}}      
+            </ul>
+        </div>
     </div>
-    <div class="column">
-        <h2>Create new Admin</h2>
-        <form class="ui form" action="/admin" method="POST">
-            <div class="field">
-                <h4>Oneauth Id</h4>
-                <input type="text" name="id" placeholder="Oneauth Id">
+    <div class="column-md-6">
+        <h3 class="text-primary">Create new Admin</h2>
+        <form class="form-inline" action="/admin" method="POST">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="oneAuthId" class="sr-only">OneAuth ID</label>
+                <input type="text" class="form-control" name="id" placeholder="OneAuth Id">
             </div>
-            <button class="ui blue tiny button" type="submit">Submit</button>
+            <button class="btn btn-primary mb-2" type="submit">Submit</button>
         </form>
-        {{#if hasMsg}}
-            <div class="ui visible message">
-                <p>{{msg}}</p>
-            </div>
-        {{/if}}
     </div>
-</div>
+</div>  
