@@ -1,74 +1,83 @@
-<table class="ui celled padded table red unstackable">
-    <thead>
-    <tr>
-        <th>Rank</th>
-        <th>Github User</th>
-        <th>Points</th>
-        <th>PRs Submitted</th>
-    </tr>
-    </thead>
-    {{#if showUserAtTop}}
-        <tr class="colored-row">
-            <td>
-                <div class="center aligned">{{loggedInUser.rank}}</div>
-            </td>
-            <td class="red text center aligned">
-                <b class="ui "><a class="red text" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
-            </td>
-            <td>
-                <div class="center aligned">{{loggedInUser.bounty}}</div>
-            </td>
-            <td>
-                <div class="center aligned">{{loggedInUser.pulls}}</div>
-            </td>
-        </tr>
-    {{/if}}
-    {{#each userstats as |user|}}
-        {{#if user.isColored}}
-            <tr class="colored-row">
-        {{else}}
-            <tr>
-        {{/if}}
-            <td>
-                <div class="center aligned">{{user.rank}}</div>
-            </td>
-            <td class="red text center aligned">
-                <b class="ui "><a class="red text" href="http://github.com/{{user.user}}">{{user.user}}</b>
-            </td>
-            <td>
-                <div class="center aligned">{{user.bounty}}</div>
-            </td>
-            <td>
-                <div class="center aligned">{{user.pulls}}</div>
-            </td>
-        </tr>
-    {{/each}}
-</table>
-
-<div class="ui pagination menu">
-               {{#if isFirstPage}}
-                    <a class="item disabled"> Prev</a>
-                {{else}}
-                    <a class="item" href="?page={{prevPage}}&size={{size}}" >Prev </a>
+<div class="card text-center  mb-3">
+    <div class="card-header">
+        <h5 class="card-title align-middle text-primary">Leaderboard</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="leaderboard-head">
+                <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Github Username</th>
+                    <th scope="col">Points</th>
+                    <th scope="col">Pull Requests Submitted</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#if showUserAtTop}}
+                    <tr>
+                        <td>
+                            <p class="right-aligned align-middle">{{loggedInUser.rank}}</p>
+                        </td>
+                        <td scope="row">
+                            <b><a class="text-primary align-middle" href="http://github.com/{{loggedInUser.user}}">{{loggedInUser.user}}</b>
+                        </td>
+                        <td>
+                            <p class="right-aligned align-middle">{{loggedInUser.bounty}}</p>
+                        </td>
+                        <td>
+                            <p class="text-secondary right-aligned align-middle">{{loggedInUser.pulls}}</p>
+                        </td>
+                    </tr>
                 {{/if}}
-
-                {{#each pagination as |link|}}
-                    <a class="item  {{#equal link.index ../page}} active  {{/equal}} "  href="{{link.link}}" >
-                        {{link.index}}
-                    </a>
+                {{#each userstats as |user|}}
+                <tr>
+                    <td>
+                        <p class="right-aligned align-middle">{{user.rank}}</p>
+                    </td>
+                    <td scope="row">
+                        <b><a class="text-primary align-middle" href="http://github.com/{{user.user}}">{{user.user}}</b>
+                    </td>
+                    <td>
+                        <p class="right-aligned align-middle">{{user.bounty}}</p>
+                    </td>
+                    <td>
+                        <p class="text-secondary right-aligned align-middle">{{user.pulls}}</p>
+                    </td>
+                </tr>
                 {{/each}}
-                {{#if isLastPage}}
-                    <a class="item disabled"> Next </a>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                {{#if isFirstPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
                 {{else}}
-                    <a class="item" href="?page={{nextPage}}&size={{size}}" >Next </a>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{prevPage}}&size={{size}}">Previous</a>
+                </li>
                 {{/if}}
-            </div>
 
-<style>
-    .red.text {
-        color: red;
-    }
-    .colored-row {
-        background-color: #fcfff5;
-    }
-</style>
+
+                {{#each pagination as |link index|}}
+                <li class="page-item {{#equal (add index 1) ../page}} active  {{/equal}} ">
+                    <a class="page-link" href="{{link}}">{{add index 1}}</a>
+                </li>
+                {{/each}}
+
+                {{#if isLastPage}}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Next</a>
+                </li>
+                {{else}}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{nextPage}}&size={{size}}">Next</a>
+                </li>
+                {{/if}}
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,34 +1,57 @@
-<form class="ui form" method="post" action="/claims/{{claim.id}}/edit">
-    <div class="field">
-        <label>Github Username</label>
-        <input name="user" placeholder="Github Username, eg. 'championswimmer'" disabled type="text" value="{{claim.user}}" required>
-    </div>
-    <div class="field">
-        <label>Issue URL</label>
-        <input name="issue_url" placeholder="URL of Issue, eg. http://github.com/org/proj/issue/7" type="url" value="{{claim.issueUrl}}" required>
-    </div>
-    <div class="field">
-        <label>Pull Request URL</label>
-        <input name="pull_url" placeholder="URL of PR, eg. http://github.com/org/proj/pull/7" type="url" value="{{claim.pullUrl}}" required>
-    </div>
-    <div class="field">
-        <label>Bounty</label>
-        <input name="bounty" placeholder="Bounty Points you are claiming for this" type="number" value="{{claim.bounty}}" required>
-    </div>
-    <div style="margin-top: 25px">
-        <div style="display: inline !important;" class="ui container center aligned">
-            <button class="ui button green" type="submit">Save</button>
+{{!-- main form --}}
+<div class="card border-primary mb-3">
+    <form method="post" action="/claims/{{claim.id}}/edit">
+        <div class="card-header text-center">
+            Create new claim
         </div>
-        <div style="display: inline !important;"  class="ui container center aligned">
-            <a href="/claims/{{claim.id}}/delete" class="ui button red">Delete
-            </a>
+
+        <div class="card-body">
+            <div class="form-group row">
+                <label for="username" class="col-sm-2 col-form-label">Github Username</label>
+                <div class="col-sm-10">
+                    <input name="user" type="text" class="form-control" id="username" disabled type="text"
+                        value="{{claim.user}}">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="issueUrl" class="col-sm-2 col-form-label">Issue URL</label>
+                <div class="col-sm-10">
+                    <input type="url" class="form-control" id="issueUrl" name="issue_url" value="{{claim.issueUrl}}" required
+                        placeholder="issue url like : http://github.com/coding-blocks/boss/issues/10">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="pullUrl" class="col-sm-2 col-form-label">Pull Request URL</label>
+                <div class="col-sm-10">
+                    <input type="url" class="form-control" id="pullUrl" name="pull_url" value="{{claim.pullUrl}}" required
+                        placeholder="pull request url like : https://github.com/coding-blocks/boss/pull/4">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="bounty" class="col-sm-2 col-form-label">Bounty</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="bounty" name="bounty" value="{{claim.bounty}}" required
+                        placeholder="Bounty Amount">
+                </div>
+            </div>
         </div>
-    </div>
-</form>
-{{#if error}}
-<div class="ui negative message">
-  <div class="header" align="center">
-    {{error}}
-  </div>
+
+        {{#if error}}
+        <div class="container">
+            <div class="card card-body add-claim-error-card  text-danger text-center">
+                {{error}}
+            </div>
+        </div>
+        {{/if}}
+
+        <div class="card-footer">
+                <a href="/claims/{{claim.id}}/delete" class="btn btn-danger ">Delete Claim</a>
+                <button type="submit" class="btn btn-success update-claim-button">Update Claim</a>
+        </div>
+    </form>
+
 </div>
-{{/if}}
+{{!-- main form ends --}}
