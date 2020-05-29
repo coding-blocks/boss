@@ -1,76 +1,120 @@
-<div class="four wide item">
-    <div class="image">
-        <div class="ui statistic">
-            <div class="value">
-                {{claim.bounty}}
+<div class="row">
+    <div class="col-md-5">
+        <form method="post" action="/claims/{{claim.id}}/update">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <input name="user" type="number" class="form-control" id="bounty" type="number"
+                                value="{{claim.bounty}}">
+                            <small id="bountyHelper" class="form-text text-muted">Final Bounty to award to user</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <select name="status" id="updateStatus" class="custom-select form-control">
+                                <option value="claimed" selected>Claimed</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="disputed">Disputed</option>
+                                <option value="revoked">Revoked</option>
+                            </select>
+                            <small id="updateStatusHelper" class="form-text text-muted">Update status of claim</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <textarea name="reason" class="form-control" id="reason" rows="3"></textarea>
+                            <small id="reason" class="form-text text-muted">Update Reason</small>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="label">
-                BOUNTY POINTS
+            <br />
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary btn-sm">Update Claim Status</a>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-7 ">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <h1>
+                                <span>{{claim.bounty}}</span>
+                            </h1>
+                            <small>bounty points</small>
+                            <hr />
+                            {{#equal claim.status "claimed"}}
+                            <span class="badge badge-pill badge-warning">{{claim.status}}</span>
+                            {{#equal claim.user ../current }}
+                            <a href="/claims/{{claim.id}}/edit" class="badge badge-info">Edit
+                                Claim</a>
+                            {{/equal}}
+                            {{/equal}}
+                            {{#equal claim.status "accepted"}}
+                            <span class="badge badge-pill badge-success">{{claim.status}}</span>
+                            {{/equal}}
+                            {{#equal claim.status "rejected"}}
+                            <span class="badge badge-pill badge-danger">{{claim.status}}</span>
+                            {{/equal}}
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <a href="/claims/view?username={{claim.user}}&status={{status}}">
+                            <h5 class="card-title">{{claim.user}}</h5>
+                        </a>
+                        <p class="card-text">
+                            {{#if claim.reason}}
+                            <small class="text-muted">Reason: {{claim.reason}}</small>
+                            {{/if}}
+                            <small class="text-muted">Project : <a
+                                    href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
+                            <br />
+                        </p>
+                        <p class="card-text">
+                            <span class="text-muted">Issue: <small><a
+                                        href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                            <br />
+
+                            <span class="text-muted">Pull Request: <small><a
+                                        href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                            <br />
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="middle aligned content">
-        <a class="header">{{claim.user}}</a>
-        <div class="meta">
-            <span>{{claim.repo}}</span>
-        </div>
-        <div class="description">
-            <p>
-                Issue : <a href="{{claim.issueUrl}}">{{claim.issueUrl}}</a>
-            </p>
-            <p>
-                Pull : <a href="{{claim.pullUrl}}">{{claim.pullUrl}}</a>
-            </p>
-        </div>
-        <div class="extra">
-            {{#equal claim.status "claimed"}}
-                <div class="ui label yellow">{{claim.status}}</div>
-            {{/equal}}
-            {{#equal claim.status "accepted"}}
-                <div class="ui label green">{{claim.status}}</div>
-            {{/equal}}
-            {{#equal claim.status "rejected"}}
-                <div class="ui label red">{{claim.status}}</div>
-            {{/equal}}
-        </div>
-    </div>
-    <form class="ui form" style="padding: 3em" method="post" action="/claims/{{claim.id}}/update">
+</div>
+{{!-- <div class="four wide item">
+    <form class="ui form" style="padding: 3em">
         <div class="four wide field">
             <label>Final Bounty Points</label>
             <input name="bounty" value="{{claim.bounty}}">
             <label>Update Status</label>
             <select name="status" class="ui dropdown" id="status">
-                <option value="claimed">Claimed</option>
-                <option value="rejected">Rejected</option>
-                <option value="accepted">Accepted</option>
-                <option value="disputed">Disputed</option>
-                <option value="revoked">Revoked</option>
             </select>
         </div>
 
         <label>Reason </label>
         <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
-        <br/>
+        <br />
         <button class="ui button green" type="submit">Submit</button>
-
-
     </form>
     <script>
-
-        $('select.dropdown').dropdown();
-
-        {{#unless claim.reason}}
-            $('#reason').hide();
+        {{#unless claim.reason }}
+        $('#reason').hide();
         {{/unless}}
-
-        $('select').on('change', function (e){
+        $('select').on('change', function (e) {
             let status = $('#status option:selected').text();
-            if( ['Rejected' , 'Disputed' , 'Revoked'].includes(status) )
+            if (['Rejected', 'Disputed', 'Revoked'].includes(status))
                 $('#reason').show();
             else
                 $('#reason').html('').hide();
-
         });
-
     </script>
-</div>
+</div> --}}

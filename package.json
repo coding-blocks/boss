@@ -2,13 +2,11 @@
   "scripts": {
     "test": "node_modules/.bin/_mocha",
     "docs": "apidoc -i routes/ -o docs/",
-    "prestart": "npm run theme:build",
-    "start": "NODE_ENV=production node index.js",
-    "start:dev": "NODE_ENV=development index.js",
-    "theme:clean": "rimraf public_static/lib/semantic/*",
-    "theme:build": "cd semantic && gulp build",
-    "theme:watch": "cd semantic && gulp watch",
-    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha"
+    "start": "cross-env NODE_ENV=production node index.js",
+    "start:dev": "cross-env NODE_ENV=development node index.js",
+    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha",
+    "probot": "probot",
+    "probot:run": "probot run ./bot/index.js --private-key ./bot_key.pem"
   },
   "dependencies": {
     "apidocs": "^2017.3.9",
@@ -25,9 +23,9 @@
     "passport-oauth2": "^1.4.0",
     "pg": "^6.1.5",
     "pg-hstore": "^2.3.2",
+    "probot": "^9.11.3",
     "request-promise": "^4.2.1",
     "rsvp": "^3.5.0",
-    "semantic-ui": "^2.3.1",
     "sequelize": "^4.44.4"
   },
   "name": "boss-backend",
@@ -40,9 +38,12 @@
   "devDependencies": {
     "chai": "^4.1.1",
     "chai-http": "^3.0.0",
+    "cross-env": "^7.0.2",
     "gulp": "^3.9.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
-    "request": "^2.81.0"
+    "nock": "^12.0.3",
+    "request": "^2.81.0",
+    "smee-client": "^1.1.0"
   }
 }
