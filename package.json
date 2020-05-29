@@ -4,6 +4,10 @@
     "start": "NODE_ENV=production node index.js",
     "start:dev": "NODE_ENV=development node index.js",
     "cover": "istanbul cover node_modules/.bin/_mocha",
+    "test": "node_modules/.bin/_mocha",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "start:dev": "cross-env NODE_ENV=development node index.js",
+    "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha",
     "probot": "probot",
     "probot:run": "probot run ./bot/index.js --private-key ./bot_key.pem"
   },
@@ -40,6 +44,7 @@
   "devDependencies": {
     "chai": "^4.1.1",
     "chai-http": "^3.0.0",
+    "cross-env": "^7.0.2",
     "gulp": "^3.9.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.5.0",
