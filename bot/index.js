@@ -25,7 +25,7 @@ Star ⭐ this project and [tweet](https://twitter.com/intent/tweet?text=I%20am%2
 
   app.on('pull_request.opened', async context => {
     const pr = context.payload.pull_request
-    if(adminUsernames.includes(issue.user.login)){
+    if(adminUsernames.includes(pr.user.login)){
       app.log(`Ignoring new pr ${pr.id} opened by admin ${pr.user.login}`)
       return
     }
@@ -47,7 +47,7 @@ Star ⭐ this project and [tweet](https://twitter.com/intent/tweet?text=I%20am%2
   app.on('pull_request.closed', async context => {
     const pr = context.payload.pull_request
     if(adminUsernames.includes(pr.user.login)){
-      app.log(`Ignoring pr ${issue.id} closing by admin ${pr.user.login}`)
+      app.log(`Ignoring pr ${pr.id} closing by admin ${pr.user.login}`)
       return
     }
     if (!!pr.merged_at) {
