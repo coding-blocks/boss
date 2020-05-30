@@ -60,9 +60,10 @@ function delClaim(claimId) {
   })
 }
 
-function getConflictedClaims(claim,issueUrlDetail) {
+function getConflictedClaims(claim,issueUrlDetail,pullUrlType) {
   projectName = '/' + issueUrlDetail.project + '/'
-  issueId = '/' + issueUrlDetail.id 
+  issueId = '/' + issueUrlDetail.id
+  pullUrlType = projectName + pullUrlType + '/'
   return db.Claim.findAll({
     where : {
       [Op.and] : [
@@ -72,7 +73,7 @@ function getConflictedClaims(claim,issueUrlDetail) {
             { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
           ]
         },
-        { pullUrl: { [Op.like]: '%/pull/%' } },
+        { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
         { id : { [Op.ne] : claim.id } }
       ]
     }

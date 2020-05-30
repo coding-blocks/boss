@@ -220,34 +220,6 @@ route.get('/claims/view', (req, res) => {
     })
 })
 
-route.get('/claims/:id', auth.adminOnly, (req, res) => {
-  du.getClaimById(req.params.id)
-    .then(claim => {
-      if (!claim) throw new Error('No claim found')
-      pullUrlDetail = getUrlDetails(claim["pullUrl"])
-      issueUrlDetail = getUrlDetails(claim["issueUrl"])
-      if(pullUrlDetail.type === "pull") {
-        du.getConflictedClaims(claim,issueUrlDetail)
-          .then(conflictedClaims => {
-            if(!conflictedClaims)
-              res.render('pages/claims/id',{claim, hasConflict: false })
-            else
-              res.render('pages/claims/id',{ claim, hasConflict: true, conflictedClaims })
-          })
-          .catch(err => {
-            res.send('Error getting conflicting claims')
-          })
-      }
-      else {
-        res.render('pages/claims/id', { claim, hasConflict: false })
-      }
-    })
-    .catch(err => {
-      console.log(err)
-      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
-    })
-})
-
 route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   res.render('pages/claims/add', {
     menu: {
@@ -277,6 +249,30 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     })
     .catch(error => {
       res.render('pages/claims/unique')
+    })
+})
+
+route.get('/claims/:id', auth.adminOnly, (req, res) => {
+  du.getClaimById(req.params.id)
+    .then(claim => {
+      if (!claim) throw new Error('No claim found')
+      pullUrlDetail = getUrlDetails(claim["pullUrl"])
+      issueUrlDetail = getUrlDetails(claim["issueUrl"])
+      du.getConflictedClaims(claim,issueUrlDetail,pullUrlDetail.type)
+        .then(conflictedClaims => {
+          console.log(conflictedClaims)
+          if(conflictedClaims.length === 0)
+            res.render('pages/claims/id',{claim, hasConflict: false })
+          else
+            res.render('pages/claims/id',{ claim, hasConflict: true, conflictedClaims })
+        })
+        .catch(err => {
+          res.send('Error getting conflicting claims')
+        })
+    })
+    .catch(err => {
+      console.log(err)
+      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
     })
 })
 
