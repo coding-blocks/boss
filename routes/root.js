@@ -248,8 +248,8 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
 
   du.createClaim(
     req.user.usergithub.username, // github username already valid
-    req.body.issue_url,
-    req.body.pull_url,
+    du.generateGenericUrl(req.body.issue_url),
+    du.generateGenericUrl(req.body.pull_url),
     req.body.bounty,
     config.CLAIM_STATUS.CLAIMED
   )

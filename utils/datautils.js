@@ -5,6 +5,12 @@ const db = require('./db')
 const fs = require('fs')
 const consts = require('./consts')
 
+function generateGenericUrl(url) {
+    const extractSingleUrl = url.trim().split(' ')[0].split('#')[0]
+    const genericUrl = new URL(extractSingleUrl).pathname.replace(/\/+$/, '')
+    return `https://github.com${genericUrl}`
+}
+
 function getContestPeriod(year) {
   if (year)
     return {
@@ -180,5 +186,6 @@ module.exports = {
   getLoggedInUserStats,
   getClaimById,
   updateClaim,
+  generateGenericUrl,
   getCounts
 }
