@@ -53,3 +53,7 @@ body {
 .dropdown-toggle.btn-light:focus {
   outline: none !important;
 }
+
+.dropdown-menu {
+  overflow: hidden;
+}

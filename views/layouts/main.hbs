@@ -24,7 +24,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <a class="navbar-brand" href="/">
-            <img src="/images/bosslogo.png" height="30" class="d-inline-block align-top" alt="Coding Blocks">
+            <img src="/images/bosslogo-light.png" height="30" class="d-inline-block align-top" alt="Coding Blocks">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,8 +84,8 @@
 
             </ul>
             {{#if isAuthenticated}}
-            <div class="item right">
-                <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}} </a>
+            <div class="item right mr-2">
+                <a target="_blank" href="https://account.codingblocks.com/users/me">Welcome {{user.firstname}}</a>
             </div>
             <a href="/logout" class="btn btn-outline-primary btn-sm" type="button">Logout</a>
             {{else}}
