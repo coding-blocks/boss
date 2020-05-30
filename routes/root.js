@@ -227,15 +227,17 @@ route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   })
 })
 
-route.get('/claims/:id', auth.adminOnly, (req, res) => {
-  du.getClaimById(req.params.id)
-    .then(claim => {
-      if (!claim) throw new Error('No claim found')
-      res.render('pages/claims/id', { claim })
-    })
-    .catch(err => {
-      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
-    })
+route.get('/claims/:id', auth.adminOnly,async (req, res) => {
+  try{
+    const claim = await du.getClaimById(req.params.id)
+    if (!claim) throw new Error('No claim found')
+
+    // get all conflicts
+    const conflicts = await du.getConflictsReport(claim)
+    res.render('pages/claims/id', {claim, conflicts})
+  }catch(e){
+    res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
+  }
 })
 
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {

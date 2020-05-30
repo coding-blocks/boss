@@ -1,7 +1,7 @@
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-4">
         <form method="post" action="/claims/{{claim.id}}/update">
-            <div class="card">
+            <div class="card border-primary">
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-sm-12">
@@ -30,14 +30,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <br />
-            <div class="card-footer text-center">
-                <button type="submit" class="btn btn-primary btn-sm">Update Claim Status</a>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary btn-sm">Update Claim Status</a>
+                </div>
             </div>
         </form>
     </div>
-    <div class="col-md-7 ">
+    <div class="col-md-8 ">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -64,57 +63,261 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <a href="/claims/view?username={{claim.user}}&status={{status}}">
-                            <h5 class="card-title">{{claim.user}}</h5>
-                        </a>
-                        <p class="card-text">
-                            {{#if claim.reason}}
-                            <small class="text-muted">Reason: {{claim.reason}}</small>
-                            {{/if}}
-                            <small class="text-muted">Project : <a
-                                    href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
-                            <br />
-                        </p>
-                        <p class="card-text">
-                            <span class="text-muted">Issue: <small><a
-                                        href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
-                            <br />
+                        <div>
+                            <a href="/claims/view?username={{claim.user}}&status={{status}}">
+                                <h5 class="card-title">{{claim.user}}</h5>
+                            </a>
+                            <p class="card-text">
+                                {{#if claim.reason}}
+                                <small class="text-muted">Reason: {{claim.reason}}</small>
+                                {{/if}}
+                                <small class="text-muted">Project : <a
+                                        href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
+                                <br />
+                            </p>
+                            <p class="card-text">
+                                <span class="text-muted">Issue: <small><a
+                                            href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                                <br />
 
-                            <span class="text-muted">Pull Request: <small><a
-                                        href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
-                            <br />
-                        </p>
+                                <span class="text-muted">Pull Request: <small><a
+                                            href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                                <br />
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <br />
+        <div>
+            <ul class="nav nav-tabs" id="conflicts-tab" role="tablist">
+                {{#if conflicts.both}}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="bothSame-tab" data-toggle="tab" href="#bothSame" role="tab"
+                        aria-controls="bothSame" aria-selected="true">
+                        Claims with same pull request and same issue as this <span class="badge badge-pill badge-primary"> {{conflicts.both.length}}</span>
+                    </a>
+                </li>
+                {{/if}}
+                {{#if conflicts.issue}}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="sameIssue-tab" data-toggle="tab" href="#sameIssue" role="tab"
+                        aria-controls="sameIssue" aria-selected="false">
+                        Claims with same issue as this <span class="badge badge-pill badge-primary"> {{conflicts.issue.length}}</span>
+                    </a>
+                </li>
+                {{/if}}
+                {{#if conflicts.pulls}}
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="samePr-tab" data-toggle="tab" href="#samePr" role="tab"
+                        aria-controls="samePr" aria-selected="false">
+                        Claims with same pull request as this <span class="badge badge-pill badge-primary"> {{conflicts.pulls.length}}</span>
+                    </a>
+                </li>
+                {{/if}}
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                {{#if conflicts.issue}}
+                <div class="tab-pane fade " id="sameIssue" role="tabpanel" aria-labelledby="sameIssue-tab">
+                    Listing claims which submitted the same issue
+                    <br /> <br />
+                    {{#each conflicts.issue as |claim|}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center">
+                                                <h1>
+                                                    <span>{{claim.bounty}}</span>
+                                                </h1>
+                                                <small>bounty points</small>
+                                                <hr />
+                                                {{#equal claim.status "claimed"}}
+                                                <span class="badge badge-pill badge-warning">{{claim.status}}</span>
+                                                    {{#equal claim.user ../current }}
+                                                    <a href="/claims/{{claim.id}}/edit" class="badge badge-info">Edit
+                                                        Claim</a>
+                                                    {{/equal}}
+                                                {{/equal}}
+                                                {{#equal claim.status "accepted"}}
+                                                <span class="badge badge-pill badge-success">{{claim.status}}</span>
+                                                {{/equal}}
+                                                {{#equal claim.status "rejected"}}
+                                                <span class="badge badge-pill badge-danger">{{claim.status}}</span>
+                                                {{/equal}}
+                                                <a href="/claims/{{claim.id}}" class="badge badge-info">View Claim</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <a href="/claims/view?username={{claim.user}}&status={{status}}">
+                                                <h5 class="card-title">{{claim.user}}</h5>
+                                            </a>
+                                            <p class="card-text">
+                                                {{#if claim.reason}}
+                                                <small class="text-muted">Reason: {{claim.reason}}</small>
+                                                {{/if}}
+                                                <br />
+                                                <small class="text-muted">Project : <a
+                                                        href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
+                                                <br />
+                                            </p>
+                                            <p class="card-text">
+                                                <span class="text-muted">Issue: <small><a
+                                                            href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                                                <br />
+
+                                                <span class="text-muted">Pull Request: <small><a
+                                                            href="{{claim.pullUrl}}">{{claim.pullUrl}}</a></small></span>
+                                                <br />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <br />
+                    {{/each}}
+                </div>
+                {{/if}}
+                {{#if conflicts.pulls}}
+                <div class="tab-pane fade " id="samePr" role="tabpanel" aria-labelledby="samePr-tab">
+                    Listing claims which submitted the same pull request
+                    <br /><br />
+                    {{#each conflicts.pulls as |claim|}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center">
+                                                <h1>
+                                                    <span>{{claim.bounty}}</span>
+                                                </h1>
+                                                <small>bounty points</small>
+                                                <hr />
+                                                {{#equal claim.status "claimed"}}
+                                                <span class="badge badge-pill badge-warning">{{claim.status}}</span>
+                                                    {{#equal claim.user ../current }}
+                                                    <a href="/claims/{{claim.id}}/edit" class="badge badge-info">Edit
+                                                        Claim</a>
+                                                    {{/equal}}
+                                                {{/equal}}
+                                                {{#equal claim.status "accepted"}}
+                                                <span class="badge badge-pill badge-success">{{claim.status}}</span>
+                                                {{/equal}}
+                                                {{#equal claim.status "rejected"}}
+                                                <span class="badge badge-pill badge-danger">{{claim.status}}</span>
+                                                {{/equal}}
+                                                <a href="/claims/{{claim.id}}" class="badge badge-info">View Claim</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <a href="/claims/view?username={{claim.user}}&status={{status}}">
+                                                <h5 class="card-title">{{claim.user}}</h5>
+                                            </a>
+                                            <p class="card-text">
+                                                {{#if claim.reason}}
+                                                <small class="text-muted">Reason: {{claim.reason}}</small>
+                                                {{/if}}
+                                                <br />
+                                                <small class="text-muted">Project : <a
+                                                        href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
+                                                <br />
+                                            </p>
+                                            <p class="card-text">
+                                                <span class="text-muted">Issue: <small><a
+                                                            href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                                                <br />
+
+                                                <span class="text-muted">Pull Request: <small><a
+                                                            href="{{claim.pullUrl}}">{{claim.pullUrl}}</a></small></span>
+                                                <br />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <br />
+                    {{/each}}
+                </div>
+                {{/if}}
+                {{#if conflicts.both}}
+                <div class="tab-pane fade " id="bothSame" role="tabpanel" aria-labelledby="bothSame-tab">
+                   Listing claims which use both, issue-url and pull Request url as this claim
+                   <br /><br />
+                    {{#each conflicts.both as |claim|}}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="text-center">
+                                                <h1>
+                                                    <span>{{claim.bounty}}</span>
+                                                </h1>
+                                                <small>bounty points</small>
+                                                <hr />
+                                                {{#equal claim.status "claimed"}}
+                                                <span class="badge badge-pill badge-warning">{{claim.status}}</span>
+                                                    {{#equal claim.user ../current }}
+                                                    <a href="/claims/{{claim.id}}/edit" class="badge badge-info">Edit
+                                                        Claim</a>
+                                                    {{/equal}}
+                                                {{/equal}}
+                                                {{#equal claim.status "accepted"}}
+                                                <span class="badge badge-pill badge-success">{{claim.status}}</span>
+                                                {{/equal}}
+                                                {{#equal claim.status "rejected"}}
+                                                <span class="badge badge-pill badge-danger">{{claim.status}}</span>
+                                                {{/equal}}
+                                                <a href="/claims/{{claim.id}}" class="badge badge-info">View Claim</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <a href="/claims/view?username={{claim.user}}&status={{status}}">
+                                                <h5 class="card-title">{{claim.user}}</h5>
+                                            </a>
+                                            <p class="card-text">
+                                                {{#if claim.reason}}
+                                                <small class="text-muted">Reason: {{claim.reason}}</small>
+                                                {{/if}}
+                                                <br />
+                                                <small class="text-muted">Project : <a
+                                                        href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
+                                                <br />
+                                            </p>
+                                            <p class="card-text">
+                                                <span class="text-muted">Issue: <small><a
+                                                            href="{{claim.issueUrl}}">{{claim.issueUrl}}</a></small></span>
+                                                <br />
+
+                                                <span class="text-muted">Pull Request: <small><a
+                                                            href="{{claim.pullUrl}}">{{claim.pullUrl}}</a></small></span>
+                                                <br />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <br />
+                    {{/each}}
+                </div>
+                {{/if}}
+            </div>
+        </div>
     </div>
 </div>
-{{!-- <div class="four wide item">
-    <form class="ui form" style="padding: 3em">
-        <div class="four wide field">
-            <label>Final Bounty Points</label>
-            <input name="bounty" value="{{claim.bounty}}">
-            <label>Update Status</label>
-            <select name="status" class="ui dropdown" id="status">
-            </select>
-        </div>
-
-        <label>Reason </label>
-        <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
-        <br />
-        <button class="ui button green" type="submit">Submit</button>
-    </form>
-    <script>
-        {{#unless claim.reason }}
-        $('#reason').hide();
-        {{/unless}}
-        $('select').on('change', function (e) {
-            let status = $('#status option:selected').text();
-            if (['Rejected', 'Disputed', 'Revoked'].includes(status))
-                $('#reason').show();
-            else
-                $('#reason').html('').hide();
-        });
-    </script>
-</div> --}}

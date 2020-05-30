@@ -59,6 +59,62 @@ function delClaim(claimId) {
   })
 }
 
+async function getConflictsReport(claim){
+    try{
+      const issues = await db.Database.query(`
+        SELECT * 
+        FROM "claims" 
+        WHERE ( "issueUrl"='${claim.issueUrl}' OR 
+                "pullUrl"='${claim.issueUrl}' )
+        AND "id" != ${claim.id}
+        `)
+        
+      const pulls = await db.Database.query(`
+        SELECT * 
+        FROM "claims" 
+        WHERE ("issueUrl"='${claim.pullUrl}')
+        AND "id" != ${claim.id}
+        `)
+
+      const both = await db.Database.query(`
+        SELECT * 
+        FROM "claims" 
+        WHERE (( "issueUrl"='${claim.issueUrl}' AND
+                "pullUrl"='${claim.pullUrl}' ) 
+          OR  ( "issueUrl"='${claim.pullUrl}' AND
+              "pullUrl"='${claim.issueUrl}' ))
+        AND "id" != ${claim.id}
+      `)
+
+      // if both urls same
+      const object = {
+        both: both[0]
+      } 
+      if(claim.issueUrl === claim.pullUrl){
+        // if url is of an issue
+        if(claim.issueUrl.includes("/issues/")){
+          object.issue = issues[0]
+          object.pulls = []
+        }else{
+          object.issue = []
+          object.pulls = pulls[0]
+        }
+      }
+      else{
+        object.issue = issues[0]
+        object.pulls = pulls[0]
+      }
+      return object
+    }catch(e){
+      console.log(e.message);
+      return {
+        issue: [],
+        pulls: [],
+        both: []
+      }
+    }
+}
+
 function updateClaim(claimId, { status, reason, bounty }) {
   const claim = {
     action: 'update',
@@ -180,5 +236,6 @@ module.exports = {
   getLoggedInUserStats,
   getClaimById,
   updateClaim,
-  getCounts
+  getCounts,
+  getConflictsReport
 }
