@@ -53,3 +53,7 @@ body {
 .dropdown-menu {
   overflow: hidden;
 }
+
+.space-right{
+  margin-right:4px;
+}
