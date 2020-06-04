@@ -49,3 +49,7 @@ body {
   position: absolute;
   right: 20px;
 }
+
+.dropdown-menu {
+  overflow: hidden;
+}

@@ -38,14 +38,32 @@ function getClaims(options) {
     limit: options.size,
     offset: offset,
     where: whereClause,
-    order: [['updatedAt', 'DESC']]
+    order: [['updatedAt', 'DESC']],
+    include: [
+      {
+        model: db.GithubResource,
+        as: 'pr',
+        ...(options.merged
+          ? {
+              where: { type: 'PULL_REQUEST', status: 'MERGED' },
+              required: true
+            }
+          : {})
+      },
+      { model: db.GithubResource, as: 'issue' }
+    ]
   })
 
   return Promise.all([distinctUsers, allClaims, distinctProjects])
 }
 
 function getClaimById(claimId) {
-  return db.Claim.findById(claimId)
+  return db.Claim.findById(claimId, {
+    include: [
+      { model: db.GithubResource, as: 'pr' },
+      { model: db.GithubResource, as: 'issue' }
+    ]
+  })
 }
 
 function getAllAdmins() {
@@ -113,7 +131,20 @@ function updateClaim(claimId, { status, reason, bounty }) {
   )
 }
 
-function createClaim(user, issueUrl, pullUrl, bounty, status) {
+function getGithubResource(url) {
+  const meta = getResourceFromUrl(url)
+
+  return db.GithubResource.findOne({
+    where: {
+      owner: meta.owner,
+      project: meta.repo,
+      type: meta.type,
+      resource_id: meta.id
+    }
+  })
+}
+
+async function createClaim(user, issueUrl, pullUrl, bounty, status) {
   const claim = {
     action: 'create',
     user,
@@ -124,12 +155,16 @@ function createClaim(user, issueUrl, pullUrl, bounty, status) {
   }
   fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
 
+  const [pr, issue] = await Promise.all([getGithubResource(pullUrl), getGithubResource(issueUrl)])
+
   return db.Claim.create({
     user,
     issueUrl,
     pullUrl,
     repo: pullUrl.split('github.com/')[1].split('/')[1],
     bounty: bounty,
+    pr_resource_id: pr && pr.id,
+    issue_resource_id: issue && issue.id,
     status: status
   })
 }
@@ -202,6 +237,20 @@ function getCounts() {
   return counts
 }
 
+const getResourceFromUrl = url => {
+  if (!url.match(/^https:\/\/github.com\/[^\/]*\/[^\/]*\/(issues|pull)\/[0-9]*\/?$/))
+    throw new Error('Unsupported URL provided')
+
+  const [owner, repo, type, id] = url.replace('https://github.com/', '').split('/')
+
+  return {
+    owner: owner.toLowerCase(),
+    repo: repo.toLowerCase(),
+    type: type === 'issues' ? 'ISSUE' : 'PULL_REQUEST',
+    id: Number(id)
+  }
+}
+
 module.exports = {
   getClaims,
   delClaim,
@@ -211,6 +260,7 @@ module.exports = {
   getClaimById,
   updateClaim,
   getCounts,
+  getResourceFromUrl,
   getAllAdmins,
   makeUserAdmin,
   getUserByOneAuthId
