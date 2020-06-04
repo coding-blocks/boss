@@ -24,7 +24,7 @@ route.get('/claims', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Sorry. Could not get the claims right now.')
+      res.status(500).send('Sorry! Could not get the claims right now.')
     })
 })
 
@@ -35,7 +35,7 @@ route.get('/claims/:id/delete', auth.adminOnly, (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Sorry. Could not delete the claim right now.')
+      res.status(500).send('Sorry! Could not delete the claim right now.')
     })
 })
 
@@ -47,7 +47,7 @@ route.get('/claims/:id/update', auth.adminOnly, (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).send('Sorry. Could not update the claim right now.')
+      res.status(500).send('Sorry! Could not update the claim right now.')
     })
 })
 
@@ -61,10 +61,10 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   }
 
   if (Date.now() > BOSS_END_DATE.getTime()) {
-    return res.send("Sorry. Boss has ended, can't add claim from now.")
+    return res.send("Sorry! Boss has ended. You can't add claim from now.")
   }
   if (Date.now() < BOSS_START_DATE.getTime()) {
-    return res.send("Sorry. BOSS has not yet started")
+    return res.send("Sorry! BOSS has not yet started")
   }
 
   du.createClaim(
@@ -79,7 +79,7 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.send('Sorry. Could not add the claim right now.')
+      res.send('Sorry! Could not add the claim right now.')
     })
 })
 
