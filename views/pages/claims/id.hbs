@@ -1,4 +1,42 @@
 <div class="row">
+    <div class="col-md-5">
+        <form method="post" action="/claims/{{claim.id}}/update">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <input name="bounty" type="number" class="form-control" id="bounty" type="number"
+                                value="{{claim.bounty}}">
+                            <small id="bountyHelper" class="form-text text-muted">Final Bounty to award to user</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <select name="status" id="updateStatus" class="custom-select form-control">
+                                <option value="claimed" selected>Claimed</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="disputed">Disputed</option>
+                                <option value="revoked">Revoked</option>
+                            </select>
+                            <small id="updateStatusHelper" class="form-text text-muted">Update status of claim</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <textarea name="reason" class="form-control" id="reason" rows="3"></textarea>
+                            <small id="reason" class="form-text text-muted">Update Reason</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary btn-sm">Update Claim Status</a>
+            </div>
+        </form>
+    </div>
     <div class="col-md-7 ">
         <div class="card">
             <div class="card-body">
@@ -29,13 +67,34 @@
                         <a href="/claims/view?username={{claim.user}}&status={{status}}">
                             <h5 class="card-title">{{claim.user}}</h5>
                         </a>
-                        <p class="card-text">
+                        <p class="card-text mb-1">
                             {{#if claim.reason}}
                             <small class="text-muted">Reason: {{claim.reason}}</small>
                             {{/if}}
                             <small class="text-muted">Project : <a
-                                    href="https://www.github.com/coding-blocks/">{{claim.repo}}</a></small>
+                                    href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
                             <br />
+                        </p>
+                        <p class="mb-1">
+                            {{#if claim.pr}}
+                              {{#equal claim.pr.status "OPEN"}}
+                              <span class="badge badge-pill badge-info">PR Open</span>
+                              {{/equal}}
+                              {{#equal claim.pr.status "MERGED"}}
+                              <span class="badge badge-pill badge-success">PR Merged</span>
+                              {{/equal}}
+                              {{#equal claim.pr.status "CLOSED"}}
+                              <span class="badge badge-pill badge-danger">PR Closed</span>
+                              {{/equal}}
+                            {{/if}}
+                            {{#if claim.issue}}
+                              {{#equal claim.issue.status "OPEN"}}
+                              <span class="badge badge-pill badge-info">Issue Open</span>
+                              {{/equal}}
+                              {{#equal claim.issue.status "CLOSED"}}
+                              <span class="badge badge-pill badge-success">Issue Closed</span>
+                              {{/equal}}
+                            {{/if}}
                         </p>
                         <p class="card-text">
                             <span class="text-muted">Issue: <small><a
@@ -98,44 +157,6 @@
             <h3 style="margin-top: 1em;">No Conflicted claims</h3>
         {{/if}}
     </div>
-    <div class="col-md-5">
-        <form method="post" action="/claims/{{claim.id}}/update">
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <input name="user" type="number" class="form-control" id="bounty" type="number"
-                                value="{{claim.bounty}}">
-                            <small id="bountyHelper" class="form-text text-muted">Final Bounty to award to user</small>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <select name="status" id="updateStatus" class="custom-select form-control">
-                                <option value="claimed" selected>Claimed</option>
-                                <option value="rejected">Rejected</option>
-                                <option value="accepted">Accepted</option>
-                                <option value="disputed">Disputed</option>
-                                <option value="revoked">Revoked</option>
-                            </select>
-                            <small id="updateStatusHelper" class="form-text text-muted">Update status of claim</small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-12">
-                            <textarea name="reason" class="form-control" id="reason" rows="3"></textarea>
-                            <small id="reason" class="form-text text-muted">Update Reason</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="card-footer text-center">
-                <button type="submit" class="btn btn-primary btn-sm">Update Claim Status</a>
-            </div>
-        </form>
-    </div>
 </div>
 {{!-- <div class="four wide item">
     <form class="ui form" style="padding: 3em">
@@ -146,7 +167,6 @@
             <select name="status" class="ui dropdown" id="status">
             </select>
         </div>
-
         <label>Reason </label>
         <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
         <br />

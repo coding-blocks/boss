@@ -15,7 +15,8 @@ route.get('/claims', (req, res) => {
   const options = {
     status: req.query.status || 'claimed',
     page: req.query.page || 1,
-    size: req.query.size || config.PAGINATION_SIZE
+    size: req.query.size || config.PAGINATION_SIZE,
+    merged: req.query.merged === 'true'
   }
 
   du.getClaims(options)
@@ -64,7 +65,16 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     return res.send("Sorry. Boss has ended, can't add claim from now.")
   }
   if (Date.now() < BOSS_START_DATE.getTime()) {
-    return res.send("Sorry. BOSS has not yet started")
+    return res.send('Sorry. BOSS has not yet started')
+  }
+
+  if (
+    !req.body.issue_url.match(/^https:\/\/github.com\/[^\/]*\/[^\/]*\/issues\/[0-9]*$/) ||
+    !req.body.pull_url.match(/^https:\/\/github.com\/[^\/]*\/[^\/]*\/(issues|pull)\/[0-9]*$/)
+  ) {
+    process.exit()
+    console.log('Bad Url')
+    return res.status(400).send('Bad url')
   }
 
   du.createClaim(
