@@ -55,7 +55,7 @@
                                             <a href="/claims/view?username={{claim.user}}&status={{status}}">
                                                 <h5 class="card-title">{{claim.user}}</h5>
                                             </a>
-                                            <p class="card-text">
+                                            <p class="card-text mb-1">
                                                 {{#if claim.reason}}
                                                 <small class="text-muted">Reason: {{claim.reason}}</small>
                                                 {{/if}}
@@ -63,6 +63,27 @@
                                                 <small class="text-muted">Project : <a
                                                         href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
                                                 <br />
+                                            </p>
+                                            <p class="mb-1">
+                                                {{#if claim.pr}}
+                                                  {{#equal claim.pr.status "OPEN"}}
+                                                  <span class="badge badge-pill badge-info">PR Open</span>
+                                                  {{/equal}}
+                                                  {{#equal claim.pr.status "MERGED"}}
+                                                  <span class="badge badge-pill badge-success">PR Merged</span>
+                                                  {{/equal}}
+                                                  {{#equal claim.pr.status "CLOSED"}}
+                                                  <span class="badge badge-pill badge-danger">PR Closed</span>
+                                                  {{/equal}}
+                                                {{/if}}
+                                                {{#if claim.issue}}
+                                                  {{#equal claim.issue.status "OPEN"}}
+                                                  <span class="badge badge-pill badge-info">Issue Open</span>
+                                                  {{/equal}}
+                                                  {{#equal claim.issue.status "CLOSED"}}
+                                                  <span class="badge badge-pill badge-success">Issue Closed</span>
+                                                  {{/equal}}
+                                                {{/if}}
                                             </p>
                                             <p class="card-text">
                                                 <span class="text-muted">Issue: <small><a

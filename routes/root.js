@@ -40,29 +40,29 @@ route.get('/logout', (req, res) => {
 })
 
 route.get('/leaderboard/:year?', async (req, res) => {
-    let { year = '2020'} = req.params
-    const validYears = ['2020', '2019', '2018']
-    
-    if (!validYears.includes(year)) {
-        return res.status(404).render('pages/404');
-    } else {
-      year = parseInt(year)
-    }
+  let { year = '2020' } = req.params
+  const validYears = ['2020', '2019', '2018']
 
-    const options = {
-        page: req.query.page || 1,
-        size: req.query.size || config.PAGINATION_SIZE,
-        year
-    }
+  if (!validYears.includes(year)) {
+    return res.status(404).render('pages/404')
+  } else {
+    year = parseInt(year)
+  }
+
+  const options = {
+    page: req.query.page || 1,
+    size: req.query.size || config.PAGINATION_SIZE,
+    year
+  }
 
   options.page = parseInt(options.page)
 
-  let loggedInUser = {};
+  let loggedInUser = {}
   const githubDetails = req.user && req.user.usergithub
   if (githubDetails) {
     const result = await du.getLoggedInUserStats(options, githubDetails.username)
     if (result[0][0]) {
-        loggedInUser = result[0][0]
+      loggedInUser = result[0][0]
     }
   }
 
@@ -73,21 +73,21 @@ route.get('/leaderboard/:year?', async (req, res) => {
       const rows = data[1][0]
       const lastPage = Math.ceil(count / options.size)
       const showUserAtTop = loggedInUser.user && !rows.some(row => row.user === loggedInUser.user)
-      rows.forEach((row) => {
-          if(githubDetails && githubDetails.username === row.user){
-              row.isColored = true
-          }
+      rows.forEach(row => {
+        if (githubDetails && githubDetails.username === row.user) {
+          row.isColored = true
+        }
       })
-      for (var i = 1; i <= lastPage; i++) pagination.push({link: `?page=${i}&size=${options.size}`, index: i})
+      for (var i = 1; i <= lastPage; i++) pagination.push({ link: `?page=${i}&size=${options.size}`, index: i })
 
-      let newPagination = pagination.slice(Math.max(0, options.page - 3), Math.min(options.page + 2, pagination.length));
-      if(newPagination[0].index != 1){
-        newPagination.unshift({link: "#", index: ". . ."});
-        newPagination.unshift({link: `?page=${1}&size=${options.size}`, index: 1})
+      let newPagination = pagination.slice(Math.max(0, options.page - 3), Math.min(options.page + 2, pagination.length))
+      if (newPagination[0].index != 1) {
+        newPagination.unshift({ link: '#', index: '. . .' })
+        newPagination.unshift({ link: `?page=${1}&size=${options.size}`, index: 1 })
       }
-      if(newPagination[newPagination.length -1].index != lastPage){
-        newPagination.push({link: "#", index: ". . ."});
-        newPagination.push({link: `?page=${lastPage}&size=${options.size}`, index: lastPage});
+      if (newPagination[newPagination.length - 1].index != lastPage) {
+        newPagination.push({ link: '#', index: '. . .' })
+        newPagination.push({ link: `?page=${lastPage}&size=${options.size}`, index: lastPage })
       }
 
       res.render('pages/leaderboard', {
@@ -138,7 +138,8 @@ route.get('/claims/view', (req, res) => {
     page: req.query.page || 1,
     size: req.query.size || config.PAGINATION_SIZE,
     minbounty: req.query.minbounty || 0,
-    maxbounty: req.query.maxbounty || 5000
+    maxbounty: req.query.maxbounty || 5000,
+    merged: req.query.merged === 'true'
   }
 
   var menuH = {}
