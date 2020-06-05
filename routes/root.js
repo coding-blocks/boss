@@ -12,6 +12,8 @@ const du = require('./../utils/datautils')
 
 const { BOSS_END_DATE, BOSS_START_DATE } = require('./../utils/consts')
 
+const { getUrlDetails } = require('../utils/urlUtils')
+
 const route = new Router()
 
 let adminUser = process.env.BOSS_ADMIN || config.secrets.BOSS_DB_USER
@@ -228,17 +230,6 @@ route.get('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   })
 })
 
-route.get('/claims/:id', auth.adminOnly, (req, res) => {
-  du.getClaimById(req.params.id)
-    .then(claim => {
-      if (!claim) throw new Error('No claim found')
-      res.render('pages/claims/id', { claim })
-    })
-    .catch(err => {
-      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
-    })
-})
-
 route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
   if (Date.now() > BOSS_END_DATE.getTime()) {
     return res.send("Sorry. Boss has ended, can't add claim from now.")
@@ -259,6 +250,29 @@ route.post('/claims/add', auth.ensureLoggedInGithub, (req, res) => {
     })
     .catch(error => {
       res.render('pages/claims/unique')
+    })
+})
+
+route.get('/claims/:id', auth.adminOnly, (req, res) => {
+  du.getClaimById(req.params.id)
+    .then(claim => {
+      if (!claim) throw new Error('No claim found')
+      pullUrlDetail = getUrlDetails(claim["pullUrl"])
+      issueUrlDetail = getUrlDetails(claim["issueUrl"])
+      du.getConflictedClaims(claim,issueUrlDetail,pullUrlDetail.type)
+        .then(conflictedClaims => {
+          if(conflictedClaims.length === 0)
+            res.render('pages/claims/id',{claim, hasConflict: false })
+          else
+            res.render('pages/claims/id',{ claim, hasConflict: true, conflictedClaims })
+        })
+        .catch(err => {
+          res.send('Error getting conflicting claims')
+        })
+    })
+    .catch(err => {
+      console.log(err)
+      res.send('Error fetching claim id = ' + escapeHtml(req.params.id))
     })
 })
 
