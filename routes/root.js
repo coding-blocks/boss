@@ -191,29 +191,53 @@ route.get('/claims/view', (req, res) => {
         })
       })
 
-      res.render('pages/claims/view', {
-        prevPage: options.page - 1,
-        nextPage: options.page + 1,
-        pagination: pagination,
-        isFirstPage: options.page == 1,
-        isLastPage: lastPage == options.page,
-        page: options.page,
-        size: options.size,
-        claims: data[1].rows,
-        menu: {
-          claims_view: 'active',
-          claims: 'claims-active'
-        },
-        status: options.status,
-        menuH,
-        current,
-        filter: filter,
-        filterproj: filterproj,
-        username: options.username,
-        projectname: options.projectname,
-        minbounty: options.minbounty,
-        maxbounty: options.maxbounty
+      const conflictCounts = {}
+
+      const conflictsLoader = async() => {
+        for (claim of data[1].rows) {
+          pullUrlDetail = getUrlDetails(claim["pullUrl"])
+          issueUrlDetail = getUrlDetails(claim["issueUrl"])
+          conflictKey = issueUrlDetail.project + '/' + pullUrlDetail.type + '/' +issueUrlDetail.id
+          if(conflictCounts[conflictKey] === undefined) {
+            const c = await du.getConflictsCount(claim,issueUrlDetail,pullUrlDetail.type)
+            conflictCounts[conflictKey] = c
+          }
+          if(conflictCounts[conflictKey] !== 0)
+            claim["conflictCount"] = conflictCounts[conflictKey]
+        }
+      }
+      
+      conflictsLoader()
+      .then(()=> {
+        res.render('pages/claims/view', {
+          prevPage: options.page - 1,
+          nextPage: options.page + 1,
+          pagination: pagination,
+          isFirstPage: options.page == 1,
+          isLastPage: lastPage == options.page,
+          page: options.page,
+          size: options.size,
+          claims: data[1].rows,
+          menu: {
+            claims_view: 'active',
+            claims: 'claims-active'
+          },
+          status: options.status,
+          menuH,
+          current,
+          filter: filter,
+          filterproj: filterproj,
+          username: options.username,
+          projectname: options.projectname,
+          minbounty: options.minbounty,
+          maxbounty: options.maxbounty
+        })
       })
+      .catch((err)=> {
+        console.log(err)
+        res.send('Error in Conflict Loader')
+      })
+
     })
     .catch(err => {
       console.log(err)

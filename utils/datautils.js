@@ -98,6 +98,26 @@ function getConflictedClaims(claim,issueUrlDetail,pullUrlType) {
   })
 }
 
+function getConflictsCount(claim,issueUrlDetail,pullUrlType) {
+  projectName = '/' + issueUrlDetail.project + '/'
+  issueId = '/' + issueUrlDetail.id
+  pullUrlType = projectName + pullUrlType + '/'
+  return db.Claim.count({
+    where : {
+      [Op.and] : [
+        {
+          [Op.or] : [
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
+          ]
+        },
+        { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
+        { id : { [Op.ne] : claim.id } }
+      ]
+    }
+  })
+}
+
 function updateClaim(claimId, { status, reason, bounty }) {
   const claim = {
     action: 'update',
@@ -252,5 +272,6 @@ module.exports = {
   updateClaim,
   getCounts,
   getConflictedClaims,
-  getResourceFromUrl
+  getResourceFromUrl,
+  getConflictsCount
 }
