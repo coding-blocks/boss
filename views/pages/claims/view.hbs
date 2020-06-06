@@ -59,6 +59,9 @@
                                                 {{#if claim.reason}}
                                                 <small class="text-muted">Reason: {{claim.reason}}</small>
                                                 {{/if}}
+                                                {{#if claim.conflictCount}}
+                                                <span class="badge badge-danger">Conflicts <span class="badge badge-light">{{claim.conflictCount}}</span></span>
+                                                {{/if}}
                                                 <br />
                                                 <small class="text-muted">Project : <a
                                                         href="https://www.github.com/coding-blocks/{{claim.repo}}">{{claim.repo}}</a></small>
