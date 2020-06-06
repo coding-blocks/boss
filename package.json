@@ -1,6 +1,7 @@
 {
   "scripts": {
     "test": "node_modules/.bin/_mocha",
+    "docs": "apidoc -i routes/ -o docs/",
     "start": "cross-env NODE_ENV=production node index.js",
     "start:dev": "cross-env NODE_ENV=development node index.js",
     "cover": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha",
@@ -8,6 +9,7 @@
     "probot:run": "probot run ./bot/index.js --private-key ./bot_key.pem"
   },
   "dependencies": {
+    "apidocs": "^2017.3.9",
     "body-parser": "^1.17.1",
     "csurf": "^1.9.0",
     "escape-html": "^1.0.3",
