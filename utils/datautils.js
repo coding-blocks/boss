@@ -78,7 +78,7 @@ function delClaim(claimId) {
   })
 }
 
-function getConflictedClaims(claim,issueUrlDetail,pullUrlType) {
+function getConflictedClaims(claimId,issueUrlDetail,pullUrlType) {
   projectName = '/' + issueUrlDetail.project + '/'
   issueId = '/' + issueUrlDetail.id
   pullUrlType = projectName + pullUrlType + '/'
@@ -92,7 +92,7 @@ function getConflictedClaims(claim,issueUrlDetail,pullUrlType) {
           ]
         },
         { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
-        { id : { [Op.ne] : claim.id } }
+        { id : { [Op.ne] : claimId } }
       ]
     }
   })

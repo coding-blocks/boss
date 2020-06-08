@@ -259,7 +259,7 @@ route.get('/claims/:id', auth.adminOnly, (req, res) => {
       if (!claim) throw new Error('No claim found')
       pullUrlDetail = getUrlDetails(claim["pullUrl"])
       issueUrlDetail = getUrlDetails(claim["issueUrl"])
-      du.getConflictedClaims(claim,issueUrlDetail,pullUrlDetail.type)
+      du.getConflictedClaims(claim.id,issueUrlDetail,pullUrlDetail.type)
         .then(conflictedClaims => {
           if(conflictedClaims.length === 0)
             res.render('pages/claims/id',{claim, hasConflict: false })
