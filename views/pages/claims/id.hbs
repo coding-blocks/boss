@@ -109,6 +109,53 @@
                 </div>
             </div>
         </div>
+        {{#if hasConflict}}
+            <h3 style="margin-top: 1em;">Conflicted claims</h3>
+            {{#each conflictedClaims as |conflictedClaim|}}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h1>
+                                    <span>{{conflictedClaim.bounty}}</span>
+                                </h1>
+                                <small>bounty points</small>
+                                <hr />
+                                <button class="btn btn-primary btn-sm" onclick="OpenConflict({{conflictedClaim.id}})">View conflict</button>
+                                <script>
+                                    function OpenConflict(conflictId) {
+                                        window.location.href = conflictId
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <a href="/claims/view?username={{conflictedClaim.user}}&status={{status}}">
+                                <h5 class="card-title">{{conflictedClaim.user}}</h5>
+                            </a>
+                            <p class="card-text">
+                                <small class="text-muted">Project : <a
+                                href="https://www.github.com/coding-blocks/">{{conflictedClaim.repo}}</a></small>
+                                <br />
+                            </p>
+                            <p class="card-text">
+                                <span class="text-muted">Issue: <small><a
+                                        href="{{conflictedClaim.issueUrl}}">{{conflictedClaim.issueUrl}}</a></small></span>
+                                <br />
+
+                                <span class="text-muted">Pull Request: <small><a
+                                        href="{{conflictedClaim.pullUrl}}">{{conflictedClaim.pullUrl}}</a></small></span>
+                                <br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+        {{else}}
+            <h3 style="margin-top: 1em;">No Conflicted claims</h3>
+        {{/if}}
     </div>
 </div>
 {{!-- <div class="four wide item">
@@ -120,7 +167,6 @@
             <select name="status" class="ui dropdown" id="status">
             </select>
         </div>
-
         <label>Reason </label>
         <textarea name="reason" id="reason"> {{claim.reason}} </textarea>
         <br />

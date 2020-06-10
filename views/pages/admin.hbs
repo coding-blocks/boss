@@ -1,13 +1,14 @@
 <div class="row">
     <div class="col-md-6">
         <h3 class="text-primary">BOSS Admins :</h2>
-        <div class="card" style="width: 18rem;">
-            <ul class="list-group list-group-flush">
-                {{#each users as |user|}}
-                <li class="list-group-item">{{ user.oneauthId }}</li>
-                {{/each}}      
-            </ul>
-        </div>
+        <ul class="list-group">
+            {{#each users as |user|}}
+                <li class="list-group-item d-flex justify-content-between align-items-center" style="width: 18rem;">
+                    {{ user.username }}
+                    <span class="badge badge-primary badge-pill">{{ user.oneauthId }}</span>
+                </li>
+            {{/each}}   
+        </ul>   
     </div>
     <div class="column-md-6">
         <h3 class="text-primary">Create new Admin</h2>

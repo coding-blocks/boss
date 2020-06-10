@@ -4,6 +4,7 @@
 const db = require('./db')
 const fs = require('fs')
 const consts = require('./consts')
+const {Op} = require('sequelize')
 
 function getContestPeriod(year) {
   if (year)
@@ -69,7 +70,8 @@ function getClaimById(claimId) {
 function getAllAdmins() {
   return db.User.findAll({
     where: {
-      role: 'admin'
+      role: 'admin',
+      username: { [Op.ne] : null }
     }
   })
 }
@@ -103,6 +105,26 @@ function delClaim(claimId) {
   return db.Claim.destroy({
     where: {
       id: claimId
+    }
+  })
+}
+
+function getConflictedClaims(claim,issueUrlDetail,pullUrlType) {
+  projectName = '/' + issueUrlDetail.project + '/'
+  issueId = '/' + issueUrlDetail.id
+  pullUrlType = projectName + pullUrlType + '/'
+  return db.Claim.findAll({
+    where : {
+      [Op.and] : [
+        {
+          [Op.or] : [
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
+            { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
+          ]
+        },
+        { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
+        { id : { [Op.ne] : claim.id } }
+      ]
     }
   })
 }
@@ -263,5 +285,6 @@ module.exports = {
   getResourceFromUrl,
   getAllAdmins,
   makeUserAdmin,
-  getUserByOneAuthId
+  getUserByOneAuthId,
+  getConflictedClaims,
 }
