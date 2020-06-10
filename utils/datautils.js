@@ -5,6 +5,7 @@ const db = require('./db')
 const fs = require('fs')
 const consts = require('./consts')
 const {Op} = require('sequelize')
+const { getUrlDetails } = require('./urlUtils')
 
 function getContestPeriod(year) {
   if (year)
@@ -98,6 +99,40 @@ function getConflictedClaims(claimId,issueUrlDetail,pullUrlType) {
   })
 }
 
+function rejectConflicts(claimId) {
+  getClaimById(claimId)
+    .then((claim) => {
+      issueUrlDetail = getUrlDetails(claim.issueUrl)
+      projectName = '/' + issueUrlDetail.project + '/'
+      issueId = '/' + issueUrlDetail.id
+      pullUrlType = getUrlDetails(claim.pullUrl).type
+      return db.Claim.update(
+        {
+          status: "rejected",
+          reason: "Conflicting with other claim",
+        },
+        {
+          where: {
+            [Op.and] : [
+              {
+                [Op.or] : [
+                  { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
+                  { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
+                ]
+              },
+              { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
+              { id : { [Op.ne] : claimId } }
+            ]
+          },
+          returning: true
+        }
+      ) 
+    })
+    .catch(err => {
+      throw new Error('Error')
+    })
+}
+
 function updateClaim(claimId, { status, reason, bounty }) {
   const claim = {
     action: 'update',
@@ -107,19 +142,42 @@ function updateClaim(claimId, { status, reason, bounty }) {
   }
   fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
 
-  return db.Claim.update(
-    {
-      status: status,
-      reason: reason,
-      bounty: bounty
-    },
-    {
-      where: {
-        id: claimId
+  if(status === 'accepted') {
+    rejectConflicts(claimId)
+      .then((result) => {
+        console.log('Rejected')
+        return db.Claim.update(
+          {
+            status: status,
+            reason: reason,
+            bounty: bounty
+          },
+          {
+            where: {
+              id: claimId
+            },
+            returning: true
+          }
+        )
+      })
+      .catch(err => {
+        throw new Error('Error')
+      })
+  } else {
+    return db.Claim.update(
+      {
+        status: status,
+        reason: reason,
+        bounty: bounty
       },
-      returning: true
-    }
-  )
+      {
+        where: {
+          id: claimId
+        },
+        returning: true
+      }
+    )
+  }
 }
 
 function getGithubResource(url) {
