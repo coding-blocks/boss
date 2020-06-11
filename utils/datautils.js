@@ -71,7 +71,6 @@ function getAllAdmins() {
   return db.User.findAll({
     where: {
       role: 'admin',
-      username: { [Op.ne] : null }
     }
   })
 }
