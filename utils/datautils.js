@@ -99,38 +99,32 @@ function getConflictedClaims(claimId,issueUrlDetail,pullUrlType) {
   })
 }
 
-function rejectConflicts(claimId) {
-  getClaimById(claimId)
-    .then((claim) => {
-      issueUrlDetail = getUrlDetails(claim.issueUrl)
-      projectName = '/' + issueUrlDetail.project + '/'
-      issueId = '/' + issueUrlDetail.id
-      pullUrlType = getUrlDetails(claim.pullUrl).type
-      return db.Claim.update(
-        {
-          status: "rejected",
-          reason: "Conflicting with other claim",
-        },
-        {
-          where: {
-            [Op.and] : [
-              {
-                [Op.or] : [
-                  { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
-                  { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
-                ]
-              },
-              { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
-              { id : { [Op.ne] : claimId } }
+function rejectConflicts(claimId,issueUrlDetail,pullUrlType) {
+  console.log(issueUrlDetail)
+  projectName = '/' + issueUrlDetail.project + '/'
+  issueId = '/' + issueUrlDetail.id
+  pullUrlType = projectName + pullUrlType + '/'
+  return db.Claim.update(
+    {
+      status: "rejected",
+      reason: "Conflicting with other claim",
+    },
+    {
+      where: {
+        [Op.and] : [
+          {
+            [Op.or] : [
+              { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
+              { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
             ]
           },
-          returning: true
-        }
-      ) 
-    })
-    .catch(err => {
-      throw new Error('Error')
-    })
+          { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
+          { id : { [Op.ne] : claimId } }
+        ]
+      },
+      returning: true
+    }
+  ) 
 }
 
 function updateClaim(claimId, { status, reason, bounty }) {
@@ -142,42 +136,19 @@ function updateClaim(claimId, { status, reason, bounty }) {
   }
   fs.writeFile(__dirname + '/../audit/' + new Date().toISOString() + '.json', JSON.stringify(claim), () => {})
 
-  if(status === 'accepted') {
-    rejectConflicts(claimId)
-      .then((result) => {
-        console.log('Rejected')
-        return db.Claim.update(
-          {
-            status: status,
-            reason: reason,
-            bounty: bounty
-          },
-          {
-            where: {
-              id: claimId
-            },
-            returning: true
-          }
-        )
-      })
-      .catch(err => {
-        throw new Error('Error')
-      })
-  } else {
-    return db.Claim.update(
-      {
-        status: status,
-        reason: reason,
-        bounty: bounty
+  return db.Claim.update(
+    {
+      status: status,
+      reason: reason,
+      bounty: bounty
+    },
+    {
+      where: {
+        id: claimId
       },
-      {
-        where: {
-          id: claimId
-        },
-        returning: true
-      }
-    )
-  }
+      returning: true
+    }
+  )
 }
 
 function getGithubResource(url) {
@@ -310,5 +281,6 @@ module.exports = {
   updateClaim,
   getCounts,
   getConflictedClaims,
-  getResourceFromUrl
+  getResourceFromUrl,
+  rejectConflicts,
 }
