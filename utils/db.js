@@ -24,6 +24,7 @@ const User = sequelize.define('user', {
     autoIncrement: true
   },
   oneauthId: Sequelize.STRING,
+  username: Sequelize.STRING,
   role: Sequelize.ENUM(['admin', 'user'])
 })
 

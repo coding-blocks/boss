@@ -62,16 +62,25 @@ module.exports = {
             },
             json   : true
         }).then( data=>{
-            const user = db.User.findOrCreate({
-                where : { oneauthId : data.id },
+            db.User.findOrCreate({
+                where : { oneauthId : data.id},
                 defaults : { role : 'user'}
-            });
-
-            return user.spread((userDB, created) => {
-                data.role = userDB.role;
-                return cb(null,data);
-
-            });
+            }).spread((userDB, created) => {
+                if(userDB.username === null) {
+                    db.User.update(
+                        { username: data.username },
+                        { where : { oneauthId: data.id },
+                        returning: true }
+                    ).then(result => {
+                        data.role = userDB.role
+                        return cb(null,data);
+                    })
+                }
+                else {
+                    data.role = userDB.role
+                    return cb(null,data);
+                }
+            })
         });
     },
   ensureLoggedInGithub(req, res, next){
