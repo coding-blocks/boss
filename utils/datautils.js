@@ -5,6 +5,7 @@ const db = require('./db')
 const fs = require('fs')
 const consts = require('./consts')
 const {Op} = require('sequelize')
+const { getUrlDetails } = require('./urlUtils')
 
 function getContestPeriod(year) {
   if (year)
@@ -78,7 +79,7 @@ function delClaim(claimId) {
   })
 }
 
-function getConflictedClaims(claim,issueUrlDetail,pullUrlType) {
+function getConflictedClaims(claimId,issueUrlDetail,pullUrlType) {
   projectName = '/' + issueUrlDetail.project + '/'
   issueId = '/' + issueUrlDetail.id
   pullUrlType = projectName + pullUrlType + '/'
@@ -92,10 +93,38 @@ function getConflictedClaims(claim,issueUrlDetail,pullUrlType) {
           ]
         },
         { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
-        { id : { [Op.ne] : claim.id } }
+        { id : { [Op.ne] : claimId } }
       ]
     }
   })
+}
+
+function rejectConflicts(claimId,issueUrlDetail,pullUrlType) {
+  console.log(issueUrlDetail)
+  projectName = '/' + issueUrlDetail.project + '/'
+  issueId = '/' + issueUrlDetail.id
+  pullUrlType = projectName + pullUrlType + '/'
+  return db.Claim.update(
+    {
+      status: "rejected",
+      reason: "Conflicting with other claim",
+    },
+    {
+      where: {
+        [Op.and] : [
+          {
+            [Op.or] : [
+              { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId } },
+              { issueUrl: { [Op.like]: '%' + projectName + '%' + issueId + '/' } }
+            ]
+          },
+          { pullUrl: { [Op.like]: '%' + pullUrlType + '%' } },
+          { id : { [Op.ne] : claimId } }
+        ]
+      },
+      returning: true
+    }
+  ) 
 }
 
 function updateClaim(claimId, { status, reason, bounty }) {
@@ -252,5 +281,6 @@ module.exports = {
   updateClaim,
   getCounts,
   getConflictedClaims,
-  getResourceFromUrl
+  getResourceFromUrl,
+  rejectConflicts,
 }

@@ -259,7 +259,7 @@ route.get('/claims/:id', auth.adminOnly, (req, res) => {
       if (!claim) throw new Error('No claim found')
       pullUrlDetail = getUrlDetails(claim["pullUrl"])
       issueUrlDetail = getUrlDetails(claim["issueUrl"])
-      du.getConflictedClaims(claim,issueUrlDetail,pullUrlDetail.type)
+      du.getConflictedClaims(claim.id,issueUrlDetail,pullUrlDetail.type)
         .then(conflictedClaims => {
           if(conflictedClaims.length === 0)
             res.render('pages/claims/id',{claim, hasConflict: false })
@@ -277,13 +277,32 @@ route.get('/claims/:id', auth.adminOnly, (req, res) => {
 })
 
 route.post('/claims/:id/update', auth.adminOnly, (req, res) => {
-  du.updateClaim(req.params.id, req.body)
-    .then(result => {
-      res.redirect('/claims/' + req.params.id)
+  if(req.body.status === 'accepted') {
+    du.getClaimById(req.params.id)
+    .then(claim => {
+      issueUrlDetail = getUrlDetails(claim["issueUrl"])
+      pullUrlType = getUrlDetails(claim["pullUrl"]).type
+      du.rejectConflicts(req.params.id,issueUrlDetail,pullUrlType)
+        .then(result => {
+          du.updateClaim(req.params.id, req.body)
+            .then(result => {
+              res.redirect('/claims/' + req.params.id)
+            })
+            .catch(error => {
+              res.send('Error updating claim')
+            })
+        })
     })
-    .catch(error => {
-      res.send('Error updating claim')
-    })
+  }
+  else {
+    du.updateClaim(req.params.id, req.body)
+      .then(result => {
+        res.redirect('/claims/' + req.params.id)
+      })
+      .catch(error => {
+        res.send('Error updating claim')
+      })
+  }
 })
 
 route.get('/claims/:id/edit', auth.ensureLoggedInGithub, auth.ensureUserCanEdit, (req, res) => {
