@@ -8,6 +8,8 @@
     "probot:run": "probot run ./bot/index.js --private-key ./bot_key.pem"
   },
   "dependencies": {
+    "@octokit/auth-oauth-app": "^3.0.4",
+    "@octokit/rest": "^18.0.0",
     "body-parser": "^1.17.1",
     "csurf": "^1.9.0",
     "escape-html": "^1.0.3",
