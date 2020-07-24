@@ -52,8 +52,7 @@
         {{!-- pagination starts --}}
         <div class="card-footer">
             <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <div id="page-selection"></div>
+                <ul id="page-selection" class="pagination justify-content-center">
                 </ul>
             </nav>
         </div>
@@ -62,22 +61,35 @@
     <script>
         $(document).ready(function () {
             let initialTrigger = false;
-            $('#page-selection').twbsPagination({
-            totalPages: {{pagination.length}}+1,
-            visiblePages: 5,
-            startPage: {{page}},
-            next: 'Next',
-            prev: 'Prev',
-            onPageClick: function (event, page) {
-                console.log({{pagination.length}})
-                    console.log(`?page=${page}&size={{size}}`)
-                    if (!initialTrigger) {
-                        initialTrigger = true;
-                    } else {
-                        window.location.href = `?page=${page}&size={{size}}`
-                    }
+            $('#page-selection').pagination({
+                items: {{pagination.length}},
+                itemOnPage: 5,
+                nextText: '<span aria-hidden="true">&raquo;</span>',
+                prevText: '<span aria-hidden="true">&laquo;</span>',
+                currentPage: {{page}},
+                displayedPages: 3,
+                onPageClick: function (page, event) {
+                    configureButtons();
+                    $('.page-item:first').addClass('disabled');
+                    $('.page-item:last').addClass('disabled');
+                    window.location.href = `?page=${page}&size={{size}}`
+                },
+                onInit: function() {
+                    configureButtons();
                 }
             })
+
+            function configureButtons()
+            {
+                $('.pagination li').addClass('page-item');
+                $('.pagination li a').addClass('page-link');
+                $('.current').addClass('page-link');
+                $('.ellipse').addClass('page-link');
+                if({{page}} == 1)
+                    $('.page-item:first').addClass('disabled');
+                if({{page}} == {{pagination.length}} || {{pagination.length}} == 0)
+                    $('.page-item:last').addClass('disabled');
+            }
         });
     </script>
 </div>
