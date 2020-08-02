@@ -31,18 +31,25 @@ cd ./boss
 
 ```
 
-3. Install all project dependency packages via NPM
+3. Check out the supported node version  
+
+```
+nvm use
+
+```
+
+4. Install all project dependency packages via NPM
 
 ```
 npm install
 
 ```
 
-4. Create a `secrets.json` file in the root directory taking hint from the `secrets-sample.json` file or You can also create a copy of `secrets-sample.json` file and rename it as `secrets.json` in the root directory. ( Don't worry secrets.json is already added to .gitignore file so it won't be commited )
+5. Create a `secrets.json` file in the root directory taking hint from the `secrets-sample.json` file or You can also create a copy of `secrets-sample.json` file and rename it as `secrets.json` in the root directory. ( Don't worry secrets.json is already added to .gitignore file so it won't be commited )
 
   
 
-5. Create a Client on Coding Blocks OneAuth using [https://account.codingblocks.com/clients/add](https://account.codingblocks.com/clients/add)
+6. Create a Client on Coding Blocks OneAuth using [https://account.codingblocks.com/clients/add](https://account.codingblocks.com/clients/add)
 
 **Remember the Client ID and Client Secret and copy them to your `secrets.json` file.**
 
@@ -51,7 +58,7 @@ Also, remember to change the callback URL to your desired url. You can use `http
 
   
 
-5. Set up PostgreSQL
+7. Set up PostgreSQL
 
 - If you don't have PostgreSQL setup on your machine you can download it from [here](https://www.postgresql.org/download/).
 - If you have renamed the `secrets-sample.json` file to `secrets.json` then
@@ -59,7 +66,7 @@ Also, remember to change the callback URL to your desired url. You can use `http
   - Create a new database in PostgreSQL server with name **dbname**.
 - If you have created a new `secrets.json` file then create the respective things accordingly.
 
-6. Start the server.
+8. Start the server.
 
 ```
 npm start
