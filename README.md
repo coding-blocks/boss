@@ -40,6 +40,8 @@ npm install
 
 4. Create a `secrets.json` file in the root directory taking hint from the `secrets-sample.json` file or You can also create a copy of `secrets-sample.json` file and rename it as `secrets.json` in the root directory. ( Don't worry secrets.json is already added to .gitignore file so it won't be commited )
 
+Walking on water and developing software from a specification are easy if both are frozen.”
+
   
 
 5. Create a Client on Coding Blocks OneAuth using [https://account.codingblocks.com/clients/add](https://account.codingblocks.com/clients/add)
