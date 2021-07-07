@@ -34,7 +34,7 @@ cd ./boss
 3. Install all project dependency packages via NPM
 
 ```
-npm install
+npm install -g node@10.20.1
 
 ```
 
